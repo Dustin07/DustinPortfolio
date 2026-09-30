@@ -24,5 +24,4 @@
 document.getElementById('year').textContent=new Date().getFullYear();
 const buttons=document.querySelectorAll('.filter'),cards=document.querySelectorAll('.project-card');
 buttons.forEach(button=>button.addEventListener('click',()=>{buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===button)));let count=0;cards.forEach(card=>{card.hidden=button.dataset.filter!=='All'&&card.dataset.category!==button.dataset.filter;if(!card.hidden)count++});document.getElementById('project-count').textContent=count+' projects';}));
-</script></body></html>
-
+</script><!-- content refreshed --></body></html>
