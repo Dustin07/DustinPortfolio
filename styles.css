@@ -116,10 +116,19 @@ body{background:#edf4fa;isolation:isolate}
 .project-card[hidden]{display:none}
 .about-grid>div,.skills>div{min-width:0}.skills{grid-template-columns:repeat(2,minmax(0,1fr));overflow-wrap:anywhere}
 
-/* Liquid glass: clear lenses, bright rims, and flowing water highlights. */
-.ambient-field{background:#c8dfe9}
-.ambient-color{background:radial-gradient(ellipse at 8% 24%,rgba(37,102,154,.60),transparent 48%),radial-gradient(ellipse at 88% 48%,rgba(50,183,194,.54),transparent 44%),radial-gradient(ellipse at 50% 100%,rgba(0,39,76,.32),transparent 50%);animation-duration:18s}
-.ambient-glint{background:radial-gradient(ellipse 75% 30% at 60% 25%,transparent 57%,rgba(255,255,255,.72) 60%,rgba(255,255,255,.10) 63%,transparent 67%),radial-gradient(ellipse 72% 34% at 22% 76%,transparent 53%,rgba(255,255,255,.65) 57%,transparent 63%),radial-gradient(ellipse at 64% 46%,rgba(255,255,255,.68),transparent 48%);filter:blur(3px);animation-duration:20s}
+/* Clear glass over aerospace-inspired flow geometry in school colors. */
+body,.ambient-field{background:#e8eef3}
+.ambient-flow{inset:-8%}
+.ambient-color{background:radial-gradient(ellipse at 8% 25%,rgba(0,39,76,.25),transparent 55%),radial-gradient(ellipse at 92% 60%,rgba(0,39,76,.17),transparent 52%),radial-gradient(ellipse at 82% 18%,rgba(255,203,5,.12),transparent 36%),radial-gradient(ellipse at 18% 90%,rgba(215,63,9,.09),transparent 38%);animation:none;will-change:auto}
+.ambient-glint{background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.52) 45%,transparent 70%);filter:none;animation:flow-light 30s ease-in-out infinite alternate}
+.ambient-streamlines{position:absolute;width:100%;height:100%;inset:0;animation:flow-breathe 26s ease-in-out infinite alternate}
+.ambient-streamlines path{stroke:#00274c;stroke-width:1.2;stroke-opacity:.18;vector-effect:non-scaling-stroke}
+.ambient-streamlines .flow-orange{stroke:#d73f09;stroke-width:2;stroke-opacity:.42}
+.ambient-streamlines .flow-maize{stroke:#ffcb05;stroke-width:2.4;stroke-opacity:.65}
+@keyframes flow-breathe{from{transform:translate3d(-8px,0,0)}to{transform:translate3d(8px,-14px,0)}}
+@keyframes flow-light{from{transform:translate3d(-4%,0,0);opacity:.65}to{transform:translate3d(4%,0,0);opacity:1}}
+@media(max-width:760px){.ambient-streamlines{width:160%;left:-30%;opacity:.7}}
+@media(prefers-reduced-motion:reduce){.ambient-streamlines,.ambient-glint{animation:none}}
 .projects,.about{background:transparent;border-color:rgba(255,255,255,.4)}
 .topbar{width:min(1150px,calc(100% - 28px));margin:12px auto 0;top:12px;border:1px solid rgba(255,255,255,.8);border-radius:24px;background:rgba(255,255,255,.32);backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%);box-shadow:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,39,76,.12),0 12px 32px rgba(0,39,76,.12)}
 .nav{width:100%;padding:0 24px}.brand,.navlinks a{color:var(--blue)}.navlinks a:hover{color:var(--blue);background:rgba(255,255,255,.45)}
@@ -134,4 +143,3 @@ body{background:#edf4fa;isolation:isolate}
 .school.michigan,.michigan-step .timeline-card,.education-item.michigan{background:rgba(0,39,76,.82)}
 .school.oregon{background:rgba(17,17,17,.82)}
 @media(max-width:760px){.topbar{top:8px;margin-top:8px;border-radius:22px;width:calc(100% - 20px)}.nav{padding:14px 18px}.project-card,.project-card:nth-child(even){background:linear-gradient(135deg,rgba(255,255,255,.76),rgba(255,255,255,.46));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.timeline-card,.timeline-item:nth-child(even) .timeline-card{border-radius:22px!important}}
-
