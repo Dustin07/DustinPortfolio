@@ -85,3 +85,11 @@ body{background:#fbfcfd}
 .case-toc,.table-wrap,.project-files,.case-bottom{border-radius:12px;box-shadow:none}
 @media(max-width:760px){.topbar{border-radius:0}.hero{padding:44px 0 38px}.projects{border-radius:0}.grid{gap:16px}.project-card,.project-card:nth-child(even){padding:24px}.project-card h3,.project-card>p{min-height:0}.about{margin:0;padding:56px 0}.contact{border-radius:0}.timeline-card,.timeline-item:nth-child(even) .timeline-card{border-radius:14px!important}}
 
+/* Flat, restrained surfaces throughout the portfolio. */
+body{background:#fff}
+.projects,.about{background:#f6f8fa}
+.timeline:before{background:#cbd5dd}
+.case-hero{background:#fff;border-bottom:1px solid #dfe4e8}
+.project-files{background:#f6f8fa;border:1px solid #dfe4e8}
+@media(max-width:760px){.navlinks{width:100%;justify-content:space-between;gap:0}.navlinks a{padding:6px 0;font-size:13px}}
+
