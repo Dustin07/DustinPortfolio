@@ -39,4 +39,5 @@ body{background:radial-gradient(circle at 8% 4%,rgba(255,203,5,.12),transparent 
 @media(max-width:520px){.credibility{display:block}.credibility-label{display:block;margin-bottom:10px}.credibility-list{display:flex;justify-content:space-between;gap:10px}.credibility-list strong{font-size:13px}}
 
 .eyebrow{text-transform:capitalize}
+.brand b{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;padding:0;border:1.5px solid rgba(255,255,255,.75);border-radius:50%;line-height:1}
 
