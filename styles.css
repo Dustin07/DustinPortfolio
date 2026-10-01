@@ -93,3 +93,25 @@ body{background:#fff}
 .project-files{background:#f6f8fa;border:1px solid #dfe4e8}
 @media(max-width:760px){.navlinks{width:100%;justify-content:space-between;gap:0}.navlinks a{padding:6px 0;font-size:13px}}
 
+/* Flowing light behind frosted, readable surfaces. */
+body{background:#edf4fa;isolation:isolate}
+.ambient-field{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:#edf4fa}
+.ambient-flow{position:absolute;inset:-18%;transform:translate3d(var(--flow-x,0px),var(--flow-y,0px),0);transition:transform .7s ease-out}
+.ambient-color,.ambient-glint{position:absolute;inset:0;will-change:transform}
+.ambient-color{background:radial-gradient(ellipse at 13% 22%,rgba(66,148,209,.38),transparent 46%),radial-gradient(ellipse at 83% 42%,rgba(68,195,204,.30),transparent 44%),radial-gradient(ellipse at 48% 92%,rgba(0,39,76,.18),transparent 46%);animation:ambient-drift 24s ease-in-out infinite alternate}
+.ambient-glint{background:radial-gradient(ellipse at 40% 24%,rgba(255,255,255,.9),transparent 43%),radial-gradient(ellipse at 88% 80%,rgba(255,203,5,.13),transparent 34%),radial-gradient(ellipse at 6% 72%,rgba(215,63,9,.10),transparent 34%);animation:ambient-glide 31s ease-in-out infinite alternate}
+@keyframes ambient-drift{from{transform:translate3d(-2%,-2%,0) rotate(-5deg) scale(1.03)}to{transform:translate3d(5%,4%,0) rotate(7deg) scale(1.12)}}
+@keyframes ambient-glide{from{transform:translate3d(4%,-3%,0) scale(1)}to{transform:translate3d(-6%,6%,0) scale(1.16)}}
+.topbar{background:rgba(0,39,76,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,203,5,.65);box-shadow:0 6px 24px rgba(0,39,76,.08)}
+.projects,.about{background:rgba(247,250,253,.36);border-top:1px solid rgba(255,255,255,.75);border-bottom:1px solid rgba(255,255,255,.75)}
+.project-card,.project-card:nth-child(even),.credibility,.timeline-card,.award,.skills>div{background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 28px rgba(0,39,76,.045)}
+.project-card:hover,.project-card:nth-child(even):hover{background:rgba(255,255,255,.96);box-shadow:0 12px 32px rgba(0,39,76,.10)}
+.school.michigan,.michigan-step .timeline-card,.education-item.michigan{background:rgba(0,39,76,.94)}
+.school.oregon{background:rgba(17,17,17,.94)}
+.chart,.result,.case-toc,.project-files,.case-bottom{background:rgba(239,244,248,.92)}
+.case-hero{background:transparent}
+.education-item:not(.michigan){background:rgba(255,255,255,.86)}
+@media(max-width:760px){.ambient-color{animation-duration:32s}.ambient-glint{animation-duration:38s}.project-card,.project-card:nth-child(even){background:rgba(255,255,255,.93);backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(prefers-reduced-motion:reduce){.ambient-color,.ambient-glint{animation:none;will-change:auto}.ambient-flow{transition:none}.project-card{transition:none}}
+.project-card[hidden]{display:none}
+
