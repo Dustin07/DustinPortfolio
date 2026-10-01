@@ -114,4 +114,24 @@ body{background:#edf4fa;isolation:isolate}
 @media(max-width:760px){.ambient-color{animation-duration:32s}.ambient-glint{animation-duration:38s}.project-card,.project-card:nth-child(even){background:rgba(255,255,255,.93);backdrop-filter:none;-webkit-backdrop-filter:none}}
 @media(prefers-reduced-motion:reduce){.ambient-color,.ambient-glint{animation:none;will-change:auto}.ambient-flow{transition:none}.project-card{transition:none}}
 .project-card[hidden]{display:none}
+.about-grid>div,.skills>div{min-width:0}.skills{grid-template-columns:repeat(2,minmax(0,1fr));overflow-wrap:anywhere}
+
+/* Liquid glass: clear lenses, bright rims, and flowing water highlights. */
+.ambient-field{background:#c8dfe9}
+.ambient-color{background:radial-gradient(ellipse at 8% 24%,rgba(37,102,154,.60),transparent 48%),radial-gradient(ellipse at 88% 48%,rgba(50,183,194,.54),transparent 44%),radial-gradient(ellipse at 50% 100%,rgba(0,39,76,.32),transparent 50%);animation-duration:18s}
+.ambient-glint{background:radial-gradient(ellipse 75% 30% at 60% 25%,transparent 57%,rgba(255,255,255,.72) 60%,rgba(255,255,255,.10) 63%,transparent 67%),radial-gradient(ellipse 72% 34% at 22% 76%,transparent 53%,rgba(255,255,255,.65) 57%,transparent 63%),radial-gradient(ellipse at 64% 46%,rgba(255,255,255,.68),transparent 48%);filter:blur(3px);animation-duration:20s}
+.projects,.about{background:transparent;border-color:rgba(255,255,255,.4)}
+.topbar{width:min(1150px,calc(100% - 28px));margin:12px auto 0;top:12px;border:1px solid rgba(255,255,255,.8);border-radius:24px;background:rgba(255,255,255,.32);backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%);box-shadow:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,39,76,.12),0 12px 32px rgba(0,39,76,.12)}
+.nav{width:100%;padding:0 24px}.brand,.navlinks a{color:var(--blue)}.navlinks a:hover{color:var(--blue);background:rgba(255,255,255,.45)}
+.project-card,.project-card:nth-child(even),.credibility,.timeline-card,.award,.skills>div,.education-item:not(.michigan){background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border:1px solid rgba(255,255,255,.85);border-radius:22px;backdrop-filter:blur(20px) saturate(155%);-webkit-backdrop-filter:blur(20px) saturate(155%);box-shadow:inset 0 2px 2px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,39,76,.14),inset 1px 0 2px rgba(255,255,255,.75),0 14px 34px rgba(0,39,76,.10)}
+.project-card[data-category="Academic"]{border-top-color:rgba(255,255,255,.85)}
+.project-card:after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(125deg,rgba(255,255,255,.28),transparent 28% 73%,rgba(255,255,255,.20));box-shadow:inset 0 0 12px rgba(255,255,255,.24)}
+.project-card:hover,.project-card:nth-child(even):hover{background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,255,255,.38));border-color:#fff;box-shadow:inset 0 2px 2px #fff,inset 0 -1px 2px rgba(0,39,76,.14),0 18px 40px rgba(0,39,76,.15)}
+.chart,.result{background:rgba(255,255,255,.60);border:1px solid rgba(255,255,255,.75);border-radius:13px}
+.card-top,.project-card>p,.tools,.section-heading p,.intro,.timeline-heading>p:last-child{color:#354b5d}
+.project-link{border-top-color:rgba(0,39,76,.14)}
+.school{border:1px solid rgba(255,255,255,.6);box-shadow:inset 0 1px 1px rgba(255,255,255,.45),0 12px 26px rgba(0,39,76,.15);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.school.michigan,.michigan-step .timeline-card,.education-item.michigan{background:rgba(0,39,76,.82)}
+.school.oregon{background:rgba(17,17,17,.82)}
+@media(max-width:760px){.topbar{top:8px;margin-top:8px;border-radius:22px;width:calc(100% - 20px)}.nav{padding:14px 18px}.project-card,.project-card:nth-child(even){background:linear-gradient(135deg,rgba(255,255,255,.76),rgba(255,255,255,.46));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}.timeline-card,.timeline-item:nth-child(even) .timeline-card{border-radius:22px!important}}
 
