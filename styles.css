@@ -41,3 +41,47 @@ body{background:radial-gradient(circle at 8% 4%,rgba(255,203,5,.12),transparent 
 .eyebrow{text-transform:capitalize}
 .brand b{display:grid;place-items:center;width:38px;height:38px;flex:0 0 38px;padding:0;border:1.5px solid rgba(255,255,255,.75);border-radius:50%;line-height:1}
 
+/* Portfolio refinement: a consistent technical grid and quieter surfaces. */
+body{background:#fbfcfd}
+.topbar{border-radius:0;border-bottom:2px solid var(--maize);box-shadow:none}
+.nav{min-height:70px}
+.hero{padding:68px 0 46px}
+.hero h1{letter-spacing:-.045em}
+.school,.school.michigan,.school.oregon{border-radius:14px;box-shadow:none;transition:none}
+.school:hover{transform:none;box-shadow:none}
+.button{border-radius:9px;box-shadow:none}
+.button:hover{transform:none;box-shadow:none;background:#123c61}
+.credibility{background:#fff;border:1px solid #dfe4e8;border-radius:12px;box-shadow:none}
+.projects{background:#f4f6f8;border-top:1px solid #dfe4e8;border-radius:0}
+.section-heading h2{letter-spacing:-.035em}
+.filters{gap:8px}
+.filter,.filter[aria-pressed="true"]{border:1px solid #d6dde3;border-radius:8px;box-shadow:none}
+.filter:hover{transform:none;box-shadow:none;border-color:var(--blue)}
+.filter[aria-pressed="true"]{border-color:var(--blue)}
+.grid{align-items:stretch;grid-auto-rows:1fr;gap:22px}
+.project-card,.project-card:nth-child(even){display:flex;flex-direction:column;min-width:0;height:100%;transform:none;border:1px solid #dbe1e6;border-top:3px solid var(--blue);border-radius:14px;padding:27px 28px 24px;box-shadow:none;transition:border-color .18s ease,box-shadow .18s ease}
+.project-card[data-category="Academic"]{border-top-color:var(--orange)}
+.project-card:hover,.project-card:nth-child(even):hover{transform:none;box-shadow:0 9px 26px rgba(0,39,76,.08);border-color:#bccbd7}
+.project-card:before{display:none}
+.card-top{margin-bottom:18px;line-height:1.4}
+.project-card h3{font-size:1.25rem;min-height:3rem;margin-bottom:12px}
+.project-card>p{min-height:3.6rem;margin-bottom:18px}
+.chart,.result{height:180px;min-height:180px;border-radius:9px;background:#f3f5f7;margin-bottom:0}
+.result{padding:20px;box-shadow:inset 3px 0 0 var(--orange)}
+.chart{padding:16px}
+.tools{min-height:2.6rem;margin:18px 0 14px;line-height:1.5}
+.project-link{margin:auto 0 0;padding:14px 0 0;border-top:1px solid #e1e6ea;border-radius:0;background:transparent;color:var(--blue)}
+.project-link span{display:none}
+.project-link:hover{text-decoration:underline}
+.timeline-card,.timeline-item:nth-child(even) .timeline-card{border:1px solid #e0e5e9;border-radius:14px;box-shadow:none}
+.timeline-card:hover{transform:none;box-shadow:0 8px 22px rgba(0,39,76,.06)}
+.timeline-card:before{display:none}
+.oregon-step .timeline-card{box-shadow:inset 3px 0 0 var(--orange)}
+.michigan-step .timeline-card{border-color:var(--blue)}
+.about{background:#f4f6f8;border-radius:0;margin:0;padding:var(--space-section) 0}
+.education-item,.award,.skills>div{border-radius:14px;box-shadow:none}
+.contact{border-radius:0}
+.case-hero{border-radius:0}
+.case-toc,.table-wrap,.project-files,.case-bottom{border-radius:12px;box-shadow:none}
+@media(max-width:760px){.topbar{border-radius:0}.hero{padding:44px 0 38px}.projects{border-radius:0}.grid{gap:16px}.project-card,.project-card:nth-child(even){padding:24px}.project-card h3,.project-card>p{min-height:0}.about{margin:0;padding:56px 0}.contact{border-radius:0}.timeline-card,.timeline-item:nth-child(even) .timeline-card{border-radius:14px!important}}
+
