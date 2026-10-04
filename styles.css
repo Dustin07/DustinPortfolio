@@ -100,7 +100,7 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 @media(prefers-reduced-motion:reduce) {html {scroll-behavior: auto}
 }
 .brand b {background: #000;color: var(--maize)}
-.eyebrow {color: #b53507}
+.eyebrow {color: var(--blue)}
 .hero h1 {color: #000}
 .hero-aside {border: 0;padding: 0;display: grid}
 .school.michigan {color: white}
@@ -400,11 +400,11 @@ to{transform:translate3d(-6%,6%,0) scale(1.16)}
 body {background: #e8eef3}
 .ambient-field {background: #e8eef3}
 .ambient-flow {inset: -8%}
-.ambient-color {background: radial-gradient(ellipse at 8% 25%,rgba(0,39,76,.25),transparent 55%),radial-gradient(ellipse at 92% 60%,rgba(0,39,76,.17),transparent 52%),radial-gradient(ellipse at 82% 18%,rgba(255,203,5,.12),transparent 36%),radial-gradient(ellipse at 18% 90%,rgba(215,63,9,.09),transparent 38%);animation: none;will-change: auto}
+.ambient-color {background: radial-gradient(ellipse at 8% 25%,rgba(0,39,76,.18),transparent 55%),radial-gradient(ellipse at 92% 60%,rgba(0,39,76,.12),transparent 52%),radial-gradient(ellipse at 82% 18%,rgba(255,203,5,.12),transparent 36%),radial-gradient(ellipse at 18% 90%,rgba(215,63,9,.09),transparent 38%);animation: none;will-change: auto}
 .ambient-glint {background: linear-gradient(120deg,transparent 20%,rgba(255,255,255,.52) 45%,transparent 70%);filter: none;animation: flow-light 30s ease-in-out infinite alternate}
 .ambient-streamlines {position: absolute;width: 100%;height: 100%;inset: 0;animation: flow-breathe 26s ease-in-out infinite alternate}
-.ambient-streamlines path {stroke: #00274c;stroke-width: 1.2;stroke-opacity: .18;vector-effect: non-scaling-stroke}
-.ambient-streamlines .flow-orange {stroke: #d73f09;stroke-width: 2;stroke-opacity: .42}
+.ambient-streamlines path {stroke: #00274c;stroke-width: 1.2;stroke-opacity: .12;vector-effect: non-scaling-stroke}
+.ambient-streamlines .flow-orange {stroke: #d73f09;stroke-width: 2;stroke-opacity: .32}
 .ambient-streamlines .flow-maize {stroke: #ffcb05;stroke-width: 2.4;stroke-opacity: .65}
 @keyframes flow-breathe {from{transform:translate3d(-8px,0,0)}
 to{transform:translate3d(8px,-14px,0)}
@@ -440,8 +440,8 @@ to{transform:translate3d(4%,0,0);opacity:1}
 .card-top {color: #354b5d}
 .project-card>p {color: #354b5d}
 .tools {color: #354b5d}
-.section-heading p {color: #354b5d}
-.intro {color: #354b5d}
+.section-heading p {color: #1c2e3d}
+.intro {color: #1c2e3d}
 .timeline-heading>p:last-child {color: #354b5d}
 .project-link {border-top-color: rgba(0,39,76,.14)}
 .school {border: 1px solid rgba(255,255,255,.6);box-shadow: inset 0 1px 1px rgba(255,255,255,.45),0 12px 26px rgba(0,39,76,.15);backdrop-filter: blur(20px);-webkit-backdrop-filter: blur(20px)}
@@ -729,3 +729,5 @@ a {color: #111;text-decoration: underline}
 footer {margin-top: 18pt;border-top: 1px solid #bbb;font-size: 9pt}
 }
 .project-link span{display:inline}
+.case-content table.compact-table{min-width:0}
+.timeline-heading>p:last-child,.timeline-date,.count,footer{color:#1c2e3d}

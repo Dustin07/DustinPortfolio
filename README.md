@@ -29,4 +29,4 @@ The public résumé is the supplied PDF, unchanged and approved for publication.
 
 ## Verification
 
-From the repository root, run `node tests/portfolio.test.cjs` and `python tests/check_site.py`. These check project filtering, URL/session behavior, mobile menu logic, keyboard section focus, active sections, print-control wiring, local links, table semantics, image descriptions, page metadata, and the sitemap. Also review real desktop and phone layouts in a browser before publishing; these scripts do not replace visual inspection.
+From the repository root, run `node tests/portfolio.test.cjs`, `node tests/ambient.test.cjs`, and `python tests/check_site.py`. These check project filtering, URL/session behavior, mobile menu logic, keyboard section focus, active sections, print-control wiring, decorative airflow geometry, reduced motion, inactive-tab pausing, local links, table semantics, image descriptions, page metadata, and the sitemap. Also review real desktop and phone layouts in a browser before publishing; these scripts do not replace visual inspection.
