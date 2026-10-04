@@ -1,0 +1,92 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const source = fs.readFileSync(path.join(__dirname, '../portfolio.js'), 'utf8');
+
+class Element {
+  constructor(text = '', dataset = {}) { this.textContent = text; this.dataset = dataset; this.attrs = {}; this.events = {}; this.value = ''; this.hidden = false; }
+  addEventListener(name, action) { this.events[name] = action; }
+  setAttribute(name, value) { this.attrs[name] = value; }
+  getAttribute(name) { return this.attrs[name]; }
+  removeAttribute(name) { delete this.attrs[name]; }
+  focus() { this.focused = true; }
+}
+function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, storageBlocked = false) {
+  const cards = [new Element('Protective Covers CATIA TPU', {category:'Boeing'}), new Element('Rocket Testing FEA', {category:'Academic'}), new Element('Carabiner FEA Ansys', {category:'Academic'}), new Element('Casting Tooling SolidWorks', {category:'PCC'})];
+  const buttons = ['All','Academic','Boeing','PCC'].map(value => new Element(value, {filter:value}));
+  const elements = {'#project-search':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
+  const timers = new Map(); let timerId = 0; let stored = saved; const events = {};
+  const context = {
+    document: {
+      querySelector: selector => elements[selector] || null,
+      querySelectorAll: selector => selector === '.project-card' ? cards : selector === '.filter' ? buttons : [],
+      getElementById: () => null,
+    },
+    URL, URLSearchParams, location:new URL(url), history:{replaceState:(_, __, next) => { context.location = new URL(next); }},
+    sessionStorage:{getItem:() => {if(storageBlocked) throw Error('blocked'); return stored ? JSON.stringify(stored) : null;},setItem:(_,value) => {if(storageBlocked) throw Error('blocked'); stored=JSON.parse(value);}},
+    setTimeout: callback => { const id=++timerId;timers.set(id, callback);return id; }, clearTimeout:id => timers.delete(id),
+    addEventListener:(name,action) => {events[name]=action;}, requestAnimationFrame:action => action(),
+  };
+  vm.runInNewContext(source, context);
+  return {cards,buttons,elements,context,events,
+    click:value => buttons.find(button=>button.dataset.filter===value).events.click(),
+    search:value => {elements['#project-search'].value=value;elements['#project-search'].events.input();[...timers.values()].forEach(action=>action());timers.clear();},
+    shown:()=>cards.filter(card=>!card.hidden).map(card=>card.textContent),
+    stored:()=>stored,
+  };
+}
+let cases=0;
+function test(name, action) { action();cases++;console.log('PASS '+name); }
+test('default library is complete',()=>{const f=fixture();assert.equal(f.shown().length,4);assert.equal(f.elements['#project-count'].textContent,'4 Projects');assert.equal(f.elements['#project-reset'].hidden,true);});
+test('category filtering and URL',()=>{const f=fixture();f.click('Boeing');assert.equal(f.shown().length,1);assert.equal(f.context.location.searchParams.get('category'),'Boeing');assert.equal(f.elements['#project-count'].textContent,'1 Project');});
+test('case-insensitive skill search',()=>{const f=fixture();f.search('fEa');assert.equal(f.shown().length,2);assert.equal(f.context.location.searchParams.get('q'),'fEa');});
+test('all search terms must match',()=>{const f=fixture();f.search('FEA Ansys');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
+test('search combines with category',()=>{const f=fixture();f.click('Boeing');f.search('FEA');assert.equal(f.shown().length,0);assert.equal(f.elements['#project-empty'].hidden,false);});
+test('clear restores all and focuses search',()=>{const f=fixture();f.click('PCC');f.search('missing');f.elements['#project-reset'].events.click();assert.equal(f.shown().length,4);assert.equal(f.elements['#project-search'].focused,true);assert.equal(f.context.location.search,'');});
+test('Escape clears query but keeps category',()=>{const f=fixture();f.click('Academic');f.search('Ansys');f.elements['#project-search'].events.keydown({key:'Escape'});assert.equal(f.shown().length,2);assert.equal(f.context.location.searchParams.get('category'),'Academic');});
+test('shared link restores category and search',()=>{const f=fixture('https://example.test/DustinPortfolio/?category=Academic&q=Ansys#work');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
+test('return link restores session view and shareable URL',()=>{const f=fixture('https://example.test/DustinPortfolio/index.html#work',{category:'Boeing',query:'TPU'});assert.equal(f.shown().length,1);assert.equal(f.context.location.searchParams.get('q'),'TPU');});
+test('fresh home ignores previous session filter',()=>{const f=fixture('https://example.test/DustinPortfolio/',{category:'PCC',query:'Tooling'});assert.equal(f.shown().length,4);});
+test('invalid category is safe',()=>{const f=fixture('https://example.test/DustinPortfolio/?category=unknown#work');assert.equal(f.shown().length,4);});
+test('blocked storage does not disable search',()=>{const f=fixture(undefined,null,true);f.search('FEA');assert.equal(f.shown().length,2);});
+test('other query parameters are preserved',()=>{const f=fixture('https://example.test/DustinPortfolio/?v=release#work');f.click('PCC');assert.equal(f.context.location.searchParams.get('v'),'release');});
+test('long shared queries are bounded',()=>{const f=fixture('https://example.test/DustinPortfolio/?q='+ 'x'.repeat(250));assert.equal(f.elements['#project-search'].value.length,120);});
+test('corrupt saved query cannot break the page',()=>{const f=fixture('https://example.test/DustinPortfolio/#work',{category:'Academic',query:123});assert.equal(f.shown().length,2);});
+test('array-shaped saved preferences are ignored',()=>{const f=fixture('https://example.test/DustinPortfolio/#work',['Boeing']);assert.equal(f.shown().length,4);});
+test('keywords index full engineering terms',()=>{const f=fixture();f.cards[2].dataset.keywords='finite element analysis';vm.runInNewContext(source,f.context);f.search('finite element');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
+test('unmatched Unicode queries do not show every card',()=>{const f=fixture();f.search('航空');assert.equal(f.shown().length,0);});
+test('punctuation does not prevent keyword matches',()=>{const f=fixture();f.search('FEA/Ansys');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
+
+function navigationFixture() {
+  const nav = new Element(), navigation = new Element(), header = new Element(), toc = new Element(), heading = new Element('Inside This Project'), bottom = new Element();
+  const links = ['overview','results','files'].map(name=>Object.assign(new Element(name),{hash:'#'+name,closest:()=>true}));
+  const sections = Object.fromEntries(links.map((link,index)=>[link.hash.slice(1),Object.assign(new Element(),{getBoundingClientRect:()=>({top:[200,800,1800][index]-context.scrollY})})]));
+  let printed=0;
+  const classes = () => ({values:new Set(),add(value){this.values.add(value);}});
+  for(const element of [nav,toc,bottom]) {element.classList=classes();element.children=[];element.append=function(value){this.children.push(value);};element.insertBefore=function(value){this.children.push(value);};}
+  nav.querySelector=selector=>selector==='.navlinks'?navigation:null;
+  header.querySelector=selector=>selector==='.nav'?nav:null;
+  header.getBoundingClientRect=()=>({height:72,bottom:80});
+  toc.querySelector=selector=>selector==='strong'?heading:null;
+  toc.querySelectorAll=()=>links;
+  const properties={};const events={};
+  const context={
+    document:{querySelector:selector=>({'.topbar':header,'.case-toc':toc,'.case-bottom':bottom}[selector]||null),querySelectorAll:selector=>selector==='a[href^="#"]'?links:[],getElementById:id=>sections[id],createElement:()=>{const element=new Element();element.children=[];element.append=function(child){this.children.push(child);};return element;},documentElement:{scrollHeight:2000,style:{setProperty:(name,value)=>{properties[name]=value;}}}},
+    window:{print:()=>{printed++;}},innerWidth:390,innerHeight:600,scrollY:0,
+    addEventListener:(name,action)=>{events[name]=action;},requestAnimationFrame:action=>action(),
+  };
+  vm.runInNewContext(source,context);
+  return {nav,navigation,header,toc,bottom,links,sections,context,properties,events,menu:nav.children[0],toggle:toc.children[0],tocLinks:toc.children[1],printed:()=>printed};
+}
+test('phone menu has associated controls and starts collapsed',()=>{const f=navigationFixture();assert.equal(f.menu.getAttribute('aria-controls'),'primary-links');assert.equal(f.menu.getAttribute('aria-expanded'),'false');assert.equal(f.properties['--nav-clearance'],'104px');});
+test('phone menu toggles and Escape restores focus',()=>{const f=navigationFixture();f.menu.events.click();assert.equal(f.menu.getAttribute('aria-expanded'),'true');f.nav.events.keydown({key:'Escape'});assert.equal(f.menu.getAttribute('aria-expanded'),'false');assert.equal(f.menu.focused,true);});
+test('navigation selection closes the menu',()=>{const f=navigationFixture();f.menu.events.click();f.navigation.events.click({target:f.links[0]});assert.equal(f.menu.getAttribute('aria-expanded'),'false');});
+test('project contents toggle and Escape restore focus',()=>{const f=navigationFixture();f.toggle.events.click();assert.equal(f.toggle.getAttribute('aria-expanded'),'true');f.toc.events.keydown({key:'Escape'});assert.equal(f.toggle.getAttribute('aria-expanded'),'false');assert.equal(f.toggle.focused,true);});
+test('project section selection collapses phone contents',()=>{const f=navigationFixture();f.toggle.events.click();f.tocLinks.events.click({target:f.links[1]});assert.equal(f.toggle.getAttribute('aria-expanded'),'false');});
+test('section navigation focuses the destination',()=>{const f=navigationFixture();f.links[1].events.click({});assert.equal(f.sections.results.tabIndex,-1);assert.equal(f.sections.results.focused,true);});
+test('modified clicks retain normal browser behavior',()=>{const f=navigationFixture();f.links[1].events.click({ctrlKey:true});assert.equal(f.sections.results.focused,undefined);});
+test('active section follows scroll position',()=>{const f=navigationFixture();f.context.scrollY=1000;f.events.scroll();assert.equal(f.links[1].getAttribute('aria-current'),'location');assert.equal(f.links[0].getAttribute('aria-current'),undefined);});
+test('last section is active at page bottom',()=>{const f=navigationFixture();f.context.scrollY=1400;f.events.scroll();assert.equal(f.links[2].getAttribute('aria-current'),'location');});
+test('print control invokes the browser print workflow',()=>{const f=navigationFixture();f.bottom.children[0].events.click();assert.equal(f.printed(),1);});
+console.log(`${cases} portfolio regression tests passed.`);

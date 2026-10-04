@@ -8,9 +8,12 @@ Live site: https://dustin07.github.io/DustinPortfolio/
 - `projects/`: case studies with contribution, decision, outcome, and evidence summaries.
 - `styles.css`: responsive visual system, liquid-glass surfaces, reading panels, and accessibility fallbacks.
 - `ambient.js`: decorative airflow geometry and restrained scroll-linked movement; honors reduced-motion preferences.
+- `portfolio.js`: searchable project library, shareable filters, tab-local return preferences, compact phone navigation, active sections, and case-study print controls. No data is sent to an analytics service.
+- `404.html`: recovery links for missing addresses, including nested project paths.
 - `images/`: selected engineering visuals from the original project reports.
 - `documents/`: original reports and the publicly approved general résumé.
 - `sitemap.xml`: canonical public page addresses.
+- `tests/`: dependency-free content and behavior checks for future updates.
 
 ## Hosting
 
@@ -23,3 +26,7 @@ There are no external font requests, analytics trackers, API keys, contact-form 
 Content is maintained explicitly; it does not automatically synchronize with Notion or the résumé. Update the relevant HTML page, verify its sources, and check local links, navigation, mobile layout, and image descriptions before publishing. Use evidence-backed outcomes and distinguish planning, simulation, specimen testing, and production adoption.
 
 The public résumé is the supplied PDF, unchanged and approved for publication. Employer technical details must not be added without public-sharing approval. Original academic reports remain unchanged.
+
+## Verification
+
+From the repository root, run `node tests/portfolio.test.cjs` and `python tests/check_site.py`. These check project filtering, URL/session behavior, mobile menu logic, keyboard section focus, active sections, print-control wiring, local links, table semantics, image descriptions, page metadata, and the sitemap. Also review real desktop and phone layouts in a browser before publishing; these scripts do not replace visual inspection.

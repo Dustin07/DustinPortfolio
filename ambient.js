@@ -21,10 +21,17 @@
     field.style.setProperty('--flow-y', reducedMotion.matches ? '0px' : `${progress * -55}px`);
   };
   const schedule = () => {
+    if (document.hidden || reducedMotion.matches) return;
     if (!pending) { pending = true; requestAnimationFrame(update); }
   };
   addEventListener('scroll', schedule, { passive: true });
   addEventListener('resize', schedule, { passive: true });
-  reducedMotion.addEventListener('change', schedule);
+  reducedMotion.addEventListener('change', update);
+  const visibility = () => {
+    field.classList.toggle('is-paused', document.hidden);
+    if (!document.hidden) update();
+  };
+  document.addEventListener('visibilitychange', visibility);
+  visibility();
   update();
 })();
