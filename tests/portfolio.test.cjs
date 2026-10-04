@@ -12,9 +12,9 @@ class Element {
   removeAttribute(name) { delete this.attrs[name]; }
   focus() { this.focused = true; }
 }
-function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, storageBlocked = false) {
-  const cards = [new Element('Protective Covers CATIA TPU', {category:'Boeing'}), new Element('Rocket Testing FEA', {category:'Academic'}), new Element('Carabiner FEA Ansys', {category:'Academic'}), new Element('Casting Tooling SolidWorks', {category:'PCC'})];
-  const buttons = ['All','Academic','Boeing','PCC'].map(value => new Element(value, {filter:value}));
+function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, storageBlocked = false, library = null) {
+  const cards = library ? library.cards.map(card => new Element(card.text, card.dataset)) : [new Element('Protective Covers CATIA TPU', {category:'Boeing'}), new Element('Rocket Testing FEA', {category:'Academic'}), new Element('Carabiner FEA Ansys', {category:'Academic'}), new Element('Casting Tooling SolidWorks', {category:'PCC'})];
+  const buttons = (library?.categories || ['All','Academic','Boeing','PCC']).map(value => new Element(value, {filter:value}));
   const elements = {'#project-search':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
   const timers = new Map(); let timerId = 0; let stored = saved; const events = {};
   const context = {
@@ -57,6 +57,18 @@ test('array-shaped saved preferences are ignored',()=>{const f=fixture('https://
 test('keywords index full engineering terms',()=>{const f=fixture();f.cards[2].dataset.keywords='finite element analysis';vm.runInNewContext(source,f.context);f.search('finite element');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
 test('unmatched Unicode queries do not show every card',()=>{const f=fixture();f.search('航空');assert.equal(f.shown().length,0);});
 test('punctuation does not prevent keyword matches',()=>{const f=fixture();f.search('FEA/Ansys');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
+
+const home = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+const decode = text => text.replace(/&amp;/g,'&').replace(/<[^>]*>/g,' ');
+const realLibrary = {
+  cards:[...home.matchAll(/<article class="project-card"([^>]*)>([\s\S]*?)<\/article>/g)].map(([,attributes,content])=>({text:decode(content),dataset:{category:attributes.match(/data-category="([^"]+)"/)[1],keywords:decode(attributes.match(/data-keywords="([^"]*)"/)?.[1] || '')}})),
+  categories:[...home.matchAll(/data-filter="([^"]+)"/g)].map(match=>match[1]),
+};
+test('published library includes every case study',()=>{const f=fixture(undefined,null,false,realLibrary);const cases=fs.readdirSync(path.join(__dirname,'../projects')).filter(file=>file.endsWith('.html'));assert.equal(f.shown().length,cases.length);assert.equal(f.elements['#project-count'].textContent,`${cases.length} Projects`);});
+test('NASA category finds the research case',()=>{const f=fixture(undefined,null,false,realLibrary);f.click('NASA');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/In-Space Manufacturing Research/);});
+test('research keywords find the NASA case',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('sensing automation');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/In-Space Manufacturing Research/);});
+test('full FEA terms find the structural case',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('finite element');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/Pocket Carabiner/);});
+test('3D printing search finds both Boeing projects',()=>{const f=fixture(undefined,null,false,realLibrary);f.click('Boeing');f.search('3d printing');assert.equal(f.shown().length,2);});
 
 function navigationFixture() {
   const nav = new Element(), navigation = new Element(), header = new Element(), toc = new Element(), heading = new Element('Inside This Project'), bottom = new Element();

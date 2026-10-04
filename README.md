@@ -7,7 +7,7 @@ Live site: https://dustin07.github.io/DustinPortfolio/
 - `index.html`: introduction, NASA research spotlight, project library, experience timeline, education, capabilities, and contact.
 - `projects/`: case studies with contribution, decision, outcome, and evidence summaries.
 - `styles.css`: responsive visual system, liquid-glass surfaces, reading panels, and accessibility fallbacks.
-- `ambient.js`: decorative airflow geometry and restrained scroll-linked movement; honors reduced-motion preferences.
+- `ambient.js`: decorative airflow geometry and restrained scroll-linked movement; honors reduced-motion preferences and includes a tab-local visitor pause control.
 - `portfolio.js`: searchable project library, shareable filters, tab-local return preferences, compact phone navigation, active sections, and case-study print controls. No data is sent to an analytics service.
 - `404.html`: recovery links for missing addresses, including nested project paths.
 - `images/`: selected engineering visuals from the original project reports.
@@ -23,7 +23,7 @@ There are no external font requests, analytics trackers, API keys, contact-form 
 
 ## Updating Content
 
-Content is maintained explicitly; it does not automatically synchronize with Notion or the résumé. Update the relevant HTML page, verify its sources, and check local links, navigation, mobile layout, and image descriptions before publishing. Use evidence-backed outcomes and distinguish planning, simulation, specimen testing, and production adoption.
+Content is maintained explicitly; it does not automatically synchronize with Notion or the résumé. Update the relevant HTML page, verify its sources, and check local links, navigation, mobile layout, and image descriptions before publishing. Every case study belongs in the searchable project library. Use evidence-backed outcomes and distinguish planning, simulation, specimen testing, and production adoption.
 
 The public résumé is the supplied PDF, unchanged and approved for publication. Employer technical details must not be added without public-sharing approval. Original academic reports remain unchanged.
 

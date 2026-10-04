@@ -238,6 +238,8 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .timeline-card h3 {font-size: 1.3rem;margin-bottom: 5px}
 .timeline-card .job {color: var(--blue);font-size: 15px;font-weight: 650;margin-bottom: 10px}
 .timeline-card p {color: var(--muted);margin: 0}
+.timeline-proof {display:inline-flex;align-items:center;gap:6px;min-height:44px;margin-top:12px;color:var(--blue);font-size:14px;font-weight:650;text-underline-offset:4px}
+.timeline-proof:hover {text-decoration:underline}
 .timeline-note {display: inline-block;margin-top: 15px;padding: 7px 12px;border-radius: 999px;background: rgba(255,203,5,.18);color: var(--blue);font-size: 13px;font-weight: 700}
 .michigan-step .timeline-marker {background: var(--blue);box-shadow: 0 0 0 3px var(--maize),0 5px 14px rgba(0,39,76,.22)}
 .michigan-step .timeline-card {color: #fff}
@@ -616,6 +618,12 @@ main[id] {scroll-margin-top: var(--nav-clearance,145px)}
 .case-bottom {justify-content: space-between}
 .project-card:focus-within {border-color: #7f98af;box-shadow: 0 12px 32px rgba(0,39,76,.12)}
 .ambient-field.is-paused * {animation-play-state: paused!important}
+.ambient-field.is-still * {transition: none!important}
+.motion-control {display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin-left:20px;padding:8px 12px;border:1px solid rgba(0,39,76,.22);border-radius:10px;background:rgba(255,255,255,.55);color:var(--blue);font:inherit;cursor:pointer}
+.motion-control[aria-pressed="true"] {background:var(--blue);color:white}
+.motion-control:disabled {cursor:default;opacity:.65}
+@media(max-width:600px) {.motion-control {display:flex;margin:14px 0 0}}
+@media print {.motion-control {display:none!important}}
 .case-toc:focus-within {scrollbar-color: #58738b #eaf0f5}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {.topbar {background: #f7fafc}
 .project-card {background: #f7fafc}

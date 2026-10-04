@@ -52,6 +52,11 @@ urls={element.text for element in sitemap.findall('.//{http://www.sitemaps.org/s
 expected_urls={page.canonical for path,page in pages.items() if path.name!='404.html'}
 if urls!=expected_urls: errors.append('Sitemap does not match canonical site pages')
 home=(root/'index.html').read_text(encoding='utf-8')
+library=Page(root/'index.html'); library.feed(home)
+project_targets={urlsplit(url).path for url in library.refs if url.startswith('projects/')}
+expected_projects={path.relative_to(root).as_posix() for path in root.joinpath('projects').glob('*.html')}
+if project_targets!=expected_projects: errors.append('Project library does not link every case study')
+if home.count('class="project-card"')!=len(expected_projects): errors.append('Project library card count does not match case studies')
 schema=home.split('<script type="application/ld+json">')[1].split('</script>')[0]
 if json.loads(schema).get('name')!='Dustin Leung': errors.append('Invalid portfolio structured data')
 print(f'Checked {len(pages)} pages, {sum(len(p.refs) for p in pages.values())} references, {sum(p.images for p in pages.values())} images, and sitemap/metadata.')

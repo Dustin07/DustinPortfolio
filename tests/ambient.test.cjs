@@ -3,14 +3,17 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const source = fs.readFileSync(path.join(__dirname,'../ambient.js'),'utf8');
-function fixture(reduced=false) {
+function fixture(reduced=false, saved=false, storageBlocked=false) {
   const values={},attributes={},events={},mediaEvents={},classes=new Set(),frames=[];
   const field={style:{setProperty:(name,value)=>{values[name]=value;}},setAttribute:(name,value)=>{attributes[name]=value;},classList:{toggle:(name,on)=>{if(on)classes.add(name);else classes.delete(name);}}};
   const media={matches:reduced,addEventListener:(name,action)=>{mediaEvents[name]=action;}};
-  const document={hidden:false,documentElement:{scrollHeight:2000},createElement:()=>field,body:{prepend:()=>{}},addEventListener:(name,action)=>{events[name]=action;}};
-  const context={document,innerHeight:1000,scrollY:0,matchMedia:()=>media,requestAnimationFrame:action=>frames.push(action),addEventListener:(name,action)=>{events[name]=action;}};
+  const control={attrs:{},events:{},setAttribute(name,value){this.attrs[name]=value;},addEventListener(name,action){this.events[name]=action;}};
+  const footer={append:()=>{}};
+  const document={hidden:false,documentElement:{scrollHeight:2000},querySelector:()=>footer,createElement:tag=>tag==='button'?control:field,body:{prepend:()=>{}},addEventListener:(name,action)=>{events[name]=action;}};
+  let stored=saved?'true':null;
+  const context={document,sessionStorage:{getItem:()=>{if(storageBlocked)throw Error('blocked');return stored;},setItem:(_,value)=>{if(storageBlocked)throw Error('blocked');stored=value;}},innerHeight:1000,scrollY:0,matchMedia:()=>media,requestAnimationFrame:action=>frames.push(action),addEventListener:(name,action)=>{events[name]=action;}};
   vm.runInNewContext(source,context);
-  return {field,values,attributes,events,media,mediaEvents,classes,frames,context,flush:()=>{frames.splice(0).forEach(action=>action());}};
+  return {field,control,stored:()=>stored,values,attributes,events,media,mediaEvents,classes,frames,context,flush:()=>{frames.splice(0).forEach(action=>action());}};
 }
 let total=0;function test(name,action){action();total++;console.log('PASS '+name);}
 test('background is hidden from assistive technology',()=>{const f=fixture();assert.equal(f.attributes['aria-hidden'],'true');assert.equal(f.field.className,'ambient-field');});
@@ -21,6 +24,12 @@ test('motion preference changes apply immediately',()=>{const f=fixture();f.cont
 test('hidden tabs pause animation and skip scroll work',()=>{const f=fixture();f.context.document.hidden=true;f.events.visibilitychange();assert.equal(f.classes.has('is-paused'),true);f.events.scroll();assert.equal(f.frames.length,0);});
 test('visible tab resumes at its current position',()=>{const f=fixture();f.context.document.hidden=true;f.events.visibilitychange();f.context.scrollY=600;f.context.document.hidden=false;f.events.visibilitychange();assert.equal(f.classes.has('is-paused'),false);assert.equal(f.values['--flow-y'],'-33px');});
 test('short pages do not produce invalid geometry values',()=>{const f=fixture();f.context.document.documentElement.scrollHeight=500;f.events.resize();f.flush();assert.equal(parseFloat(f.values['--flow-y']),0);});
+test('visitor can pause background motion',()=>{const f=fixture();f.control.events.click();assert.equal(f.control.attrs['aria-pressed'],'true');assert.equal(f.classes.has('is-still'),true);f.context.scrollY=500;f.events.scroll();assert.equal(f.frames.length,0);assert.equal(parseFloat(f.values['--flow-y']),0);assert.equal(f.stored(),'true');});
+test('visitor can resume background motion',()=>{const f=fixture(false,true);f.context.scrollY=500;f.control.events.click();assert.equal(f.control.attrs['aria-pressed'],'false');assert.equal(f.classes.has('is-still'),false);assert.equal(f.values['--flow-y'],'-27.5px');});
+test('pause preference survives project navigation in this tab',()=>{const f=fixture(false,true);assert.equal(f.control.attrs['aria-pressed'],'true');assert.equal(f.classes.has('is-paused'),true);});
+test('motion control works when storage is blocked',()=>{const f=fixture(false,false,true);f.control.events.click();assert.equal(f.classes.has('is-paused'),true);});
+test('system reduced motion cannot be overridden by the button',()=>{const f=fixture(true);assert.equal(f.control.disabled,true);assert.equal(f.classes.has('is-still'),true);});
+test('returning to a visible tab preserves manual pause',()=>{const f=fixture(false,true);f.context.document.hidden=true;f.events.visibilitychange();f.context.document.hidden=false;f.events.visibilitychange();assert.equal(f.classes.has('is-paused'),true);});
 test('decorative paths are smooth and non-crossing',()=>{
   const f=fixture();
   const paths=[...f.field.innerHTML.matchAll(/<path class="([^"]*)" d="([^"]+)"/g)].map(match=>({className:match[1],command:match[2],numbers:match[2].match(/-?\d+(?:\.\d+)?/g).map(Number)}));
