@@ -544,15 +544,17 @@ to{transform:translate3d(4%,0,0);opacity:1}
 .skills>div .skill-proof {margin-top: auto;padding-top: 14px}
 .case-content img {max-width: 100%}
 .workflow-figure {margin: 26px 0;border: 1px solid #dce4eb;border-radius: 16px;background: #f3f6f9;overflow: hidden}
-.workflow {display: grid;grid-template-columns: repeat(3,minmax(0,1fr))}
-.workflow>div {padding: 20px;border-right: 1px solid #dce4eb}
-.workflow>div:last-child {border: 0}
+.workflow {display: grid;grid-template-columns: repeat(3,minmax(0,1fr));list-style:none;margin:0;padding:0}
+.case-content .workflow {margin:0;padding:0}
+.case-content .workflow>li {margin:0}
+.workflow>div,.workflow>li {padding: 20px;border-right: 1px solid #dce4eb}
+.workflow>div:last-child,.workflow>li:last-child {border: 0}
 .workflow span {display: block;font-size: 12px;color: var(--orange);font-weight: 700;margin-bottom: 12px}
 .workflow strong {display: block;color: var(--blue)}
 .workflow p {font-size: 13px;margin: 8px 0 0}
 .workflow-figure figcaption {padding: 16px 20px;border-top: 1px solid #dce4eb;font-size: 13px;color: #425568}
 @media(max-width:600px) {.workflow {grid-template-columns: 1fr}
-.workflow>div {border-right: 0;border-bottom: 1px solid #dce4eb}
+.workflow>div,.workflow>li {border-right: 0;border-bottom: 1px solid #dce4eb}
 }
 .analytical-planform svg {display: block;width: 100%;height: auto;background: #fbfdff}
 .navlinks a {min-height: 32px}
@@ -666,6 +668,10 @@ main[id] {scroll-margin-top: var(--nav-clearance,145px)}
 .project-toolbar {align-items: start;flex-direction: column;gap: 12px}
 .search-field {width: 100%}
 .navlinks a[aria-current="location"] {border-radius: 5px;background: none;box-shadow: inset 0 -2px 0 var(--orange)}
+}
+@media(max-width:1000px) {
+.case-layout {grid-template-columns:1fr;gap:20px}
+.case-toc {position:static;border-radius:18px}
 .case-toc {max-height: none;overflow: visible}
 .case-toc.enhanced>strong {display: none}
 .toc-toggle {display: flex;align-items: center;justify-content: space-between;width: 100%;min-height: 44px;padding: 0;border: 0;background: none;color: var(--blue);font-weight: 650;text-align: left;cursor: pointer}
