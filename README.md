@@ -23,6 +23,8 @@ There are no external font requests, analytics trackers, API keys, contact-form 
 
 `Portfolio Checks` runs the dependency-free test suite on pushes and pull requests to `main`. It uses a standard Ubuntu runner with read-only repository permission, no uploaded artifacts, and no dependency cache. It skips private repositories to preserve the public-repository free-runner assumption. The checks report problems; they do not change GitHub Pages deployment settings or require branch protection.
 
+GitHub documents free use of standard runners for public repositories in its [Actions billing guide](https://docs.github.com/en/billing/concepts/product-billing/github-actions). Do not substitute paid larger runners or add storage-heavy artifacts to this workflow.
+
 ## Updating Content
 
 Content is maintained explicitly; it does not automatically synchronize with Notion or the résumé. Update the relevant HTML page, verify its sources, and check local links, navigation, mobile layout, and image descriptions before publishing. Every case study belongs in the searchable project library. Use evidence-backed outcomes and distinguish planning, simulation, specimen testing, and production adoption.

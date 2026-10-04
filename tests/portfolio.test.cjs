@@ -67,8 +67,13 @@ const realLibrary = {
 test('published library includes every case study',()=>{const f=fixture(undefined,null,false,realLibrary);const cases=fs.readdirSync(path.join(__dirname,'../projects')).filter(file=>file.endsWith('.html'));assert.equal(f.shown().length,cases.length);assert.equal(f.elements['#project-count'].textContent,`${cases.length} Projects`);});
 test('NASA category finds the research case',()=>{const f=fixture(undefined,null,false,realLibrary);f.click('NASA');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/In-Space Manufacturing Research/);});
 test('research keywords find the NASA case',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('sensing automation');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/In-Space Manufacturing Research/);});
-test('full FEA terms find the structural case',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('finite element');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/Pocket Carabiner/);});
+test('full FEA terms find structural and solidification studies',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('finite element');assert.equal(f.shown().length,2);assert.ok(f.shown().some(text=>/Pocket Carabiner/.test(text)));assert.ok(f.shown().some(text=>/Gating System/.test(text)));});
 test('3D printing search finds both Boeing projects',()=>{const f=fixture(undefined,null,false,realLibrary);f.click('Boeing');f.search('3d printing');assert.equal(f.shown().length,2);});
+test('CAM does not match camera sensing',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('CAM');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/Custom CNC Golf Putter/);});
+test('AI does not match an aircraft tail',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('AI');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/In-Space Manufacturing Research/);});
+test('full language-model terms find the research case',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('language model');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/In-Space Manufacturing Research/);});
+test('CAD search finds the actual part-modeling and tooling work',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('CAD');assert.equal(f.shown().length,8);assert.ok(f.shown().every(text=>!text.includes('In-Space Manufacturing Research')));});
+test('FEA search does not imply completed rocket material analysis',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('FEA');assert.equal(f.shown().length,2);assert.ok(f.shown().every(text=>!text.includes('Rocket Structures')));});
 
 function navigationFixture() {
   const nav = new Element(), navigation = new Element(), header = new Element(), toc = new Element(), heading = new Element('Inside This Project'), bottom = new Element();

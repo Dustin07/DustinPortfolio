@@ -19,6 +19,8 @@ class Page(HTMLParser):
         if tag=='caption': self.captions+=1
         if tag=='th' and a.get('scope') not in ['row','col']: errors.append(f'{self.path.name}: unscoped table header')
         if tag=='a' and a.get('target')=='_blank' and not ('noreferrer' in a.get('rel','') or 'noopener' in a.get('rel','')): errors.append(f'{self.path.name}: unsafe new-tab link')
+        if tag=='a' and a.get('target')=='_blank' and a.get('href','').endswith('.pdf'):
+            if 'PDF' not in a.get('aria-label','') or 'new tab' not in a.get('aria-label',''): errors.append(f'{self.path.name}: document link missing format/new-tab cue')
         if tag=='link' and a.get('rel')=='canonical': self.canonical=a.get('href')
         if tag in ['a','link','script','img']:
             url=a.get('href') or a.get('src')
