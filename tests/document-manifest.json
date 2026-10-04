@@ -1,0 +1,72 @@
+[
+  {
+    "file": "aircraft-aerodynamics-report.pdf",
+    "bytes": 3547409,
+    "sha256": "49b25a71ff23e5abc539ab3fb917bf4e3f9a523ce6f319beb8ae877ffebd2de3"
+  },
+  {
+    "file": "aircraft-aerodynamics-slides.pdf",
+    "bytes": 1343693,
+    "sha256": "1dd83eb5935896af3506a54393237e4a8b06f37ccdc6aaeb7103116fb92fadf4"
+  },
+  {
+    "file": "carabiner-fea-report.pdf",
+    "bytes": 1839416,
+    "sha256": "64dcb8cb15f8c408e783bf46ce18746605a898807d193dff1cd7d0320d049c78"
+  },
+  {
+    "file": "cnc-putter-presentation.pdf",
+    "bytes": 2208966,
+    "sha256": "1ec15de284fa7c291a5321d42952d2ba3456e72564356b3426701820b64c7cf3"
+  },
+  {
+    "file": "cnc-putter-report.pdf",
+    "bytes": 1051520,
+    "sha256": "a921e8428aad66d60348ab4bbd2654ad97b3fb07246c3b8957975835fd2d8dc3"
+  },
+  {
+    "file": "dustin-leung-resume.pdf",
+    "bytes": 75612,
+    "sha256": "ed49db2d8db9c5aabd8905e15c6c72c788923d9a659069cc3c7ad77a6256b8e8"
+  },
+  {
+    "file": "irec-rocket-structures-report.pdf",
+    "bytes": 617756,
+    "sha256": "e1a5e1c35e57113a5145adf16b93d6804f5b9e31d8354037c68531784eeff316"
+  },
+  {
+    "file": "rocket-propulsion-hybrid-1-code.pdf",
+    "bytes": 510936,
+    "sha256": "4d43f2dce406afaf4c9f58dac4fe70d60ab147645269d0285598d26f27a938c8"
+  },
+  {
+    "file": "rocket-propulsion-hybrid-2-code.pdf",
+    "bytes": 508368,
+    "sha256": "3197933508956a0946bd925d7606672dd71a0d27bf3bfaba56befb0f6f547124"
+  },
+  {
+    "file": "rocket-propulsion-liquid-1-code.pdf",
+    "bytes": 434900,
+    "sha256": "559b9278c94b741ccd6bd261d996a124ef63aae6408e0f744f5634c13519f84c"
+  },
+  {
+    "file": "rocket-propulsion-liquid-2-code.pdf",
+    "bytes": 432803,
+    "sha256": "e745f622e8e31daf314136cb216875c791b30ca74d62f6a478d022623326c9d2"
+  },
+  {
+    "file": "rocket-propulsion-report.pdf",
+    "bytes": 1294270,
+    "sha256": "c9e6a91bf5a585057d817dcb56fe134e0cb25b0e9ff827c163f306560c2d3553"
+  },
+  {
+    "file": "rocket-propulsion-solid-1-code.pdf",
+    "bytes": 394276,
+    "sha256": "fb0b411d824fa202c3c0e6899e66e72518b8593fb398400d94a0dffc482dfa06"
+  },
+  {
+    "file": "rocket-propulsion-solid-2-code.pdf",
+    "bytes": 393643,
+    "sha256": "43121ebf4f8dea07f8100d630d6f1c01b2a30e89631f422bccc9d444acf286b6"
+  }
+]

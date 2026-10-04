@@ -32,5 +32,7 @@ jobs:
         run: node tests/ambient.test.cjs
       - name: Check engineering data consistency
         run: node tests/engineering.test.cjs
+      - name: Protect the original reports and resume
+        run: node tests/documents.test.cjs
       - name: Check all site links and page metadata
         run: python3 tests/check_site.py
