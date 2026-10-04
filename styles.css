@@ -376,12 +376,6 @@ body {isolation: isolate}
 .ambient-flow {position: absolute;transform: translate3d(var(--flow-x,0px),var(--flow-y,0px),0);transition: transform .7s ease-out}
 .ambient-color {position: absolute;inset: 0}
 .ambient-glint {position: absolute;inset: 0;will-change: transform}
-@keyframes ambient-drift {from{transform:translate3d(-2%,-2%,0) rotate(-5deg) scale(1.03)}
-to{transform:translate3d(5%,4%,0) rotate(7deg) scale(1.12)}
-}
-@keyframes ambient-glide {from{transform:translate3d(4%,-3%,0) scale(1)}
-to{transform:translate3d(-6%,6%,0) scale(1.16)}
-}
 .topbar {border-bottom: 1px solid rgba(255,203,5,.65)}
 .projects {border-top: 1px solid rgba(255,255,255,.75);border-bottom: 1px solid rgba(255,255,255,.75)}
 .about {border-top: 1px solid rgba(255,255,255,.75);border-bottom: 1px solid rgba(255,255,255,.75)}

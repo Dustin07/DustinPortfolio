@@ -30,6 +30,8 @@ jobs:
         run: node tests/portfolio.test.cjs
       - name: Check motion controls and geometry
         run: node tests/ambient.test.cjs
+      - name: Check stylesheet safeguards
+        run: node tests/styles.test.cjs
       - name: Check engineering data consistency
         run: node tests/engineering.test.cjs
       - name: Protect the original reports and resume
