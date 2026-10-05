@@ -15,6 +15,22 @@ test('every case appears exactly once in the library',()=>{
   assert.deepEqual(cards.map(card=>card.target).sort(),cases);
 });
 test('project numbers are sequential',()=>cards.forEach((card,index)=>assert.equal(card.html.match(/class="number">(\d+)/)[1],String(index+1).padStart(2,'0'))));
+
+test('every case offers a valid, specifically labeled project highlight shortcut',()=>{
+  const targets={'nasa-manufacturing':['engineering-decisions','Engineering Decisions'],'protective-covers':['section-4','View Outcome'],'rocket-structures':['section-5','View Results'],'legacy-reverse-engineering':['section-3','View Impact'],'ergonomic-tools':['section-4','View Outcome'],'carabiner-fea':['section-4','View Results'],'cnc-putter':['section-4','View Machining Plan'],'rocket-propulsion':['section-8','View Key Results'],'aircraft-aerodynamics':['section-2','View My Contribution'],'gating-optimization':['section-3','View Deliverables'],'die-design':['section-3','View Deliverables']};
+  assert.equal(Object.keys(targets).length,cards.length);
+  for(const [name,[id,label]] of Object.entries(targets)){
+    const html=read('projects/'+name+'.html');
+    const nav=html.match(/<nav class="case-shortcuts"[^>]*>([\s\S]*?)<\/nav>/)[1];
+    assert.ok(nav.includes(`<a href="#${id}">${label}`));assert.ok(html.includes(`id="${id}"`));
+    assert.equal((html.match(/class="case-shortcuts"/g)||[]).length,1);
+  }
+});
+
+test('project-file shortcuts appear only when the page hosts project files',()=>cards.forEach(card=>{
+  const html=read(card.target),nav=html.match(/<nav class="case-shortcuts"[^>]*>([\s\S]*?)<\/nav>/)[1];
+  assert.equal(nav.includes('href="#project-files-heading"'),html.includes('id="project-files-heading"'));
+}));
 test('next-project links follow the library and include NASA',()=>cards.forEach((card,index)=>{
   const html=read(card.target);
   const next=html.match(/<a href="([^"]+)" aria-label="Next Project:/);
@@ -32,6 +48,20 @@ test('stress penalty uses stress increase per removed volume',()=>{
   near((spine[1]-base[1])/(base[2]-spine[2]),.084,.0005);
   near((tube[1]-base[1])/(base[2]-tube[2]),.137,.0005);
   assert.match(read('projects/carabiner-fea.html'),/Stress Penalty per Removed Volume \(MPa\/mm³\)/);
+});
+test('carabiner trade-off bars match rounded baseline-relative table changes',()=>{
+  const html=read('projects/carabiner-fea.html');
+  const plot=html.match(/<figure class="engineering-figure tradeoff-plot">([\s\S]*?)<\/figure>/)[1];
+  const [base,...variants]=rows(html).map(row=>row.slice(1).map(Number));
+  const widths=series=>[...plot.matchAll(new RegExp(`<rect data-series="${series}"[^>]*width="([\\d.]+)"`,'g'))].map(([,width])=>Number(width));
+  assert.equal(widths('volume').length,2);assert.equal(widths('stress').length,2);
+  variants.forEach((row,index)=>{
+    const removed=(base[2]-row[2])/base[2]*100,added=(row[1]-base[1])/base[1]*100;
+    assert.equal(widths('volume')[index],Number(removed.toFixed(1))*10);
+    assert.equal(widths('stress')[index],Number(added.toFixed(1))*10);
+  });
+  assert.match(plot,/same zero-based 0 to 30 percent scale/);
+  assert.match(plot,/360 N load, not measured capacity or a tested load rating/);
 });
 test('wing reference area and mean chord match displayed geometry',()=>{
   const data=Object.fromEntries(rows(read('projects/aircraft-aerodynamics.html')).slice(0,7));

@@ -48,3 +48,5 @@ The sharing artwork can be rendered from `tests/render-social.html` at exactly 1
 `node tests/contrast.test.cjs` protects representative solid-surface text colors and the inset figure-focus outline using the [W3C contrast thresholds](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html). This is not a full accessibility certification or a pixel-level check of all translucent, gradient, zoom, or assistive-technology states. Review those states directly as well.
 
 Also run `node tests/related.test.cjs`, `python tests/assets.test.py`, `node tools/build_related.cjs`, and `python tools/version_assets.py` to verify related destinations, project-specific contact links, and current asset versions. Compact phone navigation and project contents dismiss on an outside tap; interactions inside the open controls remain available.
+
+Search indexes separated DOM text nodes, not concatenated `textContent` from minified cards. Verify exact acronyms in the real browser as well as in the tests. Empty category searches can widen to all projects while retaining the visitor's keyword; this option appears only when actual matches exist elsewhere.

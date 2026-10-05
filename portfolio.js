@@ -23,6 +23,8 @@
     document.querySelector('.filters').hidden = false;
     const count = document.querySelector('#project-count');
     const empty = document.querySelector('#project-empty');
+    const emptyMessage = document.querySelector('#project-empty-message');
+    const expandSearch = document.querySelector('#project-expand-search');
     const reset = document.querySelector('#project-reset');
     const categories = buttons.map(button => button.dataset.filter);
     const params = new URLSearchParams(location.search);
@@ -37,22 +39,36 @@
     // Engineering acronyms should not match incidental substrings (CAM/camera,
     // AI/tail). Longer descriptive terms retain flexible substring matching.
     const acronyms = new Set(['ai','fea','cad','cam','nx','tpu','fdm','sla','cmm','gdt','rag','llm','cea','gpu','dfm','dfa','3d','cplusplus','csharp']);
+    // Preserve boundaries between DOM text nodes. Minified HTML can otherwise
+    // turn the final tool label into "FEAView Project" and hide exact matches.
+    const nodeText = node => node.nodeType === 3 ? node.textContent : node.childNodes?.length ?
+      [...node.childNodes].map(nodeText).join(' ') : (node.textContent || '');
     const searchable = cards.map(card => {
-      const text = normalize(card.textContent + ' ' + (card.dataset.keywords || ''));
+      const text = normalize(nodeText(card) + ' ' + (card.dataset.keywords || ''));
       return {text, tokens:new Set(text.split(/\s+/).filter(Boolean))};
     });
     const apply = (syncURL = true, historyMode = 'replace') => {
       const query = search.value.trim().slice(0, 120);
       const words = normalize(query).split(/\s+/).filter(Boolean);
-      let visible = 0;
+      let visible = 0, matchesAcrossCategories = 0;
       cards.forEach((card, index) => {
-        card.hidden = (category !== 'All' && card.dataset.category !== category) ||
-          !words.every(word => acronyms.has(word) || word.length <= 2 ? searchable[index].tokens.has(word) : searchable[index].text.includes(word));
+        const matches = words.every(word => acronyms.has(word) || word.length <= 2 ? searchable[index].tokens.has(word) : searchable[index].text.includes(word));
+        if (matches) matchesAcrossCategories++;
+        card.hidden = (category !== 'All' && card.dataset.category !== category) || !matches;
         if (!card.hidden) visible++;
       });
       buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === category)));
-      count.textContent = `${visible} ${visible === 1 ? 'Project' : 'Projects'}`;
+      const countLabel = `${visible} ${visible === 1 ? 'Project' : 'Projects'}`;
+      if (count.textContent !== countLabel) count.textContent = countLabel;
       empty.hidden = visible > 0;
+      if (!visible && emptyMessage) {
+        const categoryLabel = buttons.find(button => button.dataset.filter === category)?.textContent.trim();
+        emptyMessage.textContent = `No matching projects${query ? ` for “${query}”` : ''}${category !== 'All' ? ` in ${categoryLabel}` : ''}. Try another keyword or clear the filters.`;
+      }
+      if (expandSearch) {
+        expandSearch.hidden = visible > 0 || category === 'All' || !query || !matchesAcrossCategories;
+        expandSearch.textContent = `Search All Projects (${matchesAcrossCategories} ${matchesAcrossCategories === 1 ? 'Match' : 'Matches'})`;
+      }
       reset.hidden = category === 'All' && !query;
       remember({ category, query });
       if (syncURL) {
@@ -75,6 +91,9 @@
     });
     reset.addEventListener('click', () => {
       category = 'All'; search.value = ''; apply(true, 'push'); search.focus();
+    });
+    expandSearch?.addEventListener('click', () => {
+      category = 'All'; apply(true, 'push'); search.focus();
     });
     addEventListener('popstate', () => {
       const restored = new URLSearchParams(location.search);

@@ -16,7 +16,8 @@ class Element {
 function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, storageBlocked = false, library = null) {
   const cards = library ? library.cards.map(card => new Element(card.text, card.dataset)) : [new Element('Protective Covers CATIA TPU', {category:'Boeing'}), new Element('Rocket Testing FEA', {category:'Academic'}), new Element('Carabiner FEA Ansys', {category:'Academic'}), new Element('Casting Tooling SolidWorks', {category:'PCC'})];
   const buttons = (library?.categories || ['All','Academic','Boeing','PCC']).map(value => new Element(value, {filter:value}));
-  const elements = {'#project-search':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
+  if (library) library.cards.forEach((card,index) => {if(card.childNodes) cards[index].childNodes=card.childNodes;});
+  const elements = {'#project-search':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-empty-message':new Element(), '#project-expand-search':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
   const timers = new Map(); let timerId = 0; let stored = saved; const events = {};
   const context = {
     document: {
@@ -44,6 +45,11 @@ test('category filtering and URL',()=>{const f=fixture();f.click('Boeing');asser
 test('case-insensitive skill search',()=>{const f=fixture();f.search('fEa');assert.equal(f.shown().length,2);assert.equal(f.context.location.searchParams.get('q'),'fEa');});
 test('all search terms must match',()=>{const f=fixture();f.search('FEA Ansys');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
 test('search combines with category',()=>{const f=fixture();f.click('Boeing');f.search('FEA');assert.equal(f.shown().length,0);assert.equal(f.elements['#project-empty'].hidden,false);});
+test('empty search names the query and selected category as text',()=>{const f=fixture();f.click('Boeing');f.search('<missing>');assert.equal(f.elements['#project-empty-message'].textContent,'No matching projects for “<missing>” in Boeing. Try another keyword or clear the filters.');});
+test('empty category search offers actual matches elsewhere',()=>{const f=fixture();f.click('Boeing');f.search('FEA');assert.equal(f.elements['#project-expand-search'].hidden,false);assert.equal(f.elements['#project-expand-search'].textContent,'Search All Projects (2 Matches)');});
+test('widening search keeps the query and preserves unrelated URL parameters',()=>{const f=fixture('https://example.test/DustinPortfolio/?v=release#work');f.click('Boeing');f.search('FEA');f.elements['#project-expand-search'].events.click();assert.equal(f.shown().length,2);assert.equal(f.elements['#project-search'].value,'FEA');assert.equal(f.elements['#project-search'].focused,true);assert.equal(f.context.location.searchParams.has('category'),false);assert.equal(f.context.location.searchParams.get('q'),'FEA');assert.equal(f.context.location.searchParams.get('v'),'release');assert.equal(f.elements['#project-expand-search'].hidden,true);});
+test('search widening is hidden when no other project matches',()=>{const f=fixture();f.click('PCC');f.search('missing');assert.equal(f.elements['#project-expand-search'].hidden,true);f.search('SolidWorks');assert.equal(f.elements['#project-expand-search'].hidden,true);});
+test('one alternative match has a singular label',()=>{const f=fixture();f.click('Academic');f.search('TPU');assert.equal(f.elements['#project-expand-search'].textContent,'Search All Projects (1 Match)');});
 test('clear restores all and focuses search',()=>{const f=fixture();f.click('PCC');f.search('missing');f.elements['#project-reset'].events.click();assert.equal(f.shown().length,4);assert.equal(f.elements['#project-search'].focused,true);assert.equal(f.context.location.search,'');});
 test('Escape clears query but keeps category',()=>{const f=fixture();f.click('Academic');f.search('Ansys');f.elements['#project-search'].events.keydown({key:'Escape'});assert.equal(f.shown().length,2);assert.equal(f.context.location.searchParams.get('category'),'Academic');});
 test('shared link restores category and search',()=>{const f=fixture('https://example.test/DustinPortfolio/?category=Academic&q=Ansys#work');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
@@ -68,6 +74,7 @@ const languageLibrary={cards:[{text:'Custom machining',dataset:{category:'Academ
 test('C++ is not reduced to the incidental letter C',()=>{const f=fixture(undefined,null,false,languageLibrary);f.search('C++');assert.deepEqual(f.shown(),['C++ controller']);});
 test('C# remains a distinct programming-language query',()=>{const f=fixture(undefined,null,false,languageLibrary);f.search('c#');assert.deepEqual(f.shown(),['C# application']);});
 test('one-letter queries do not match arbitrary words',()=>{const f=fixture();f.search('c');assert.equal(f.shown().length,0);});
+test('adjacent DOM text blocks retain exact skill boundaries',()=>{const f=fixture(undefined,null,false,{categories:['All','Academic'],cards:[{text:'Siemens NX · Ansys · FEAView Project',dataset:{category:'Academic'},childNodes:[{childNodes:[{nodeType:3,textContent:'Siemens NX · Ansys · FEA'}]},{childNodes:[{nodeType:3,textContent:'View Project'}]}]}]});f.search('FEA');assert.equal(f.shown().length,1);f.search('NX');assert.equal(f.shown().length,1);f.search('Ansys');assert.equal(f.shown().length,1);});
 
 const home = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
 const decode = text => text.replace(/&amp;/g,'&').replace(/<[^>]*>/g,' ');
