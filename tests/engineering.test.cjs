@@ -44,6 +44,22 @@ test('rocket testing chart agrees with the case-study results',()=>{
   const card=cards.find(card=>card.target==='projects/rocket-structures.html').html;
   for(const [hours,,strength] of report){assert.match(card,new RegExp(`<span>${strength.replace('.','\\.')}</span>`));assert.match(card,new RegExp(`<small>${hours}h</small>`));}
 });
+test('rocket strength plot uses the displayed data on a zero-based scale',()=>{
+  const html=read('projects/rocket-structures.html');
+  const plot=html.match(/<figure class="engineering-figure results-plot">([\s\S]*?)<\/figure>/)[1];
+  const strength=rows(html).map(row=>Number(row[2]));
+  const points=[...plot.matchAll(/<circle cx="([\d.]+)" cy="([\d.]+)"/g)].map(([,x,y])=>({x:Number(x),y:Number(y)}));
+  assert.equal(points.length,strength.length);
+  points.forEach((point,index)=>near(point.y,230-strength[index]*3,.001));
+  assert.match(plot,/Zero-based strength axis from 0 to 60 MPa/);
+  assert.match(plot,/no uncertainty bars or fitted trend/);
+});
+test('condition-level means are rounded and scoped, not specimen statistics',()=>{
+  const html=read('projects/rocket-structures.html'),data=rows(html);
+  const mean=index=>data.reduce((sum,row)=>sum+Number(row[index]),0)/data.length;
+  near(mean(2),45.9,.05);near(mean(3),1629,.5);
+  assert.match(html,/averages of the condition-level values, not pooled specimen statistics/);
+});
 test('putter operation estimates total approximately twenty minutes',()=>{
   const html=read('projects/cnc-putter.html');
   const times=[...html.matchAll(/— (\d+) min (\d+) sec/g)].map(([,min,sec])=>Number(min)*60+Number(sec));

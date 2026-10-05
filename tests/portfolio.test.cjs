@@ -23,7 +23,7 @@ function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, st
       querySelectorAll: selector => selector === '.project-card' ? cards : selector === '.filter' ? buttons : [],
       getElementById: () => null,
     },
-    URL, URLSearchParams, location:new URL(url), history:{replaceState:(_, __, next) => { context.location = new URL(next); }},
+    URL, URLSearchParams, location:new URL(url), history:{replaceState:(_, __, next) => { context.location = new URL(next); },pushState:(_, __, next) => {context.location = new URL(next);context.pushes=(context.pushes||0)+1;}},
     sessionStorage:{getItem:() => {if(storageBlocked) throw Error('blocked'); return stored ? JSON.stringify(stored) : null;},setItem:(_,value) => {if(storageBlocked) throw Error('blocked'); stored=JSON.parse(value);}},
     setTimeout: callback => { const id=++timerId;timers.set(id, callback);return id; }, clearTimeout:id => timers.delete(id),
     addEventListener:(name,action) => {events[name]=action;}, requestAnimationFrame:action => action(),
@@ -57,6 +57,12 @@ test('array-shaped saved preferences are ignored',()=>{const f=fixture('https://
 test('keywords index full engineering terms',()=>{const f=fixture();f.cards[2].dataset.keywords='finite element analysis';vm.runInNewContext(source,f.context);f.search('finite element');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
 test('unmatched Unicode queries do not show every card',()=>{const f=fixture();f.search('航空');assert.equal(f.shown().length,0);});
 test('punctuation does not prevent keyword matches',()=>{const f=fixture();f.search('FEA/Ansys');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
+test('category changes create a browser-history destination',()=>{const f=fixture();f.click('Boeing');assert.equal(f.context.pushes,1);f.click('Boeing');assert.equal(f.context.pushes,1);});
+test('Back restores the category and query from the destination URL',()=>{const f=fixture();f.click('Boeing');f.context.location=new URL('https://example.test/DustinPortfolio/?category=Academic&q=Ansys#work');f.events.popstate();assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);assert.equal(f.elements['#project-search'].value,'Ansys');assert.equal(f.buttons.find(button=>button.dataset.filter==='Academic').attrs['aria-pressed'],'true');});
+test('Back to an unfiltered URL does not revive a saved filter',()=>{const f=fixture();f.click('Boeing');f.context.location=new URL('https://example.test/DustinPortfolio/#work');f.events.popstate();assert.equal(f.shown().length,4);assert.equal(f.elements['#project-search'].value,'');assert.equal(f.stored().category,'All');});
+test('typed searches are saved immediately before navigating away',()=>{const f=fixture();f.elements['#project-search'].value='Ansys';f.elements['#project-search'].events.input();assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);assert.equal(f.stored().query,'Ansys');assert.equal(f.context.location.searchParams.get('q'),'Ansys');});
+test('native search-field clear updates the visible projects',()=>{const f=fixture();f.search('Ansys');f.elements['#project-search'].value='';f.elements['#project-search'].events.search();assert.equal(f.shown().length,4);assert.equal(f.context.location.searchParams.has('q'),false);});
+test('history-restored queries are bounded and categories validated',()=>{const f=fixture();f.context.location=new URL('https://example.test/DustinPortfolio/?category=unknown&q='+ 'x'.repeat(250));f.events.popstate();assert.equal(f.elements['#project-search'].value.length,120);assert.equal(f.stored().category,'All');});
 
 const home = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
 const decode = text => text.replace(/&amp;/g,'&').replace(/<[^>]*>/g,' ');

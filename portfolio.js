@@ -39,7 +39,7 @@
       const text = normalize(card.textContent + ' ' + (card.dataset.keywords || ''));
       return {text, tokens:new Set(text.split(/\s+/).filter(Boolean))};
     });
-    const apply = (syncURL = true) => {
+    const apply = (syncURL = true, historyMode = 'replace') => {
       const query = search.value.trim().slice(0, 120);
       const words = normalize(query).split(/\s+/).filter(Boolean);
       let visible = 0;
@@ -57,17 +57,28 @@
         const url = new URL(location.href);
         if (category === 'All') url.searchParams.delete('category'); else url.searchParams.set('category', category);
         if (query) url.searchParams.set('q', query); else url.searchParams.delete('q');
-        history.replaceState(null, '', url);
+        if (url.href !== location.href) {
+          if (historyMode === 'push') history.pushState(null, '', url);
+          else history.replaceState(null, '', url);
+        }
       }
     };
-    buttons.forEach(button => button.addEventListener('click', () => { category = button.dataset.filter; apply(); }));
-    let searchTimer;
-    search.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(apply, 150); });
+    buttons.forEach(button => button.addEventListener('click', () => { category = button.dataset.filter; apply(true, 'push'); }));
+    // Eleven local cards are cheap to filter immediately. This also keeps a
+    // typed query safe when a visitor opens a project before a timer would fire.
+    search.addEventListener('input', () => apply());
+    search.addEventListener('search', () => apply());
     search.addEventListener('keydown', event => {
-      if (event.key === 'Escape') { clearTimeout(searchTimer); search.value = ''; apply(); }
+      if (event.key === 'Escape') { search.value = ''; apply(); }
     });
     reset.addEventListener('click', () => {
-      clearTimeout(searchTimer); category = 'All'; search.value = ''; apply(); search.focus();
+      category = 'All'; search.value = ''; apply(true, 'push'); search.focus();
+    });
+    addEventListener('popstate', () => {
+      const restored = new URLSearchParams(location.search);
+      category = categories.includes(restored.get('category')) ? restored.get('category') : 'All';
+      search.value = (restored.get('q') || '').slice(0, 120);
+      apply(false);
     });
     addEventListener('pageshow', () => apply(false));
     apply();

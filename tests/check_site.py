@@ -32,6 +32,7 @@ class Page(HTMLParser):
 
 pages={}
 for path in root.rglob('*.html'):
+    if path.relative_to(root).parts[0] == 'tests': continue  # Rendering fixtures are not portfolio pages.
     page=Page(path); page.feed(path.read_text(encoding='utf-8')); pages[path.resolve()]=page
     if page.h1!=1: errors.append(f'{path.name}: expected one h1, got {page.h1}')
     text=path.read_text(encoding='utf-8')

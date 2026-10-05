@@ -740,3 +740,36 @@ footer {margin-top: 18pt;border-top: 1px solid #bbb;font-size: 9pt}
 .project-link span{display:inline}
 .case-content table.compact-table{min-width:0}
 .timeline-heading>p:last-child,.timeline-date,.count,footer{color:#1c2e3d}
+
+/* Technical figures: preserve their source captions and native resolution. */
+.figure-zoom {position:relative;display:block;width:100%;min-width:0;padding:0;border:0;background:transparent;color:var(--blue);cursor:zoom-in}
+.figure-zoom img {display:block;width:100%}
+.figure-zoom svg {display:block;width:100%;height:auto}
+.figure-zoom-cue {position:absolute;right:12px;bottom:12px;padding:7px 11px;border:1px solid #b7c5d0;border-radius:8px;background:rgba(255,255,255,.95);color:var(--blue);font:600 12px/1.4 system-ui;pointer-events:none}
+.figure-zoom:hover .figure-zoom-cue {border-color:var(--blue)}
+.figure-zoom:focus-visible {outline-offset:-4px}
+.figure-viewer {width:min(960px,calc(100% - 32px));max-height:calc(100dvh - 32px);padding:0;border:1px solid #aebbc7;border-radius:18px;background:#f7fafc;color:var(--blue);box-shadow:0 24px 80px rgba(0,20,40,.3);overflow:auto}
+.figure-viewer::backdrop {background:rgba(0,20,40,.72);backdrop-filter:blur(5px)}
+.figure-viewer-bar {display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 20px;border-bottom:1px solid #dce4eb;background:#f7fafc}
+.figure-viewer-bar h2 {margin:0;font-size:18px;line-height:1.4}
+.figure-viewer-close {flex:none;min-height:44px;padding:8px 14px;border:1px solid #aebbc7;border-radius:9px;background:white;color:var(--blue);font:600 14px system-ui;cursor:pointer}
+.figure-viewer figure {margin:0;padding:20px}
+.figure-viewer figure img {display:block;max-width:100%;max-height:calc(100dvh - 220px);width:auto;height:auto;margin:0 auto;object-fit:contain;background:#fff}
+.figure-viewer figcaption {margin-top:16px;max-width:70ch;font-size:14px;line-height:1.6;color:#354b5d}
+html.figure-viewer-open {overflow:hidden}
+html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
+.results-plot {margin:24px 0}
+.results-plot svg {display:block;width:100%;height:auto;background:#fbfdff}
+@media(max-width:600px) {
+  .figure-viewer {width:calc(100% - 20px);max-height:calc(100dvh - 20px);border-radius:14px}
+  .figure-viewer-bar {padding:12px;gap:10px}
+  .figure-viewer-bar h2 {font-size:16px}
+  .figure-viewer figure {padding:12px}
+  .figure-viewer figure img {max-height:calc(100dvh - 210px)}
+  .test-photo .figure-zoom-cue {right:6px;bottom:6px;font-size:11px;padding:5px 7px}
+}
+@media print {
+  .figure-viewer {display:none!important}
+  .figure-zoom-cue {display:none!important}
+  html.figure-viewer-open {overflow:visible}
+}

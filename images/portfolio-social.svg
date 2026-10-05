@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Dustin Leung — Mechanical Engineering Portfolio</title>
+  <desc id="description">Dustin Leung. Mechanical Design, Aerospace Manufacturing, and Experimental Research. University of Michigan and Oregon State University. Navy, orange, and maize engineering portfolio branding with the circular DL mark.</desc>
+  <rect width="1200" height="630" fill="#f5f8fa"/>
+  <g fill="none" stroke="#00274c" stroke-width="1.5" opacity=".12">
+    <path d="M710 -40 C750 80 930 115 1290 90"/>
+    <path d="M700 15 C755 150 930 180 1290 160"/>
+    <path d="M690 70 C760 220 930 245 1290 230"/>
+    <path d="M680 125 C765 290 930 310 1290 300"/>
+    <path d="M670 180 C770 360 930 375 1290 370"/>
+    <path d="M660 235 C775 430 930 440 1290 440"/>
+  </g>
+  <path d="M700 15 C755 150 930 180 1290 160" fill="none" stroke="#d73f09" stroke-width="3" opacity=".6"/>
+  <path d="M660 235 C775 430 930 440 1290 440" fill="none" stroke="#ffcb05" stroke-width="3"/>
+  <circle cx="1028" cy="320" r="94" fill="#09090a" stroke="#fff" stroke-width="4"/>
+  <text x="1028" y="344" text-anchor="middle" font-family="Arial, sans-serif" font-size="70" font-weight="700" fill="#ffcb05">DL</text>
+  <g font-family="Arial, sans-serif" fill="#00274c">
+    <text x="72" y="112" font-size="21" font-weight="700" letter-spacing="2.2">MECHANICAL ENGINEERING PORTFOLIO</text>
+    <text x="68" y="230" font-size="80" font-weight="700" letter-spacing="-2">Dustin Leung</text>
+    <rect x="72" y="262" width="80" height="5" rx="2.5" fill="#d73f09"/>
+    <text x="72" y="326" font-size="29">Mechanical Design</text>
+    <text x="72" y="374" font-size="29">Aerospace Manufacturing</text>
+    <text x="72" y="422" font-size="29">Experimental Research</text>
+  </g>
+  <rect y="510" width="1200" height="120" fill="#00274c"/>
+  <g font-family="Arial, sans-serif" fill="#fff">
+    <text x="72" y="560" font-size="24" font-weight="700">University of Michigan</text>
+    <text x="72" y="595" font-size="18" fill="#ffcb05">Mechanical Engineering Graduate Study</text>
+    <text x="700" y="560" font-size="24" font-weight="700">Oregon State University</text>
+    <text x="700" y="595" font-size="18">B.S. Mechanical Engineering · Aerospace Option</text>
+  </g>
+</svg>
