@@ -28,6 +28,8 @@ jobs:
           persist-credentials: false
       - name: Check project navigation and search
         run: node tests/portfolio.test.cjs
+      - name: Check related work and project contact paths
+        run: node tests/related.test.cjs
       - name: Check motion controls and geometry
         run: node tests/ambient.test.cjs
       - name: Check technical figure viewer

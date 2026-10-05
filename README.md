@@ -33,6 +33,8 @@ Content is maintained explicitly; it does not automatically synchronize with Not
 
 After changing a stylesheet or script, run `python tools/version_assets.py --write`. This mechanically refreshes only the referenced asset versions using content hashes, so returning visitors receive the current files. `python tools/version_assets.py` checks without changing anything and also runs in the repository checks.
 
+After changing project-card titles or summaries, run `node tools/build_related.cjs --write`. This refreshes the two curated related-work links on each case study from the existing project library and keeps project-specific email subject lines aligned with their titles. The default command checks without changing files. Keep the curated destinations relevant; these links are not recommendations from a tracking service.
+
 The public résumé is the supplied PDF, unchanged and approved for publication. Employer technical details must not be added without public-sharing approval. Original academic reports remain unchanged.
 
 `tests/document-manifest.json` records the sizes and SHA-256 hashes of the original published PDFs. If Dustin approves a replacement, update its matching baseline deliberately; do not bypass the integrity check to accommodate an unexplained file change.
@@ -44,3 +46,5 @@ From the repository root, run `node tests/portfolio.test.cjs`, `node tests/figur
 The sharing artwork can be rendered from `tests/render-social.html` at exactly 1200 × 630. Confirm the captured file's actual JPEG format and dimensions before replacing `images/portfolio-social.jpg`; do not merely change the extension of an unknown image format. A social service may retain a cached preview after an update. No account posting or social-platform access is needed for the site metadata itself.
 
 `node tests/contrast.test.cjs` protects representative solid-surface text colors and the inset figure-focus outline using the [W3C contrast thresholds](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html). This is not a full accessibility certification or a pixel-level check of all translucent, gradient, zoom, or assistive-technology states. Review those states directly as well.
+
+Also run `node tests/related.test.cjs`, `python tests/assets.test.py`, `node tools/build_related.cjs`, and `python tools/version_assets.py` to verify related destinations, project-specific contact links, and current asset versions. Compact phone navigation and project contents dismiss on an outside tap; interactions inside the open controls remain available.

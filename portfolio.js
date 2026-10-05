@@ -112,6 +112,12 @@
     links.addEventListener('click', event => {
       if (event.target.closest('a')) toggle.setAttribute('aria-expanded', 'false');
     });
+    document.addEventListener('pointerdown', event => {
+      if (innerWidth <= 1000 && toggle.getAttribute('aria-expanded') === 'true' && !toc.contains(event.target)) {
+        toggle.setAttribute('aria-expanded', 'false');
+        if (links.contains(document.activeElement)) toggle.focus({preventScroll:true});
+      }
+    });
     const print = document.createElement('button');
     print.type = 'button';
     print.className = 'print-project';
@@ -152,6 +158,13 @@
       const height = header.getBoundingClientRect().height;
       document.documentElement.style.setProperty('--nav-clearance', `${Math.ceil(height) + (innerWidth <= 760 ? 8 : 12) + 24}px`);
     };
+    document.addEventListener('pointerdown', event => {
+      if (innerWidth <= 760 && menu.getAttribute('aria-expanded') === 'true' && !nav.contains(event.target)) {
+        menu.setAttribute('aria-expanded', 'false');
+        if (navigation.contains(document.activeElement)) menu.focus({preventScroll:true});
+        clearance();
+      }
+    });
     if ('ResizeObserver' in window) new ResizeObserver(clearance).observe(header);
     else addEventListener('resize', clearance, {passive:true});
     clearance();

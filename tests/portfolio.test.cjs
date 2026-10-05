@@ -11,6 +11,7 @@ class Element {
   getAttribute(name) { return this.attrs[name]; }
   removeAttribute(name) { delete this.attrs[name]; }
   focus() { this.focused = true; }
+  contains(target) {return this===target || (this.children||[]).some(child=>child.contains(target));}
 }
 function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, storageBlocked = false, library = null) {
   const cards = library ? library.cards.map(card => new Element(card.text, card.dataset)) : [new Element('Protective Covers CATIA TPU', {category:'Boeing'}), new Element('Rocket Testing FEA', {category:'Academic'}), new Element('Carabiner FEA Ansys', {category:'Academic'}), new Element('Casting Tooling SolidWorks', {category:'PCC'})];
@@ -99,18 +100,24 @@ function navigationFixture() {
   header.getBoundingClientRect=()=>({height:72,bottom:80});
   toc.querySelector=selector=>selector==='strong'?heading:null;
   toc.querySelectorAll=()=>links;
-  const properties={};const events={};
+  const navLink=new Element('Projects');navigation.children=[navLink];
+  nav.contains=target=>target===nav||navigation.contains(target)||nav.children.some(child=>child.contains(target));
+  const properties={};const events={},documentEvents={};
   const context={
-    document:{querySelector:selector=>({'.topbar':header,'.case-toc':toc,'.case-bottom':bottom}[selector]||null),querySelectorAll:selector=>selector==='a[href^="#"]'?links:[],getElementById:id=>sections[id],createElement:()=>{const element=new Element();element.children=[];element.append=function(child){this.children.push(child);};return element;},documentElement:{scrollHeight:2000,style:{setProperty:(name,value)=>{properties[name]=value;}}}},
+    document:{querySelector:selector=>({'.topbar':header,'.case-toc':toc,'.case-bottom':bottom}[selector]||null),querySelectorAll:selector=>selector==='a[href^="#"]'?links:[],getElementById:id=>sections[id],addEventListener:(name,fn)=>{(documentEvents[name]||=[]).push(fn);},createElement:()=>{const element=new Element();element.children=[];element.append=function(child){this.children.push(child);};return element;},documentElement:{scrollHeight:2000,style:{setProperty:(name,value)=>{properties[name]=value;}}}},
     window:{print:()=>{printed++;}},innerWidth:390,innerHeight:600,scrollY:0,
     addEventListener:(name,action)=>{events[name]=action;},requestAnimationFrame:action=>action(),
   };
   vm.runInNewContext(source,context);
-  return {nav,navigation,header,toc,bottom,links,sections,context,properties,events,menu:nav.children[0],toggle:toc.children[0],tocLinks:toc.children[1],printed:()=>printed};
+  return {nav,navigation,navLink,header,toc,bottom,links,sections,context,properties,events,menu:nav.children[0],toggle:toc.children[0],tocLinks:toc.children[1],printed:()=>printed,pointer:target=>(documentEvents.pointerdown||[]).forEach(fn=>fn({target}))};
 }
 test('phone menu has associated controls and starts collapsed',()=>{const f=navigationFixture();assert.equal(f.menu.getAttribute('aria-controls'),'primary-links');assert.equal(f.menu.getAttribute('aria-expanded'),'false');assert.equal(f.properties['--nav-clearance'],'104px');});
 test('phone menu toggles and Escape restores focus',()=>{const f=navigationFixture();f.menu.events.click();assert.equal(f.menu.getAttribute('aria-expanded'),'true');f.nav.events.keydown({key:'Escape'});assert.equal(f.menu.getAttribute('aria-expanded'),'false');assert.equal(f.menu.focused,true);});
 test('navigation selection closes the menu',()=>{const f=navigationFixture();f.menu.events.click();f.navigation.events.click({target:f.links[0]});assert.equal(f.menu.getAttribute('aria-expanded'),'false');});
+test('outside taps dismiss the phone menu without leaving focus hidden',()=>{const f=navigationFixture();f.menu.events.click();f.context.document.activeElement=f.navLink;f.pointer(new Element('outside'));assert.equal(f.menu.getAttribute('aria-expanded'),'false');assert.equal(f.menu.focused,true);});
+test('pointer interaction inside the phone menu does not dismiss it',()=>{const f=navigationFixture();f.menu.events.click();f.pointer(f.navLink);assert.equal(f.menu.getAttribute('aria-expanded'),'true');});
+test('outside taps dismiss compact project contents and restore hidden link focus',()=>{const f=navigationFixture();f.toggle.events.click();f.context.document.activeElement=f.links[1];f.pointer(new Element('outside'));assert.equal(f.toggle.getAttribute('aria-expanded'),'false');assert.equal(f.toggle.focused,true);});
+test('wide-screen contents are not collapsed by outside interaction',()=>{const f=navigationFixture();f.context.innerWidth=1280;f.toggle.events.click();f.pointer(new Element('outside'));assert.equal(f.toggle.getAttribute('aria-expanded'),'true');});
 test('project contents toggle and Escape restore focus',()=>{const f=navigationFixture();f.toggle.events.click();assert.equal(f.toggle.getAttribute('aria-expanded'),'true');f.toc.events.keydown({key:'Escape'});assert.equal(f.toggle.getAttribute('aria-expanded'),'false');assert.equal(f.toggle.focused,true);});
 test('project section selection collapses phone contents',()=>{const f=navigationFixture();f.toggle.events.click();f.tocLinks.events.click({target:f.links[1]});assert.equal(f.toggle.getAttribute('aria-expanded'),'false');});
 test('section navigation focuses the destination',()=>{const f=navigationFixture();f.links[1].events.click({});assert.equal(f.sections.results.tabIndex,-1);assert.equal(f.sections.results.focused,true);});
