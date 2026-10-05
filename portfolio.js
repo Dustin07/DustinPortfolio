@@ -31,10 +31,12 @@
     let category = categories.includes(categoryFromURL) ? categoryFromURL :
       (!params.has('category') && !params.has('q') && categories.includes(previous?.category) ? previous.category : 'All');
     search.value = (params.get('q') ?? (!params.has('category') ? previous?.query : '') ?? '').slice(0, 120);
-    const normalize = value => value.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ');
+    const normalize = value => value.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+      .replace(/\bc\+\+/g,' cplusplus ').replace(/\bc#/g,' csharp ').replace(/\bgd\s*&\s*t\b/g,' gdt ')
+      .replace(/[^\p{L}\p{N}]+/gu,' ');
     // Engineering acronyms should not match incidental substrings (CAM/camera,
     // AI/tail). Longer descriptive terms retain flexible substring matching.
-    const acronyms = new Set(['ai','fea','cad','cam','nx','tpu','fdm','sla','cmm','gdt','rag','llm','cea','gpu','dfm','dfa','3d']);
+    const acronyms = new Set(['ai','fea','cad','cam','nx','tpu','fdm','sla','cmm','gdt','rag','llm','cea','gpu','dfm','dfa','3d','cplusplus','csharp']);
     const searchable = cards.map(card => {
       const text = normalize(card.textContent + ' ' + (card.dataset.keywords || ''));
       return {text, tokens:new Set(text.split(/\s+/).filter(Boolean))};
@@ -45,7 +47,7 @@
       let visible = 0;
       cards.forEach((card, index) => {
         card.hidden = (category !== 'All' && card.dataset.category !== category) ||
-          !words.every(word => acronyms.has(word) ? searchable[index].tokens.has(word) : searchable[index].text.includes(word));
+          !words.every(word => acronyms.has(word) || word.length <= 2 ? searchable[index].tokens.has(word) : searchable[index].text.includes(word));
         if (!card.hidden) visible++;
       });
       buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === category)));

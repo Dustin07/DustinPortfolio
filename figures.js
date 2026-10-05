@@ -14,27 +14,58 @@
   bar.className = 'figure-viewer-bar';
   const title = document.createElement('h2');
   title.id = 'figure-viewer-title';
+  const actions = document.createElement('div');
+  actions.className = 'figure-viewer-actions';
+  const size = document.createElement('button');
+  size.type = 'button';
+  size.className = 'figure-viewer-size';
+  size.textContent = 'Actual Size';
+  size.setAttribute('aria-pressed', 'false');
+  size.setAttribute('aria-controls', 'figure-viewer-media');
   const close = document.createElement('button');
   close.type = 'button';
   close.className = 'figure-viewer-close';
   close.textContent = 'Close';
   close.setAttribute('aria-label', 'Close Figure');
-  bar.append(title, close);
+  actions.append(size, close);
+  bar.append(title, actions);
   const figure = document.createElement('figure');
+  const media = document.createElement('div');
+  media.className = 'figure-viewer-media';
+  media.id = 'figure-viewer-media';
+  media.setAttribute('role', 'region');
+  media.setAttribute('aria-label', 'Figure Detail');
+  media.tabIndex = -1;
   const enlarged = document.createElement('img');
   enlarged.decoding = 'async';
   const caption = document.createElement('figcaption');
   caption.id = 'figure-viewer-caption';
-  figure.append(enlarged, caption);
+  media.append(enlarged);
+  figure.append(media, caption);
   dialog.append(bar, figure);
   document.body.append(dialog);
   let opener = null;
+  let actualSize = false;
+  const setSize = value => {
+    actualSize = value;
+    if (value) dialog.classList.add('is-actual-size');
+    else dialog.classList.remove('is-actual-size');
+    size.setAttribute('aria-pressed', String(value));
+    media.tabIndex = value ? 0 : -1;
+    media.scrollTop = 0;
+    media.scrollLeft = 0;
+  };
+  size.addEventListener('click', () => setSize(!actualSize));
 
   close.addEventListener('click', () => dialog.close());
-  // Close is the viewer's only interactive control. Keep Tab on that control
-  // instead of cycling through browser chrome in single-control dialogs.
+  // Cycle through viewer controls, including keyboard panning at actual size.
   dialog.addEventListener('keydown', event => {
-    if (event.key === 'Tab') { event.preventDefault(); close.focus({preventScroll:true}); }
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      const controls = actualSize ? [size, close, media] : [size, close];
+      const index = controls.indexOf(event.target);
+      controls[(index + (event.shiftKey ? -1 : 1) + controls.length) % controls.length].focus({preventScroll:true});
+    }
   });
   dialog.addEventListener('close', () => {
     document.documentElement.classList.remove('figure-viewer-open');
@@ -75,6 +106,7 @@
     button.append(image, cue);
     button.addEventListener('click', () => {
       opener = button;
+      setSize(false);
       title.textContent = heading;
       if (vector) {
         const copy = image.cloneNode(true);

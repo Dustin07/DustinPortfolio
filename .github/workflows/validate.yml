@@ -36,9 +36,15 @@ jobs:
         run: node tests/social.test.cjs
       - name: Check stylesheet safeguards
         run: node tests/styles.test.cjs
+      - name: Check representative contrast and focus safeguards
+        run: node tests/contrast.test.cjs
       - name: Check engineering data consistency
         run: node tests/engineering.test.cjs
       - name: Protect the original reports and resume
         run: node tests/documents.test.cjs
       - name: Check all site links and page metadata
         run: python3 tests/check_site.py
+      - name: Prevent stale stylesheet and script versions
+        run: python3 tools/version_assets.py
+      - name: Check asset-version refresh behavior
+        run: python3 tests/assets.test.py

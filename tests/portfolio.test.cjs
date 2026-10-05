@@ -63,6 +63,10 @@ test('Back to an unfiltered URL does not revive a saved filter',()=>{const f=fix
 test('typed searches are saved immediately before navigating away',()=>{const f=fixture();f.elements['#project-search'].value='Ansys';f.elements['#project-search'].events.input();assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);assert.equal(f.stored().query,'Ansys');assert.equal(f.context.location.searchParams.get('q'),'Ansys');});
 test('native search-field clear updates the visible projects',()=>{const f=fixture();f.search('Ansys');f.elements['#project-search'].value='';f.elements['#project-search'].events.search();assert.equal(f.shown().length,4);assert.equal(f.context.location.searchParams.has('q'),false);});
 test('history-restored queries are bounded and categories validated',()=>{const f=fixture();f.context.location=new URL('https://example.test/DustinPortfolio/?category=unknown&q='+ 'x'.repeat(250));f.events.popstate();assert.equal(f.elements['#project-search'].value.length,120);assert.equal(f.stored().category,'All');});
+const languageLibrary={cards:[{text:'Custom machining',dataset:{category:'Academic'}},{text:'C++ controller',dataset:{category:'Academic'}},{text:'C# application',dataset:{category:'Academic'}}],categories:['All','Academic']};
+test('C++ is not reduced to the incidental letter C',()=>{const f=fixture(undefined,null,false,languageLibrary);f.search('C++');assert.deepEqual(f.shown(),['C++ controller']);});
+test('C# remains a distinct programming-language query',()=>{const f=fixture(undefined,null,false,languageLibrary);f.search('c#');assert.deepEqual(f.shown(),['C# application']);});
+test('one-letter queries do not match arbitrary words',()=>{const f=fixture();f.search('c');assert.equal(f.shown().length,0);});
 
 const home = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
 const decode = text => text.replace(/&amp;/g,'&').replace(/<[^>]*>/g,' ');
@@ -80,6 +84,8 @@ test('AI does not match an aircraft tail',()=>{const f=fixture(undefined,null,fa
 test('full language-model terms find the research case',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('language model');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/In-Space Manufacturing Research/);});
 test('CAD search finds the actual part-modeling and tooling work',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('CAD');assert.equal(f.shown().length,8);assert.ok(f.shown().every(text=>!text.includes('In-Space Manufacturing Research')));});
 test('FEA search does not imply completed rocket material analysis',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('FEA');assert.equal(f.shown().length,2);assert.ok(f.shown().every(text=>!text.includes('Rocket Structures')));});
+test('GD&T matches its actual metrology case',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('GD&T');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/Legacy Component Reverse Engineering/);});
+test('untagged C++ projects are not invented by broad substring matching',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('C++');assert.equal(f.shown().length,0);});
 
 function navigationFixture() {
   const nav = new Element(), navigation = new Element(), header = new Element(), toc = new Element(), heading = new Element('Inside This Project'), bottom = new Element();
