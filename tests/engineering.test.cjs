@@ -124,4 +124,20 @@ test('shorter case studies retain their key evidence boundaries',()=>{
   assert.match(read('projects/gating-optimization.html'),/Customer approval was pending at handoff/);
   assert.match(read('projects/cnc-putter.html'),/not measured shop-floor cycle times/);
 });
+test('carabiner comparison includes both deflection penalties',()=>{
+  const html=read('projects/carabiner-fea.html'),data=rows(html);
+  near((Number(data[1][1])/Number(data[0][1])-1)*100,9.8,.05);
+  near((Number(data[2][1])/Number(data[0][1])-1)*100,19.0,.05);
+  assert.match(html,/<dt>Deflection<\/dt><dd>\+9.8%/);
+  assert.match(html,/<dt>Deflection<\/dt><dd>\+19.0%/);
+  assert.match(html,/not a complete design acceptance criterion/);
+});
+test('carabiner initial mesh evidence is separate from final-case validation',()=>{
+  const html=read('projects/carabiner-fea.html');
+  near((971-970)/971*100,.10,.005);
+  assert.match(html,/995, 974, 971, and 970 MPa/);
+  assert.match(html,/Final-case convergence is not independently verified/);
+  assert.match(html,/initial mesh series is not proof of final-case accuracy/);
+  assert.match(html,/These steps were not completed in this study/);
+});
 console.log(`${total} engineering data and navigation checks passed.`);
