@@ -151,4 +151,3 @@ test('active section follows scroll position',()=>{const f=navigationFixture();f
 test('last section is active at page bottom',()=>{const f=navigationFixture();f.context.scrollY=1400;f.events.scroll();assert.equal(f.links[2].getAttribute('aria-current'),'location');});
 test('print control invokes the browser print workflow',()=>{const f=navigationFixture();f.bottom.children[0].events.click();assert.equal(f.printed(),1);});
 console.log(`${cases} portfolio regression tests passed.`);
-
