@@ -38,6 +38,8 @@ jobs:
         run: node tests/tensile.test.cjs
       - name: Check putter machining illustration
         run: node tests/putter.test.cjs
+      - name: Check carabiner comparison illustration
+        run: node tests/carabiner.test.cjs
       - name: Check portfolio link previews
         run: node tests/social.test.cjs
       - name: Check stylesheet safeguards
