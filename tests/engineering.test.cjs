@@ -96,5 +96,17 @@ test('putter operation estimates total approximately twenty minutes',()=>{
   const short=[...html.matchAll(/— (\d+) sec/g)].map(([,sec])=>Number(sec));
   assert.equal(times.length+short.length,6);near([...times,...short].reduce((a,b)=>a+b,0)/60,20,.2);
 });
-test('putter reference geometry is credited',()=>assert.match(read('projects/cnc-putter.html'),/starting putter geometry came from a GrabCAD reference model/));
+test('putter reference geometry is credited',()=>assert.match(read('projects/cnc-putter.html'),/using a GrabCAD reference model/));
+test('every library card uses one labeled preview panel',()=>cards.forEach(card=>{
+  assert.equal((card.html.match(/class="card-preview"/g)||[]).length,1);
+  assert.match(card.html,/<div class="preview-label">[^<]+<\/div>/);
+}));
+test('shorter case studies retain their key evidence boundaries',()=>{
+  assert.match(read('projects/aircraft-aerodynamics.html'),/I owned the wing and horizontal-tail geometric reconstruction/);
+  assert.match(read('projects/carabiner-fea.html'),/initial loading condition different from the final comparison/);
+  assert.match(read('projects/rocket-structures.html'),/not pooled specimen statistics/);
+  assert.match(read('projects/rocket-propulsion.html'),/neglects drag and gravity losses/);
+  assert.match(read('projects/gating-optimization.html'),/Customer approval was pending at handoff/);
+  assert.match(read('projects/cnc-putter.html'),/not measured shop-floor cycle times/);
+});
 console.log(`${total} engineering data and navigation checks passed.`);
