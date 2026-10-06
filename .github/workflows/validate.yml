@@ -36,6 +36,8 @@ jobs:
         run: node tests/figures.test.cjs
       - name: Check tensile test illustration
         run: node tests/tensile.test.cjs
+      - name: Check putter machining illustration
+        run: node tests/putter.test.cjs
       - name: Check portfolio link previews
         run: node tests/social.test.cjs
       - name: Check stylesheet safeguards
