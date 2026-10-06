@@ -97,6 +97,21 @@ test('putter operation estimates total approximately twenty minutes',()=>{
   assert.equal(times.length+short.length,6);near([...times,...short].reduce((a,b)=>a+b,0)/60,20,.2);
 });
 test('putter reference geometry is credited',()=>assert.match(read('projects/cnc-putter.html'),/using a GrabCAD reference model/));
+test('rocket baseline comparison is descriptive and arithmetically correct',()=>{
+  const html=read('projects/rocket-structures.html'),data=rows(html);
+  near(Number(data[0][2])-Number(data[4][2]),6.38,.0001);
+  near((Number(data[0][2])-Number(data[4][2]))/Number(data[0][2])*100,13.1,.05);
+  assert.match(html,/6.38 MPa \(13.1%\)/);
+  assert.match(html,/not a significance test/);
+});
+test('rocket method connects schematic loading to the reported setup without claiming playback',()=>{
+  const html=read('projects/rocket-structures.html');
+  assert.match(html,/50 mm gauge length and 115 mm grip separation/);
+  assert.match(html,/not to scale/);
+  assert.match(html,/0 hours = unannealed baseline/);
+  assert.match(html,/does not provide the count, scatter/);
+  assert.match(html,/These specimen tests are not a flight qualification/);
+});
 test('every library card uses one labeled preview panel',()=>cards.forEach(card=>{
   assert.equal((card.html.match(/class="card-preview"/g)||[]).length,1);
   assert.match(card.html,/<div class="preview-label">[^<]+<\/div>/);

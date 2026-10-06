@@ -806,6 +806,24 @@ footer {margin-top: 18pt;border-top: 1px solid #bbb;font-size: 9pt}
 html.figure-viewer-open {overflow:hidden}
 html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
 .results-plot {margin:24px 0}
+.test-matrix {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:24px 0}
+.test-matrix>div {padding:18px;border:1px solid #dce4eb;border-radius:12px;background:#f7fafc}
+.test-matrix dt {font-size:12px;font-weight:650;color:var(--blue);margin-bottom:8px}
+.test-matrix dd {margin:0;color:#334454;font-size:14px;line-height:1.65}
+.case-content .test-sequence {list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:24px 0}
+.test-sequence li {margin:0;padding-top:14px;border-top:3px solid var(--orange);font-size:14px}
+.test-sequence strong,.test-sequence span {display:block}
+.test-sequence strong {color:var(--blue);margin-bottom:8px}
+.test-setup-note {padding:18px;background:#f7fafc;border:1px solid #dce4eb;border-radius:12px;font-size:14px}
+.method-details {margin:22px 0;padding:0;border:1px solid #dce4eb;border-radius:12px;background:#f7fafc}
+.method-details>summary {min-height:52px;align-items:center;padding:14px 18px;line-height:1.5}
+.case-content .method-details>p,.case-content .method-details>ul {margin:0;padding:0 18px 18px;font-size:14px}
+.case-content .method-details>ul {padding-left:36px}
+.result-reading {padding:22px;border-left:3px solid var(--orange);border-radius:0 12px 12px 0;background:#eff4f8;margin:24px 0}
+.result-reading .eyebrow {font-size:12px;margin-bottom:10px}
+.result-reading p:last-child {margin:0;font-size:14px}
+@media(max-width:600px) {.test-matrix,.case-content .test-sequence{grid-template-columns:1fr}.test-matrix{gap:10px}.case-content .test-sequence{gap:12px}}
+@media print {.method-details>summary{display:none}.method-details>p,.method-details>ul{display:block!important}.method-details::details-content{content-visibility:visible!important}.test-matrix>div,.result-reading{break-inside:avoid}}
 .results-plot svg {display:block;width:100%;height:auto;background:#fbfdff}
 .related-projects {margin-top:36px;padding-top:28px;border-top:1px solid #dce4eb}
 .case-content .related-projects h2 {margin:0 0 18px;font-size:22px}
