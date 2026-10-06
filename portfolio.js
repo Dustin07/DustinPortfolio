@@ -17,8 +17,9 @@
   };
   const cards = [...document.querySelectorAll('.project-card')];
   const buttons = [...document.querySelectorAll('.filter')];
-  const search = document.querySelector('#project-search');
+    const search = document.querySelector('#project-search');
   if (cards.length && search) {
+    const library = document.querySelector('#project-library');
     document.querySelector('.project-toolbar').hidden = false;
     document.querySelector('.filters').hidden = false;
     const count = document.querySelector('#project-count');
@@ -29,6 +30,8 @@
     const categories = buttons.map(button => button.dataset.filter);
     const params = new URLSearchParams(location.search);
     const previous = location.hash === '#work' ? recalled() : null;
+    // Returning from a case study restores access to the full library.
+    if (library && previous) library.open = true;
     const categoryFromURL = params.get('category');
     let category = categories.includes(categoryFromURL) ? categoryFromURL :
       (!params.has('category') && !params.has('q') && categories.includes(previous?.category) ? previous.category : 'All');
@@ -50,6 +53,7 @@
     const apply = (syncURL = true, historyMode = 'replace') => {
       const query = search.value.trim().slice(0, 120);
       const words = normalize(query).split(/\s+/).filter(Boolean);
+      if (library && (category !== 'All' || query)) library.open = true;
       let visible = 0, matchesAcrossCategories = 0;
       cards.forEach((card, index) => {
         const matches = words.every(word => acronyms.has(word) || word.length <= 2 ? searchable[index].tokens.has(word) : searchable[index].text.includes(word));
@@ -211,3 +215,4 @@
     highlight();
   }
 })();
+

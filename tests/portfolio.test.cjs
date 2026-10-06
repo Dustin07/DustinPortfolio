@@ -19,6 +19,8 @@ function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, st
   if (library) library.cards.forEach((card,index) => {if(card.childNodes) cards[index].childNodes=card.childNodes;});
   const elements = {'#project-search':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-empty-message':new Element(), '#project-expand-search':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
   const timers = new Map(); let timerId = 0; let stored = saved; const events = {};
+  elements['#project-library'] = new Element();
+  elements['#project-library'].open = false;
   const context = {
     document: {
       querySelector: selector => elements[selector] || null,
@@ -41,6 +43,11 @@ function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, st
 let cases=0;
 function test(name, action) { action();cases++;console.log('PASS '+name); }
 test('default library is complete',()=>{const f=fixture();assert.equal(f.shown().length,4);assert.equal(f.elements['#project-count'].textContent,'4 Projects');assert.equal(f.elements['#project-reset'].hidden,true);});
+test('fresh homepage keeps the full library collapsed',()=>assert.equal(fixture().elements['#project-library'].open,false));
+test('shared category and query links reveal the full library',()=>{
+  for(const suffix of ['?category=Boeing#work','?q=Ansys#work']) assert.equal(fixture('https://example.test/DustinPortfolio/'+suffix).elements['#project-library'].open,true);
+});
+test('returning from a case study reveals even an unfiltered library',()=>assert.equal(fixture('https://example.test/DustinPortfolio/#work',{category:'All',query:''}).elements['#project-library'].open,true));
 test('category filtering and URL',()=>{const f=fixture();f.click('Boeing');assert.equal(f.shown().length,1);assert.equal(f.context.location.searchParams.get('category'),'Boeing');assert.equal(f.elements['#project-count'].textContent,'1 Project');});
 test('case-insensitive skill search',()=>{const f=fixture();f.search('fEa');assert.equal(f.shown().length,2);assert.equal(f.context.location.searchParams.get('q'),'fEa');});
 test('all search terms must match',()=>{const f=fixture();f.search('FEA Ansys');assert.deepEqual(f.shown(),['Carabiner FEA Ansys']);});
@@ -77,6 +84,17 @@ test('one-letter queries do not match arbitrary words',()=>{const f=fixture();f.
 test('adjacent DOM text blocks retain exact skill boundaries',()=>{const f=fixture(undefined,null,false,{categories:['All','Academic'],cards:[{text:'Siemens NX · Ansys · FEAView Project',dataset:{category:'Academic'},childNodes:[{childNodes:[{nodeType:3,textContent:'Siemens NX · Ansys · FEA'}]},{childNodes:[{nodeType:3,textContent:'View Project'}]}]}]});f.search('FEA');assert.equal(f.shown().length,1);f.search('NX');assert.equal(f.shown().length,1);f.search('Ansys');assert.equal(f.shown().length,1);});
 
 const home = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+test('selected work features research, production design, and experimental evidence',()=>{
+  const featured=home.match(/<div class="featured-grid"[^>]*>([\s\S]*?)<\/div>/)[1];
+  assert.equal((featured.match(/class="featured-card"/g)||[]).length,3);
+  for(const page of ['nasa-manufacturing','protective-covers','rocket-structures']) assert.ok(featured.includes('projects/'+page+'.html'));
+  assert.match(home,/<details class="project-library" id="project-library"><summary>Browse All 11 Projects/);
+});
+test('full degree details appear once, in the timeline',()=>{
+  for(const degree of ['B.S. Mechanical Engineering · Aerospace Engineering Option','M.S. Mechanical Engineering · Expected May 2028']) assert.equal(home.split(degree).length-1,1);
+  assert.equal(home.includes('hero-aside'),false);
+  assert.equal(home.includes('Education & Recognition'),false);
+});
 const decode = text => text.replace(/&amp;/g,'&').replace(/<[^>]*>/g,' ');
 const realLibrary = {
   cards:[...home.matchAll(/<article class="project-card"([^>]*)>([\s\S]*?)<\/article>/g)].map(([,attributes,content])=>({text:decode(content),dataset:{category:attributes.match(/data-category="([^"]+)"/)[1],keywords:decode(attributes.match(/data-keywords="([^"]*)"/)?.[1] || '')}})),
@@ -133,3 +151,4 @@ test('active section follows scroll position',()=>{const f=navigationFixture();f
 test('last section is active at page bottom',()=>{const f=navigationFixture();f.context.scrollY=1400;f.events.scroll();assert.equal(f.links[2].getAttribute('aria-current'),'location');});
 test('print control invokes the browser print workflow',()=>{const f=navigationFixture();f.bottom.children[0].events.click();assert.equal(f.printed(),1);});
 console.log(`${cases} portfolio regression tests passed.`);
+
