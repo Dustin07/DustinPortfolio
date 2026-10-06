@@ -26,9 +26,9 @@
     const ease=progress*progress*(3-2*progress);
     demo.dataset.step=String(step);
     body.setAttribute('stroke-width',String(step===2?42-10*ease:42));
-    spine.setAttribute('stroke-width',String(42-14*ease));
-    spine.style.opacity=step===1?'1':'0';
-    removedSpine.style.opacity=step===1?String(.65*ease):'0';
+    // The reduced spine flattens the visible face; its lateral outline stays fixed.
+    spine.style.opacity=step===1?String(ease):'0';
+    removedSpine.style.opacity=step===1?String(.45*ease):'0';
     removedTube.style.opacity=step===2?String(.65*ease):'0';
     if(current===step)return;
     current=step;
