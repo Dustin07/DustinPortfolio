@@ -34,6 +34,8 @@ jobs:
         run: node tests/ambient.test.cjs
       - name: Check technical figure viewer
         run: node tests/figures.test.cjs
+      - name: Check tensile test illustration
+        run: node tests/tensile.test.cjs
       - name: Check portfolio link previews
         run: node tests/social.test.cjs
       - name: Check stylesheet safeguards

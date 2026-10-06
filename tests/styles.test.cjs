@@ -19,7 +19,7 @@ test('stylesheet delimiters, strings, and comments are balanced',()=>{
 });
 test('declared background animations are actually referenced',()=>{
   const defined=[...css.matchAll(/@keyframes\s+([\w-]+)/g)].map(match=>match[1]);
-  const referenced=new Set([...css.matchAll(/animation:\s*([\w-]+)/g)].map(match=>match[1]));
+  const referenced=new Set([...css.matchAll(/animation(?:-name)?:\s*([\w-]+)/g)].map(match=>match[1]));
   assert.equal(new Set(defined).size,defined.length);
   for(const name of defined)assert.ok(referenced.has(name),`Unused animation ${name}`);
 });

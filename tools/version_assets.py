@@ -7,8 +7,8 @@ from html import escape, unescape
 from urllib.parse import parse_qsl, urlencode
 
 root = Path(__file__).resolve().parents[1]
-assets = ['styles.css', 'ambient.js', 'portfolio.js', 'figures.js']
-pattern = re.compile(r'((?:href|src)=")((?:\.\./|/DustinPortfolio/|https://dustin07\.github\.io/DustinPortfolio/)?(styles\.css|ambient\.js|portfolio\.js|figures\.js))(\?[^"\s]*)?(\")')
+assets = ['styles.css', 'ambient.js', 'portfolio.js', 'figures.js', 'tensile.js']
+pattern = re.compile(r'((?:href|src)=")((?:\.\./|/DustinPortfolio/|https://dustin07\.github\.io/DustinPortfolio/)?(styles\.css|ambient\.js|portfolio\.js|figures\.js|tensile\.js))(\?[^"\s]*)?(\")')
 
 def versioned_html(text, hashes):
     def replace(match):

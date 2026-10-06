@@ -10,6 +10,7 @@ Live site: https://dustin07.github.io/DustinPortfolio/
 - `ambient.js`: decorative airflow geometry and restrained scroll-linked movement; honors reduced-motion preferences and includes a tab-local visitor pause control.
 - `portfolio.js`: searchable project library, shareable filters, tab-local return preferences, compact phone navigation, active sections, and case-study print controls. No data is sent to an analytics service.
 - `figures.js`: native modal viewing for existing technical images, preserving source captions, keyboard controls, and return focus. Unsupported browsers retain the readable inline figures.
+- `tensile.js`: lightweight eight-second dogbone loading/separation illustration on the rocket-materials case. It is schematic, not test footage or measured deformation. Local pause, system reduced motion, offscreen/hidden-tab pauses, static/print fallbacks, and the background-motion preference are honored. Run `node tests/tensile.test.cjs` when changing it.
 - `images/portfolio-social.svg` and `.jpg`: editable branded link-preview artwork and the rendered 1200 × 630 sharing image. Page titles and descriptions remain specific to each case study.
 - `404.html`: recovery links for missing addresses, including nested project paths.
 - `images/`: selected engineering visuals from the original project reports.
