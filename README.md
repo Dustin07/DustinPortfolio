@@ -14,7 +14,7 @@ Live site: https://dustin07.github.io/DustinPortfolio/
 - `images/portfolio-social.svg` and `.jpg`: editable branded link-preview artwork and the rendered 1200 × 630 sharing image. Page titles and descriptions remain specific to each case study.
 - `404.html`: recovery links for missing addresses, including nested project paths.
 - `images/`: selected engineering visuals from the original project reports.
-- `documents/`: original reports and the publicly approved general résumé.
+- `documents/`: original reports and the publicly approved general resume.
 - `sitemap.xml`: canonical public page addresses.
 - `tests/`: dependency-free content and behavior checks for future updates.
 
@@ -30,13 +30,13 @@ GitHub documents free use of standard runners for public repositories in its [Ac
 
 ## Updating Content
 
-Content is maintained explicitly; it does not automatically synchronize with Notion or the résumé. Update the relevant HTML page, verify its sources, and check local links, navigation, mobile layout, and image descriptions before publishing. Every case study belongs in the searchable project library. Use evidence-backed outcomes and distinguish planning, simulation, specimen testing, and production adoption.
+Content is maintained explicitly; it does not automatically synchronize with Notion or the resume. Update the relevant HTML page, verify its sources, and check local links, navigation, mobile layout, and image descriptions before publishing. Every case study belongs in the searchable project library. Use evidence-backed outcomes and distinguish planning, simulation, specimen testing, and production adoption.
 
 After changing a stylesheet or script, run `python tools/version_assets.py --write`. This mechanically refreshes only the referenced asset versions using content hashes, so returning visitors receive the current files. `python tools/version_assets.py` checks without changing anything and also runs in the repository checks.
 
 After changing project-card titles or summaries, run `node tools/build_related.cjs --write`. This refreshes the two curated related-work links on each case study from the existing project library and keeps project-specific email subject lines aligned with their titles. The default command checks without changing files. Keep the curated destinations relevant; these links are not recommendations from a tracking service.
 
-The public résumé is the supplied PDF, unchanged and approved for publication. Employer technical details must not be added without public-sharing approval. Original academic reports remain unchanged.
+The public resume is the supplied PDF, unchanged and approved for publication. Employer technical details must not be added without public-sharing approval. Original academic reports remain unchanged.
 
 `tests/document-manifest.json` records the sizes and SHA-256 hashes of the original published PDFs. If Dustin approves a replacement, update its matching baseline deliberately; do not bypass the integrity check to accommodate an unexplained file change.
 

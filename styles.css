@@ -433,12 +433,12 @@ to{transform:translate3d(4%,0,0);opacity:1}
 .brand {color: var(--blue)}
 .navlinks a {color: var(--blue)}
 .navlinks a:hover {color: var(--blue);background: rgba(255,255,255,.45)}
-.project-card {background: linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border: 1px solid rgba(255,255,255,.85);border-radius: 22px;backdrop-filter: blur(20px) saturate(155%);-webkit-backdrop-filter: blur(20px) saturate(155%);box-shadow: inset 0 2px 2px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,39,76,.14),inset 1px 0 2px rgba(255,255,255,.75),0 14px 34px rgba(0,39,76,.10)}
-.project-card:nth-child(even) {background: linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border: 1px solid rgba(255,255,255,.85);border-radius: 22px;backdrop-filter: blur(20px) saturate(155%);-webkit-backdrop-filter: blur(20px) saturate(155%);box-shadow: inset 0 2px 2px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,39,76,.14),inset 1px 0 2px rgba(255,255,255,.75),0 14px 34px rgba(0,39,76,.10)}
-.credibility {background: linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border: 1px solid rgba(255,255,255,.85);border-radius: 22px;backdrop-filter: blur(20px) saturate(155%);-webkit-backdrop-filter: blur(20px) saturate(155%);box-shadow: inset 0 2px 2px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,39,76,.14),inset 1px 0 2px rgba(255,255,255,.75),0 14px 34px rgba(0,39,76,.10)}
-.timeline-card {background: linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border: 1px solid rgba(255,255,255,.85);border-radius: 22px;backdrop-filter: blur(20px) saturate(155%);-webkit-backdrop-filter: blur(20px) saturate(155%);box-shadow: inset 0 2px 2px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,39,76,.14),inset 1px 0 2px rgba(255,255,255,.75),0 14px 34px rgba(0,39,76,.10)}
-.award {background: linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border: 1px solid rgba(255,255,255,.85);border-radius: 22px;backdrop-filter: blur(20px) saturate(155%);-webkit-backdrop-filter: blur(20px) saturate(155%);box-shadow: inset 0 2px 2px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,39,76,.14),inset 1px 0 2px rgba(255,255,255,.75),0 14px 34px rgba(0,39,76,.10)}
-.skills>div {background: linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border: 1px solid rgba(255,255,255,.85);border-radius: 22px;backdrop-filter: blur(20px) saturate(155%);-webkit-backdrop-filter: blur(20px) saturate(155%);box-shadow: inset 0 2px 2px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,39,76,.14),inset 1px 0 2px rgba(255,255,255,.75),0 14px 34px rgba(0,39,76,.10)}
+.project-card,
+.project-card:nth-child(even),
+.credibility,
+.timeline-card,
+.award,
+.skills>div,
 .education-item:not(.michigan) {background: linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border: 1px solid rgba(255,255,255,.85);border-radius: 22px;backdrop-filter: blur(20px) saturate(155%);-webkit-backdrop-filter: blur(20px) saturate(155%);box-shadow: inset 0 2px 2px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,39,76,.14),inset 1px 0 2px rgba(255,255,255,.75),0 14px 34px rgba(0,39,76,.10)}
 .project-card[data-category="Academic"] {border-top-color: rgba(255,255,255,.85)}
 .project-card:after {content: "";position: absolute;inset: 0;border-radius: inherit;pointer-events: none;background: linear-gradient(125deg,rgba(255,255,255,.28),transparent 28% 73%,rgba(255,255,255,.20));box-shadow: inset 0 0 12px rgba(255,255,255,.24)}
