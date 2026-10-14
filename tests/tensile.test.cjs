@@ -6,11 +6,12 @@ function fixture(reduced=false,observer=true){
   const control={hidden:true,setAttribute:(k,v)=>attrs[k]=v,addEventListener:(k,v)=>events[k]=v};
   const demo={querySelector:()=>control,classList:{add:k=>classes.add(k),toggle:(k,v)=>v?classes.add(k):classes.delete(k)}};
   const media={matches:reduced,addEventListener:(k,v)=>mediaEvents[k]=v};
-  const document={hidden:false,querySelector:()=>demo,addEventListener:(k,v)=>docEvents[k]=v};
-  let observed;
-  const window=observer?{IntersectionObserver:class{constructor(fn){observed=fn;}observe(){}}}:{};
-  vm.runInNewContext(source,{document,window,matchMedia:()=>media,IntersectionObserver:window.IntersectionObserver});
-  return {classes,attrs,events,docEvents,mediaEvents,document,media,control,intersect:value=>observed([{isIntersecting:value}])};
+  const ambientClasses=new Set(),ambient={classList:{contains:k=>ambientClasses.has(k)}};
+  const document={hidden:false,querySelector:s=>s==='.ambient-field'?ambient:demo,addEventListener:(k,v)=>docEvents[k]=v};
+  let observed,mutation;
+  const window=observer?{IntersectionObserver:class{constructor(fn){observed=fn;}observe(){}},MutationObserver:class{constructor(fn){mutation=fn;}observe(){}}}:{};
+  vm.runInNewContext(source,{document,window,matchMedia:()=>media,...window});
+  return {classes,attrs,events,docEvents,mediaEvents,document,media,control,ambientClasses,mutate:()=>mutation(),intersect:value=>observed([{isIntersecting:value}])};
 }
 let total=0;const test=(name,fn)=>{fn();total++;console.log('PASS '+name);};
 test('controls enhance a static fallback',()=>{const f=fixture();assert.equal(f.control.hidden,false);assert.ok(f.classes.has('is-enhanced'));assert.equal(f.attrs['aria-pressed'],'false');});
@@ -22,4 +23,5 @@ test('visibility changes cannot override a visitor pause',()=>{const f=fixture()
 test('older observer support still allows pausing',()=>{const f=fixture(false,false);f.events.click();assert.ok(f.classes.has('is-paused'));});
 test('loop is schematic, accessible, and isolated from the static figure viewer',()=>{const html=fs.readFileSync(path.join(root,'projects/rocket-structures.html'),'utf8');assert.match(html,/<figure class="tensile-demo"/);assert.match(html,/aria-labelledby="tensile-title tensile-description"/);assert.match(html,/not recorded footage/);assert.match(html,/class="tensile-toggle"[^>]* hidden/);});
 test('CSS honors global pause, reduced motion, and print',()=>{const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');assert.match(css,/\.ambient-field\.is-paused ~ main \.tensile-motion/);assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{\.tensile-demo \.tensile-motion\{animation:none!important/);assert.match(css,/@media print\{\.tensile-demo \.tensile-motion\{animation:none!important/);assert.match(css,/animation-duration:8s/);});
+test('page pause disables local controls and preserves a local pause on resume',()=>{const f=fixture();f.events.click();f.ambientClasses.add('is-still');f.mutate();assert.equal(f.control.disabled,true);assert.ok(f.classes.has('is-paused'));f.ambientClasses.clear();f.mutate();assert.equal(f.control.disabled,false);assert.ok(f.classes.has('is-paused'));f.events.click();assert.equal(f.classes.has('is-paused'),false);});
 console.log(`${total} tensile animation checks passed.`);

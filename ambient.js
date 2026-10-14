@@ -20,7 +20,7 @@
   if (control) {
     control.type = 'button';
     control.className = 'motion-control';
-    control.textContent = 'Pause Background Motion';
+    control.textContent = 'Pause Page Animations';
     footer.append(control);
     control.addEventListener('click', () => {
       paused = !paused;
