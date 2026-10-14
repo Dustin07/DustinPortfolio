@@ -893,3 +893,23 @@ html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
 .library-shortcut {display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:8px 0;color:var(--blue);font-weight:650;text-underline-offset:4px;flex-shrink:0}
 @media(max-width:760px) {.projects>.shell>.section-heading {align-items:flex-start;flex-direction:column;gap:8px}}
 @media print {.library-shortcut {display:none}}
+
+/* Follow the documented process; animation timing is illustrative. */
+.workflow-enhanced .workflow>li {animation:workflow-step var(--sequence-duration,9s) linear var(--step-delay,0s) infinite;position:relative}
+@keyframes workflow-step {
+  0%,3% {background:#f3f6f9;box-shadow:inset 0 3px transparent}
+  7%,27% {background:#e3edf5;box-shadow:inset 0 3px #00274c}
+  33%,100% {background:#f3f6f9;box-shadow:inset 0 3px transparent}
+}
+.workflow-paused .workflow>li {animation-play-state:paused}
+.workflow-still .workflow>li {animation:none}
+.workflow-enhanced figcaption {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.workflow-toggle {min-height:44px;padding:8px 12px;border:1px solid #aebbc7;border-radius:8px;background:#fff;color:var(--blue);font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.workflow-toggle:disabled {cursor:default;color:#425568;background:#f3f6f9}
+/* Subtle response without moving text or delaying navigation. */
+.featured-card,.related-card,.button,.filter,.workflow-toggle,.menu-toggle,.toc-toggle {transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease,color .18s ease}
+.featured-card:focus-visible,.related-card:focus-visible {box-shadow:0 10px 28px rgba(0,39,76,.10)}
+.workflow-toggle:hover:enabled {background:#eaf1f7}
+.ambient-field.is-still ~ main .featured-card,.ambient-field.is-still ~ main .related-card,.ambient-field.is-still ~ main .workflow-toggle {transition:none}
+@media(prefers-reduced-motion:reduce) {.workflow-enhanced .workflow>li {animation:none!important}}
+@media print {.workflow-enhanced .workflow>li {animation:none!important;background:white;box-shadow:none}.workflow-toggle {display:none!important}}
