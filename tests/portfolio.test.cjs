@@ -44,6 +44,8 @@ let cases=0;
 function test(name, action) { action();cases++;console.log('PASS '+name); }
 test('default library is complete',()=>{const f=fixture();assert.equal(f.shown().length,4);assert.equal(f.elements['#project-count'].textContent,'4 Projects');assert.equal(f.elements['#project-reset'].hidden,true);});
 test('fresh homepage keeps the full library collapsed',()=>assert.equal(fixture().elements['#project-library'].open,false));
+
+test('direct project-library link reveals the library without a stored preference',()=>{const f=fixture('https://example.test/DustinPortfolio/#project-library');assert.equal(f.elements['#project-library'].open,true);assert.equal(f.shown().length,4);});
 test('shared category and query links reveal the full library',()=>{
   for(const suffix of ['?category=Boeing#work','?q=Ansys#work']) assert.equal(fixture('https://example.test/DustinPortfolio/'+suffix).elements['#project-library'].open,true);
 });

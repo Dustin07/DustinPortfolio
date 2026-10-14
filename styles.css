@@ -887,3 +887,9 @@ html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
   .figure-zoom-cue {display:none!important}
   html.figure-viewer-open {overflow:visible}
 }
+
+/* Keep the complete project library reachable before the featured cards. */
+.project-library {scroll-margin-top:var(--nav-clearance,145px)}
+.library-shortcut {display:inline-flex;align-items:center;gap:12px;min-height:44px;padding:8px 0;color:var(--blue);font-weight:650;text-underline-offset:4px;flex-shrink:0}
+@media(max-width:760px) {.projects>.shell>.section-heading {align-items:flex-start;flex-direction:column;gap:8px}}
+@media print {.library-shortcut {display:none}}

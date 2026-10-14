@@ -31,7 +31,7 @@
     const params = new URLSearchParams(location.search);
     const previous = location.hash === '#work' ? recalled() : null;
     // Returning from a case study restores access to the full library.
-    if (library && previous) library.open = true;
+    if (library && (previous || location.hash === '#project-library')) library.open = true;
     const categoryFromURL = params.get('category');
     let category = categories.includes(categoryFromURL) ? categoryFromURL :
       (!params.has('category') && !params.has('q') && categories.includes(previous?.category) ? previous.category : 'All');
@@ -153,7 +153,11 @@
   document.querySelectorAll('a[href^="#"]').forEach(link => link.addEventListener('click', event => {
     if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     const target = document.getElementById(link.hash.slice(1));
-    if (target) { target.tabIndex = -1; target.focus({preventScroll:true}); }
+    if (target) {
+      // Open native disclosures before navigating to their contents.
+      if (target.tagName === 'DETAILS') target.open = true;
+      target.tabIndex = -1; target.focus({preventScroll:true});
+    }
   }));
   const nav = header?.querySelector('.nav');
   const navigation = nav?.querySelector('.navlinks');
