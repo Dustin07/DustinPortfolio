@@ -913,3 +913,24 @@ html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
 .ambient-field.is-still ~ main .featured-card,.ambient-field.is-still ~ main .related-card,.ambient-field.is-still ~ main .workflow-toggle {transition:none}
 @media(prefers-reduced-motion:reduce) {.workflow-enhanced .workflow>li {animation:none!important}}
 @media print {.workflow-enhanced .workflow>li {animation:none!important;background:white;box-shadow:none}.workflow-toggle {display:none!important}}
+
+/* Quiet surfaces keep the engineering work, rather than the chrome, in focus. */
+@media screen and (forced-colors:none) {
+  body,.ambient-field,.projects,.about {background:#fafbfc}
+  .ambient-field {opacity:.32}
+  h1,h2 {font-weight:600;letter-spacing:-.035em}
+  .topbar {background:#fff;border:1px solid #e3e8ec;border-radius:12px;box-shadow:0 2px 12px rgba(0,39,76,.025);backdrop-filter:none;-webkit-backdrop-filter:none}
+  .credibility {justify-content:flex-start;min-height:0;padding:22px 0;background:transparent;border:0;border-top:1px solid #dce4eb;border-radius:0;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .featured-card {border:1px solid #dce4eb;border-radius:12px;box-shadow:none}
+  .featured-card:last-child {border-top-color:#dce4eb}
+  .featured-card:hover,.featured-card:focus-visible {border-color:#8ba1b4;box-shadow:0 5px 16px rgba(0,39,76,.045)}
+  .project-card,.project-card:nth-child(even),.timeline-card,.timeline-item:nth-child(even) .timeline-card,.award,.skills>div {border-radius:12px!important;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .project-card:after {display:none}
+  .michigan-step .timeline-card {background:white;border-color:#dce4eb;color:var(--blue)}
+  .michigan-step .timeline-card .job {color:var(--blue)}
+  .michigan-step .timeline-card p {color:var(--muted)}
+  .michigan-step .timeline-card .timeline-type {color:var(--blue)}
+  .case-content {background:white;border-color:#e3e8ec;border-radius:12px;box-shadow:none}
+  .case-brief,.case-toc,.project-library,.related-card {border-radius:12px;box-shadow:none}
+  .skills>div,.award {background:transparent;border:0;border-top:1px solid #dce4eb;border-radius:0!important}
+}
