@@ -36,6 +36,8 @@ jobs:
         run: node tests/figures.test.cjs
       - name: Check workflow animation preferences and visibility
         run: node tests/workflow.test.cjs
+      - name: Check progressive entrance motion
+        run: node tests/motion.test.cjs
       - name: Check tensile test illustration
         run: node tests/tensile.test.cjs
       - name: Check putter machining illustration

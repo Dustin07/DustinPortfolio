@@ -934,3 +934,43 @@ html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
   .case-brief,.case-toc,.project-library,.related-card {border-radius:12px;box-shadow:none}
   .skills>div,.award {background:transparent;border:0;border-top:1px solid #dce4eb;border-radius:0!important}
 }
+
+/* A shared cadence for entrances and direct interactions. Never hide content. */
+:root {--ease-settle:cubic-bezier(.22,1,.36,1);--ease-control:cubic-bezier(.2,.7,.3,1)}
+@media screen and (forced-colors:none) {
+ .hero {padding-block:clamp(48px,7vw,100px) 42px}
+ .hero h1 {font-size:clamp(3rem,7.2vw,5.5rem);line-height:1.05;letter-spacing:-.055em}
+ .hero .intro {max-width:65ch;font-size:clamp(1rem,1.5vw,1.125rem)}
+ .section-heading {margin-bottom:32px}
+ .featured-grid {gap:24px}
+ .featured-card {padding:32px;border-radius:20px;gap:20px}
+ .featured-card h3 {font-size:1.5rem;letter-spacing:-.025em;line-height:1.2}
+ .featured-action {margin-top:8px}
+ .button {border-radius:999px;padding-inline:23px}
+ .button,.featured-card,.related-card,.project-card,.filter,.navlinks a,.case-shortcuts a {transition:transform .35s var(--ease-settle),background-color .22s var(--ease-control),border-color .22s var(--ease-control),box-shadow .35s var(--ease-settle),color .22s var(--ease-control)}
+ .featured-action>span:last-child,.related-action>span:last-child {transition:transform .35s var(--ease-settle)}
+}
+@media screen and (prefers-reduced-motion:no-preference) {
+ .motion-enter {animation:content-arrive .65s var(--ease-settle)}
+ .motion-enter:focus-within {animation:none}
+ @keyframes content-arrive {from{opacity:.72;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+ @keyframes control-open {from{opacity:.6;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+ @media (max-width:760px) {.menu-toggle[aria-expanded="true"]~.navlinks {animation:control-open .25s var(--ease-settle)}}
+ @media (max-width:1000px) {.toc-toggle[aria-expanded="true"]~.toc-links {animation:control-open .25s var(--ease-settle)}}
+ @media (hover:hover) and (pointer:fine) {
+  .featured-card:hover,.related-card:hover {transform:translateY(-4px)}
+  .featured-card:hover .featured-action>span:last-child,.related-card:hover .related-action>span:last-child {transform:translateX(3px)}
+  .button:hover {transform:translateY(-1px)}
+ }
+ .button:active {transform:scale(.98)}
+ @supports (interpolate-size:allow-keywords) {
+  .project-library,.method-details {interpolate-size:allow-keywords}
+  .project-library::details-content,.method-details::details-content {block-size:0;overflow:clip;transition:block-size .4s var(--ease-settle),content-visibility .4s allow-discrete}
+  .project-library[open]::details-content,.method-details[open]::details-content {block-size:auto}
+ }
+}
+.ambient-field.is-still~main .motion-enter {animation:none}
+.ambient-field.is-still~main *,.ambient-field.is-still~header * {transition:none!important}
+.ambient-field.is-still~main .toc-links,.ambient-field.is-still~header .navlinks {animation:none!important}
+@media(max-width:760px) {.featured-card{padding:26px}.hero{padding-top:44px}.hero h1{font-size:clamp(2.8rem,12vw,4rem)}}
+@media print {.motion-enter{animation:none!important;transform:none!important;opacity:1!important}}
