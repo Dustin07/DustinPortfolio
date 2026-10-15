@@ -4,18 +4,19 @@ const path = require('node:path');
 const vm = require('node:vm');
 const source = fs.readFileSync(path.join(__dirname,'../ambient.js'),'utf8');
 function fixture(reduced=false, saved=false, storageBlocked=false) {
-  const values={},attributes={},events={},mediaEvents={},classes=new Set(),frames=[];
+  const values={},attributes={},events={},mediaEvents={},classes=new Set(),pageClasses=new Set(),frames=[];
   const field={style:{setProperty:(name,value)=>{values[name]=value;}},setAttribute:(name,value)=>{attributes[name]=value;},classList:{toggle:(name,on)=>{if(on)classes.add(name);else classes.delete(name);}}};
   const media={matches:reduced,addEventListener:(name,action)=>{mediaEvents[name]=action;}};
   const control={attrs:{},events:{},setAttribute(name,value){this.attrs[name]=value;},addEventListener(name,action){this.events[name]=action;}};
   const footer={append:()=>{}};
-  const document={hidden:false,documentElement:{scrollHeight:2000},querySelector:()=>footer,createElement:tag=>tag==='button'?control:field,body:{prepend:()=>{}},addEventListener:(name,action)=>{events[name]=action;}};
+  const document={hidden:false,documentElement:{scrollHeight:2000,classList:{toggle:(name,on)=>on?pageClasses.add(name):pageClasses.delete(name)}},querySelector:()=>footer,createElement:tag=>tag==='button'?control:field,body:{prepend:()=>{}},addEventListener:(name,action)=>{events[name]=action;}};
   let stored=saved?'true':null;
   const context={document,sessionStorage:{getItem:()=>{if(storageBlocked)throw Error('blocked');return stored;},setItem:(_,value)=>{if(storageBlocked)throw Error('blocked');stored=value;}},innerHeight:1000,scrollY:0,matchMedia:()=>media,requestAnimationFrame:action=>frames.push(action),addEventListener:(name,action)=>{events[name]=action;}};
   vm.runInNewContext(source,context);
-  return {field,control,stored:()=>stored,values,attributes,events,media,mediaEvents,classes,frames,context,flush:()=>{frames.splice(0).forEach(action=>action());}};
+  return {field,control,stored:()=>stored,values,attributes,events,media,mediaEvents,classes,pageClasses,frames,context,flush:()=>{frames.splice(0).forEach(action=>action());}};
 }
 let total=0;function test(name,action){action();total++;console.log('PASS '+name);}
+test('page motion preference follows manual and system settings',()=>{const f=fixture();assert.equal(f.pageClasses.has('motion-disabled'),false);f.control.events.click();assert.equal(f.pageClasses.has('motion-disabled'),true);f.control.events.click();assert.equal(f.pageClasses.has('motion-disabled'),false);f.media.matches=true;f.mediaEvents.change();assert.equal(f.pageClasses.has('motion-disabled'),true);f.media.matches=false;f.mediaEvents.change();assert.equal(f.pageClasses.has('motion-disabled'),false);});
 test('background is hidden from assistive technology',()=>{const f=fixture();assert.equal(f.attributes['aria-hidden'],'true');assert.equal(f.field.className,'ambient-field');});
 test('scroll updates are frame-throttled',()=>{const f=fixture();f.context.scrollY=500;f.events.scroll();f.events.scroll();assert.equal(f.frames.length,1);f.flush();assert.equal(f.values['--flow-y'],'-27.5px');});
 test('motion stays within bounded displacement',()=>{const f=fixture();for(const scroll of [-100,0,250,500,750,1000,100000]){f.context.scrollY=scroll;f.events.scroll();f.flush();assert.ok(Math.abs(parseFloat(f.values['--flow-x']))<=24);assert.ok(parseFloat(f.values['--flow-y'])>=-55);assert.ok(parseFloat(f.values['--flow-y'])<=0);}});

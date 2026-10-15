@@ -1020,3 +1020,29 @@ html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
  @keyframes backdrop-arrive {from{opacity:0}to{opacity:1}}
 }
 .ambient-field.is-still~.figure-viewer,.ambient-field.is-still~.figure-viewer::backdrop {animation:none!important}
+
+/* The visitor's pause preference includes navigation and interaction feedback. */
+html.motion-disabled {scroll-behavior:auto!important}
+html.motion-disabled *,html.motion-disabled *::before,html.motion-disabled *::after {transition:none!important}
+html.motion-disabled .featured-card:hover,html.motion-disabled .related-card:hover,
+html.motion-disabled .button:hover,html.motion-disabled .button:active,
+html.motion-disabled .featured-card:hover .featured-visual svg,
+html.motion-disabled .featured-card:hover .featured-action>span:last-child,
+html.motion-disabled .related-card:hover .related-action>span:last-child {transform:none}
+
+/* Keep project discovery compact across the phone-to-tablet transition. */
+.featured-visual {max-height:210px}
+@media screen and (min-width:600px) and (max-width:900px) {
+ .featured-card {display:grid;grid-template-columns:180px minmax(0,1fr);grid-template-rows:auto auto 1fr auto auto;gap:12px 24px;padding:24px}
+ .featured-card .featured-visual {grid-column:1;grid-row:1 / 6;align-self:stretch;aspect-ratio:auto;max-height:none;margin:0;min-height:220px}
+ .featured-card>:not(.featured-visual) {grid-column:2}
+ .featured-card h3 {min-height:0}
+ .featured-card>strong {padding-top:0}
+ .featured-card .featured-action {margin-top:0}
+ .featured-visual>span {max-width:150px;text-align:center;line-height:1.6}
+}
+@media screen and (max-width:480px) {
+ .hero .actions {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
+ .hero .actions>a {display:inline-flex;align-items:center;justify-content:center;min-height:44px;text-align:center}
+ .hero .actions>.button {padding:10px 12px;font-size:13px;white-space:nowrap}
+}

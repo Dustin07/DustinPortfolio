@@ -45,6 +45,7 @@
   const syncMotion = () => {
     field.classList.toggle('is-paused', document.hidden || reducedMotion.matches || paused);
     field.classList.toggle('is-still', reducedMotion.matches || paused);
+    document.documentElement.classList.toggle('motion-disabled', reducedMotion.matches || paused);
     if (control) {
       control.setAttribute('aria-pressed', String(paused));
       control.disabled = reducedMotion.matches;

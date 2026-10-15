@@ -51,6 +51,7 @@
       return {text, tokens:new Set(text.split(/\s+/).filter(Boolean))};
     });
     const apply = (syncURL = true, historyMode = 'replace') => {
+      document.dispatchEvent?.(new Event('portfolio:before-filter'));
       const query = search.value.trim().slice(0, 120);
       const words = normalize(query).split(/\s+/).filter(Boolean);
       if (library && (category !== 'All' || query)) library.open = true;
@@ -84,6 +85,7 @@
           else history.replaceState(null, '', url);
         }
       }
+      document.dispatchEvent?.(new Event('portfolio:filtered'));
     };
     buttons.forEach(button => button.addEventListener('click', () => { category = button.dataset.filter; apply(true, 'push'); }));
     // Eleven local cards are cheap to filter immediately. This also keeps a
