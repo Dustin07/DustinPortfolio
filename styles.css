@@ -974,3 +974,19 @@ html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
 .ambient-field.is-still~main .toc-links,.ambient-field.is-still~header .navlinks {animation:none!important}
 @media(max-width:760px) {.featured-card{padding:26px}.hero{padding-top:44px}.hero h1{font-size:clamp(2.8rem,12vw,4rem)}}
 @media print {.motion-enter{animation:none!important;transform:none!important;opacity:1!important}}
+
+/* Lightweight project previews use only documented workflows and a labeled schematic. */
+.featured-visual {order:-1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:1.8;background:linear-gradient(150deg,#f1f5f8,#fafbfc);border-radius:12px;overflow:hidden;margin:-12px -12px 4px;color:#425568}
+.featured-visual svg {display:block;width:100%;height:auto;max-height:156px;stroke:#60788d;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .6s var(--ease-settle)}
+.featured-visual svg rect,.featured-visual svg circle {fill:#fafcfd}
+.featured-visual .preview-accent {stroke:#00274c;fill:#00274c}
+.featured-visual path.preview-accent {fill:none;stroke-width:2.5}
+.featured-visual .preview-specimen {fill:#f9e8de;stroke:#b8431b}
+.featured-visual>span {font-size:11px;letter-spacing:.035em;margin:-8px 0 16px}
+@media screen and (prefers-reduced-motion:no-preference) {
+ .motion-enter .preview-trace {animation:preview-connect 1.2s var(--ease-settle)}
+ @keyframes preview-connect {from{stroke-dasharray:1;stroke-dashoffset:1}to{stroke-dasharray:1;stroke-dashoffset:0}}
+ @media(hover:hover) and (pointer:fine) {.featured-card:hover .featured-visual svg {transform:scale(1.035)}}
+}
+.ambient-field.is-still~main .preview-trace {animation:none}
+@media print {.featured-visual{display:none}}
