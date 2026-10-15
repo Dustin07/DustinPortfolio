@@ -1,12 +1,12 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../motion.js'),'utf8');
 function fixture(reduce=false,support=true){
- const classes=new Set(),observed=[],removed=[],events={};let callback,disconnected=false;
+ const classes=new Set(),observed=[],removed=[],events={};let callback,mutation,disconnected=false,paused=false;
  const target={classList:{add:x=>classes.add(x),remove:x=>classes.delete(x)}};
  const media={matches:reduce,addEventListener:(k,v)=>events[k]=v};
- const window=support?{IntersectionObserver:class{constructor(fn){callback=fn;}observe(t){observed.push(t);}unobserve(t){removed.push(t);}disconnect(){disconnected=true;}}}:{};
- vm.runInNewContext(source,{window,...window,document:{querySelectorAll:()=>[target],addEventListener(){}},matchMedia:()=>media});
- return {classes,observed,removed,events,media,target,disconnected:()=>disconnected,enter:v=>callback([{target,isIntersecting:v}])};
+ const window=support?{IntersectionObserver:class{constructor(fn){callback=fn;}observe(t){observed.push(t);}unobserve(t){removed.push(t);}disconnect(){disconnected=true;}},MutationObserver:class{constructor(fn){mutation=fn;}observe(){}}}:{};
+ vm.runInNewContext(source,{window,...window,document:{hidden:false,documentElement:{classList:{contains:()=>paused}},querySelectorAll:()=>[target],addEventListener(){}},matchMedia:()=>media});
+ return {classes,observed,removed,events,media,target,disconnected:()=>disconnected,pause:v=>{paused=v;mutation();},enter:v=>callback([{target,isIntersecting:v}])};
 }
 const a=fixture();assert.equal(a.classes.size,0);a.enter(false);assert.equal(a.classes.size,0);a.enter(true);assert.ok(a.classes.has('motion-enter'));assert.equal(a.removed[0],a.target);
 a.media.matches=true;a.events.change();assert.equal(a.classes.size,0);assert.equal(a.disconnected(),true);
@@ -32,3 +32,5 @@ g.rootClasses.clear();g.events['portfolio:before-filter']();g.cards[2].left=200;
 const hidden=gridFixture();hidden.events['portfolio:before-filter']();hidden.cards[0].left=100;hidden.events['portfolio:filtered']();hidden.doc.hidden=true;hidden.events.visibilitychange();hidden.flush();assert.equal(hidden.animations.length,0);
 const noAPI=gridFixture();noAPI.cards.forEach(c=>{c.animate=undefined;});noAPI.events['portfolio:before-filter']();noAPI.cards[1].left=0;noAPI.events['portfolio:filtered']();assert.doesNotThrow(()=>noAPI.flush());
 console.log('PASS: filter movement, unchanged cards, rapid cancellation, focus, hidden tabs, reduced motion, page pause, and native fallback.');
+
+const once=fixture();once.enter(true);once.pause(true);assert.equal(once.classes.has('motion-enter'),false);once.pause(false);assert.equal(once.classes.has('motion-enter'),false);const pausedEntry=fixture();pausedEntry.pause(true);pausedEntry.enter(true);assert.equal(pausedEntry.classes.has('motion-enter'),false);console.log('PASS: page pause clears completed entrances and resume does not replay them.');

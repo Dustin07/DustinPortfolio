@@ -3,11 +3,12 @@
   'use strict';
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   if (reduced.matches || !('IntersectionObserver' in window)) return;
+  const disabled = () => reduced.matches || document.hidden || document.documentElement.classList.contains('motion-disabled');
   const targets = document.querySelectorAll('.featured-card, .timeline-card, .skills > div, .related-card');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(({target, isIntersecting}) => {
       if (!isIntersecting) return;
-      if (!reduced.matches) target.classList.add('motion-enter');
+      if (!disabled()) target.classList.add('motion-enter');
       observer.unobserve(target);
     });
   }, {threshold:0.12});
@@ -16,7 +17,6 @@
   const cards = [...document.querySelectorAll('.project-card')];
   const running = new Set();
   let before = new Map(), frame = 0;
-  const disabled = () => reduced.matches || document.hidden || document.documentElement.classList.contains('motion-disabled');
   const cancel = () => {
     if (frame) cancelAnimationFrame(frame);
     frame = 0;
@@ -54,7 +54,11 @@
   document.addEventListener('focusin', cancel);
   document.addEventListener('visibilitychange', () => {if (document.hidden) cancel();});
   if ('MutationObserver' in window) {
-    new MutationObserver(() => {if (disabled()) cancel();}).observe(document.documentElement, {attributes:true, attributeFilter:['class']});
+    new MutationObserver(() => {
+      if (!disabled()) return;
+      cancel();
+      targets.forEach(target => target.classList.remove('motion-enter'));
+    }).observe(document.documentElement, {attributes:true, attributeFilter:['class']});
   }
   reduced.addEventListener('change', () => {
     if (!reduced.matches) return;
