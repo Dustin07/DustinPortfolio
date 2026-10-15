@@ -91,7 +91,8 @@
     const vector = image.tagName?.toLowerCase() === 'svg';
     if (vector && typeof XMLSerializer === 'undefined') return;
     const originalCaption = original.querySelector('figcaption');
-    const heading = originalCaption?.querySelector('strong')?.textContent.trim() || 'Project Figure';
+    const captionHeading = originalCaption?.querySelector('strong')?.textContent.trim();
+    const heading = captionHeading || 'Project Figure';
     const description = vector ? image.querySelector('title')?.textContent.trim() || heading : image.alt || heading;
     const button = document.createElement('button');
     button.type = 'button';
@@ -120,7 +121,10 @@
         enlarged.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(copy));
       } else enlarged.src = image.currentSrc || image.src;
       enlarged.alt = description;
-      caption.textContent = originalCaption?.textContent.trim() || description;
+      const fullCaption = originalCaption?.textContent.trim() || description;
+      const captionBody = captionHeading && fullCaption.startsWith(captionHeading)
+        ? fullCaption.slice(captionHeading.length).trim().replace(/^\.\s+/, '') : fullCaption;
+      caption.textContent = captionBody || description;
       dialog.showModal();
       document.documentElement.classList.add('figure-viewer-open');
       close.focus({preventScroll:true});

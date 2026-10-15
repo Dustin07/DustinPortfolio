@@ -990,3 +990,33 @@ html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
 }
 .ambient-field.is-still~main .preview-trace {animation:none}
 @media print {.featured-visual{display:none}}
+
+/* Case studies share the homepage's calm rhythm without nesting reading panels. */
+@media screen and (forced-colors:none) {
+ .case-hero {padding-top:clamp(42px,6vw,76px);padding-bottom:36px}
+ .case-hero h1 {max-width:20ch;font-size:clamp(2.3rem,4.8vw,3.7rem);line-height:1.1;letter-spacing:-.045em}
+ .case-summary {max-width:62ch;line-height:1.75;font-size:clamp(1rem,1.8vw,1.2rem)}
+ .case-brief {border:0;border-radius:0;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:1px solid #dce4eb}
+ .case-brief>div {padding:24px 20px}
+ .case-content {border:0;box-shadow:none;border-radius:0;background:transparent;padding-top:12px}
+ .case-content>p,.case-content>ul,.case-content>ol {font-size:1.0625rem;line-height:1.8}
+ .case-content h2 {font-size:clamp(1.5rem,2.5vw,1.85rem);margin-top:48px;margin-bottom:18px;letter-spacing:-.025em}
+ .case-toc {background:transparent;border:0;padding:12px 0}
+ .case-toc strong {font-size:12px;color:#425568;padding-left:12px}
+ .case-toc a {transition:color .2s var(--ease-control),background-color .2s var(--ease-control);border-radius:6px}
+ .case-toc a[aria-current="location"] {background:#eef3f7;box-shadow:inset 2px 0 0 #00274c}
+ .case-bottom {background:transparent;border-top:1px solid #dce4eb;border-radius:0;padding:24px 0;gap:16px 24px}
+ .figure-viewer {border-radius:20px;box-shadow:0 24px 90px rgba(0,20,40,.24)}
+}
+@media screen and (max-width:1000px) and (forced-colors:none) {
+ .case-toc {padding:12px 16px;border:1px solid #dce4eb;border-radius:12px;background:#fff}
+ .case-content {padding:16px 0}
+}
+@media screen and (max-width:600px) {.case-brief>div{padding:18px 12px}.case-content>p,.case-content>ul,.case-content>ol{font-size:1rem}.case-content h2{margin-top:36px}}
+@media screen and (prefers-reduced-motion:no-preference) {
+ .figure-viewer[open] {animation:figure-arrive .24s var(--ease-settle)}
+ .figure-viewer[open]::backdrop {animation:backdrop-arrive .24s ease-out}
+ @keyframes figure-arrive {from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+ @keyframes backdrop-arrive {from{opacity:0}to{opacity:1}}
+}
+.ambient-field.is-still~.figure-viewer,.ambient-field.is-still~.figure-viewer::backdrop {animation:none!important}

@@ -87,7 +87,7 @@ test('adjacent DOM text blocks retain exact skill boundaries',()=>{const f=fixtu
 
 const home = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
 test('selected work features research, production design, and experimental evidence',()=>{
-  const featured=home.match(/<div class="featured-grid"[^>]*>([\s\S]*?)<\/div>/)[1];
+  const featured=home.match(/<div class="featured-grid"[^>]*>([\s\S]*?)<\/div>\s*<details class="project-library"/)[1];
   assert.equal((featured.match(/class="featured-card"/g)||[]).length,3);
   for(const page of ['nasa-manufacturing','protective-covers','rocket-structures']) assert.ok(featured.includes('projects/'+page+'.html'));
   assert.match(home,/<details class="project-library" id="project-library"><summary>Browse All 11 Projects/);
