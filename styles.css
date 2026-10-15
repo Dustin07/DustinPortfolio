@@ -1046,3 +1046,7 @@ html.motion-disabled .related-card:hover .related-action>span:last-child {transf
  .hero .actions>a {display:inline-flex;align-items:center;justify-content:center;min-height:44px;text-align:center}
  .hero .actions>.button {padding:10px 12px;font-size:13px;white-space:nowrap}
 }
+
+.table-scroll-hint {margin:18px 0 8px;color:#425568;font-size:12px;line-height:1.5}
+.table-wrap {overscroll-behavior-inline:contain;scrollbar-width:thin;scrollbar-color:#8ba1b4 #eef3f7}
+@media print {.table-scroll-hint{display:none!important}}

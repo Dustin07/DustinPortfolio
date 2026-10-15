@@ -220,4 +220,30 @@
     addEventListener('resize', schedule, { passive: true });
     highlight();
   }
+  // Explain horizontal scrolling only where the table actually overflows.
+  document.querySelectorAll('.table-wrap').forEach((wrap, index) => {
+    const table = wrap.querySelector('table');
+    if (!table) return;
+    const hint = document.createElement('p');
+    hint.className = 'table-scroll-hint';
+    hint.id = 'table-scroll-hint-' + (index + 1);
+    hint.textContent = 'Scroll horizontally to see all columns.';
+    hint.hidden = true;
+    wrap.before(hint);
+    const existingDescription = wrap.getAttribute('aria-describedby');
+    const update = () => {
+      const overflow = wrap.scrollWidth > wrap.clientWidth + 1;
+      hint.hidden = !overflow;
+      if (overflow) wrap.setAttribute('aria-describedby', [existingDescription, hint.id].filter(Boolean).join(' '));
+      else if (existingDescription) wrap.setAttribute('aria-describedby', existingDescription);
+      else wrap.removeAttribute('aria-describedby');
+    };
+    if ('ResizeObserver' in window) {
+      const observer = new ResizeObserver(update);
+      observer.observe(wrap);
+      observer.observe(table);
+    } else addEventListener('resize', update, {passive:true});
+    update();
+  });
+
 })();
