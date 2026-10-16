@@ -1088,3 +1088,8 @@ html.motion-disabled .related-card:hover .related-action>span:last-child {transf
 @media screen and (max-width:1000px) and (forced-colors:none) {
  .case-toc.enhanced {background:#fff;box-shadow:0 4px 14px rgba(0,39,76,.04)}
 }
+
+/* Nested analyses keep their hierarchy and clear the compact reading toolbar. */
+.case-toc a.toc-subsection {padding-left:20px;font-size:12px}
+.case-content h3[id] {font-size:1.35rem;line-height:1.35;margin:32px 0 14px;scroll-margin-top:var(--nav-clearance,145px)}
+@media screen and (max-width:1000px) {.case-toc.enhanced~.case-content h3[id] {scroll-margin-top:calc(var(--nav-clearance,145px) + 80px)}}
