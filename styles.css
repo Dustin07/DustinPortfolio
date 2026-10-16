@@ -1050,3 +1050,32 @@ html.motion-disabled .related-card:hover .related-action>span:last-child {transf
  .featured-grid {grid-auto-rows:auto}
  .featured-card h3,.project-card h3,.project-card>p,.project-card .tools {min-height:0}
 }
+
+/* Capabilities remain readable instead of splitting words into narrow columns. */
+@media screen and (forced-colors:none) {
+ .award {padding:20px 0}
+ .award strong {display:block;font-size:15px;line-height:1.6}
+ .award p {line-height:1.75}
+ .skills>div {padding:18px 0}
+ .skills h3 {font-size:15px;line-height:1.45}
+ .skills p {line-height:1.75;overflow-wrap:normal}
+ .skills>div .skill-proof {display:inline-flex;align-items:center;min-height:44px;font-size:13px;line-height:1.5;padding-top:12px}
+}
+@media screen and (max-width:600px) {
+ .skills {grid-template-columns:minmax(0,1fr);gap:10px}
+ .skills>div .skill-proof {margin-top:8px;padding-top:0}
+ .about-grid {gap:32px}
+}
+
+/* Progressive line wrapping avoids isolated words in headings and summaries. */
+.hero h1,.case-hero h1,.section-heading h2,.timeline-heading h2,.about h2 {text-wrap:balance}
+.intro,.case-summary,.featured-card>p,.timeline-card p,.skills p {text-wrap:pretty}
+
+/* One clear contact action, with quieter supporting destinations. */
+@media screen and (forced-colors:none) {
+ .contact-links {gap:12px 20px;align-items:center}
+ .contact .contact-links a {display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 0;border:0;border-radius:0;color:#fff;text-decoration:underline;text-underline-offset:4px;transition:background-color .2s var(--ease-control),color .2s var(--ease-control)}
+ .contact .contact-links a:hover {background:transparent;color:#fff;text-decoration-thickness:2px}
+ .contact .contact-links .contact-primary {padding:10px 20px;background:#fff;border:1px solid #fff;border-radius:999px;color:var(--blue);text-decoration:none}
+ .contact .contact-links .contact-primary:hover {background:#edf2f7;color:var(--blue);border-color:#edf2f7}
+}
