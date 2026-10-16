@@ -1,46 +1,25 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
-const path = require('node:path');
 const vm = require('node:vm');
-const source = fs.readFileSync(path.join(__dirname,'../ambient.js'),'utf8');
-function fixture(reduced=false, saved=false, storageBlocked=false) {
-  const values={},attributes={},events={},mediaEvents={},classes=new Set(),pageClasses=new Set(),frames=[];
-  const field={style:{setProperty:(name,value)=>{values[name]=value;}},setAttribute:(name,value)=>{attributes[name]=value;},classList:{toggle:(name,on)=>{if(on)classes.add(name);else classes.delete(name);}}};
-  const media={matches:reduced,addEventListener:(name,action)=>{mediaEvents[name]=action;}};
-  const control={attrs:{},events:{},setAttribute(name,value){this.attrs[name]=value;},addEventListener(name,action){this.events[name]=action;}};
-  const footer={append:()=>{}};
-  const document={hidden:false,documentElement:{scrollHeight:2000,classList:{toggle:(name,on)=>on?pageClasses.add(name):pageClasses.delete(name)}},querySelector:()=>footer,createElement:tag=>tag==='button'?control:field,body:{prepend:()=>{}},addEventListener:(name,action)=>{events[name]=action;}};
-  let stored=saved?'true':null;
-  const context={document,sessionStorage:{getItem:()=>{if(storageBlocked)throw Error('blocked');return stored;},setItem:(_,value)=>{if(storageBlocked)throw Error('blocked');stored=value;}},innerHeight:1000,scrollY:0,matchMedia:()=>media,requestAnimationFrame:action=>frames.push(action),addEventListener:(name,action)=>{events[name]=action;}};
-  vm.runInNewContext(source,context);
-  return {field,control,stored:()=>stored,values,attributes,events,media,mediaEvents,classes,pageClasses,frames,context,flush:()=>{frames.splice(0).forEach(action=>action());}};
+const source = fs.readFileSync(require('node:path').join(__dirname,'../ambient.js'),'utf8');
+function fixture({reduced=false,saved=false,storageBlocked=false,footer=true}={}) {
+ const classes=new Set(),pageClasses=new Set(),attrs={},events={},mediaEvents={};
+ const field={setAttribute:(k,v)=>attrs[k]=v,classList:{toggle:(k,v)=>v?classes.add(k):classes.delete(k)}};
+ const control={attrs:{},events:{},setAttribute(k,v){this.attrs[k]=v;},addEventListener(k,v){this.events[k]=v;}};
+ const media={matches:reduced,addEventListener:(k,v)=>mediaEvents[k]=v};
+ const document={hidden:false,documentElement:{classList:{toggle:(k,v)=>v?pageClasses.add(k):pageClasses.delete(k)}},body:{prepend(){}},querySelector:()=>footer?{append(){}}:null,createElement:k=>k==='button'?control:field,addEventListener:(k,v)=>events[k]=v};
+ let stored=saved?'true':null;
+ const context={document,matchMedia:()=>media,sessionStorage:{getItem(){if(storageBlocked)throw Error('blocked');return stored;},setItem(k,v){if(storageBlocked)throw Error('blocked');stored=v;}}};
+ vm.runInNewContext(source,context);
+ return {classes,pageClasses,attrs,control,media,document,events,mediaEvents,field,stored:()=>stored};
 }
-let total=0;function test(name,action){action();total++;console.log('PASS '+name);}
-test('page motion preference follows manual and system settings',()=>{const f=fixture();assert.equal(f.pageClasses.has('motion-disabled'),false);f.control.events.click();assert.equal(f.pageClasses.has('motion-disabled'),true);f.control.events.click();assert.equal(f.pageClasses.has('motion-disabled'),false);f.media.matches=true;f.mediaEvents.change();assert.equal(f.pageClasses.has('motion-disabled'),true);f.media.matches=false;f.mediaEvents.change();assert.equal(f.pageClasses.has('motion-disabled'),false);});
-test('background is hidden from assistive technology',()=>{const f=fixture();assert.equal(f.attributes['aria-hidden'],'true');assert.equal(f.field.className,'ambient-field');});
-test('scroll updates are frame-throttled',()=>{const f=fixture();f.context.scrollY=500;f.events.scroll();f.events.scroll();assert.equal(f.frames.length,1);f.flush();assert.equal(f.values['--flow-y'],'-27.5px');});
-test('motion stays within bounded displacement',()=>{const f=fixture();for(const scroll of [-100,0,250,500,750,1000,100000]){f.context.scrollY=scroll;f.events.scroll();f.flush();assert.ok(Math.abs(parseFloat(f.values['--flow-x']))<=24);assert.ok(parseFloat(f.values['--flow-y'])>=-55);assert.ok(parseFloat(f.values['--flow-y'])<=0);}});
-test('reduced motion removes scroll-linked movement',()=>{const f=fixture(true);f.context.scrollY=900;f.events.scroll();assert.equal(f.frames.length,0);assert.equal(parseFloat(f.values['--flow-x']),0);assert.equal(parseFloat(f.values['--flow-y']),0);});
-test('motion preference changes apply immediately',()=>{const f=fixture();f.context.scrollY=500;f.events.scroll();f.flush();f.media.matches=true;f.mediaEvents.change();assert.equal(parseFloat(f.values['--flow-y']),0);});
-test('hidden tabs pause animation and skip scroll work',()=>{const f=fixture();f.context.document.hidden=true;f.events.visibilitychange();assert.equal(f.classes.has('is-paused'),true);f.events.scroll();assert.equal(f.frames.length,0);});
-test('visible tab resumes at its current position',()=>{const f=fixture();f.context.document.hidden=true;f.events.visibilitychange();f.context.scrollY=600;f.context.document.hidden=false;f.events.visibilitychange();assert.equal(f.classes.has('is-paused'),false);assert.equal(f.values['--flow-y'],'-33px');});
-test('short pages do not produce invalid geometry values',()=>{const f=fixture();f.context.document.documentElement.scrollHeight=500;f.events.resize();f.flush();assert.equal(parseFloat(f.values['--flow-y']),0);});
-test('visitor can pause background motion',()=>{const f=fixture();f.control.events.click();assert.equal(f.control.attrs['aria-pressed'],'true');assert.equal(f.classes.has('is-still'),true);f.context.scrollY=500;f.events.scroll();assert.equal(f.frames.length,0);assert.equal(parseFloat(f.values['--flow-y']),0);assert.equal(f.stored(),'true');});
-test('visitor can resume background motion',()=>{const f=fixture(false,true);f.context.scrollY=500;f.control.events.click();assert.equal(f.control.attrs['aria-pressed'],'false');assert.equal(f.classes.has('is-still'),false);assert.equal(f.values['--flow-y'],'-27.5px');});
-test('pause preference survives project navigation in this tab',()=>{const f=fixture(false,true);assert.equal(f.control.attrs['aria-pressed'],'true');assert.equal(f.classes.has('is-paused'),true);});
-test('motion control works when storage is blocked',()=>{const f=fixture(false,false,true);f.control.events.click();assert.equal(f.classes.has('is-paused'),true);});
-test('system reduced motion cannot be overridden by the button',()=>{const f=fixture(true);assert.equal(f.control.disabled,true);assert.equal(f.classes.has('is-still'),true);});
-test('returning to a visible tab preserves manual pause',()=>{const f=fixture(false,true);f.context.document.hidden=true;f.events.visibilitychange();f.context.document.hidden=false;f.events.visibilitychange();assert.equal(f.classes.has('is-paused'),true);});
-test('decorative paths are smooth and non-crossing',()=>{
-  const f=fixture();
-  const paths=[...f.field.innerHTML.matchAll(/<path class="([^"]*)" d="([^"]+)"/g)].map(match=>({className:match[1],command:match[2],numbers:match[2].match(/-?\d+(?:\.\d+)?/g).map(Number)}));
-  assert.equal(paths.length,12);assert.equal(paths.filter(p=>p.className==='flow-orange').length,1);assert.equal(paths.filter(p=>p.className==='flow-maize').length,1);
-  paths.forEach(p=>{assert.equal(p.numbers.length,12);assert.match(p.command,/^M .* C .* S /);});
-  const curve=(points,t)=>points.reduce((sum,p,i)=>sum+([1,3,3,1][i]*(1-t)**(3-i)*t**i)*p[1],0);
-  for(let step=0;step<=100;step++){
-    const t=step/100;const first=[],second=[];
-    for(const p of paths){const n=p.numbers;const a=[[n[0],n[1]],[n[2],n[3]],[n[4],n[5]],[n[6],n[7]]];const reflected=[2*n[6]-n[4],2*n[7]-n[5]];const b=[a[3],reflected,[n[8],n[9]],[n[10],n[11]]];first.push(curve(a,t));second.push(curve(b,t));}
-    for(let index=1;index<paths.length;index++){assert.ok(first[index]>first[index-1]);assert.ok(second[index]>second[index-1]);}
-  }
-});
-console.log(`${total} ambient motion and geometry tests passed.`);
+let total=0;function test(name,fn){fn();total++;console.log('PASS '+name);}
+test('static background is hidden from assistive technology and contains no animated artwork',()=>{const f=fixture();assert.equal(f.attrs['aria-hidden'],'true');assert.equal(f.field.className,'ambient-field');assert.equal(f.field.innerHTML,undefined);});
+test('motion control pauses and resumes page interactions',()=>{const f=fixture();assert.equal(f.pageClasses.has('motion-disabled'),false);f.control.events.click();assert.ok(f.classes.has('is-still'));assert.ok(f.pageClasses.has('motion-disabled'));assert.equal(f.control.attrs['aria-pressed'],'true');assert.equal(f.stored(),'true');f.control.events.click();assert.equal(f.classes.has('is-still'),false);assert.equal(f.pageClasses.has('motion-disabled'),false);});
+test('pause preference survives navigation in the tab',()=>{const f=fixture({saved:true});assert.ok(f.classes.has('is-paused'));assert.equal(f.control.attrs['aria-pressed'],'true');});
+test('system reduced motion takes priority over the control',()=>{const f=fixture({reduced:true});assert.equal(f.control.disabled,true);assert.ok(f.classes.has('is-still'));assert.ok(f.pageClasses.has('motion-disabled'));f.media.matches=false;f.mediaEvents.change();assert.equal(f.control.disabled,false);assert.equal(f.pageClasses.has('motion-disabled'),false);});
+test('system preference changes preserve an existing manual pause',()=>{const f=fixture({saved:true});f.media.matches=true;f.mediaEvents.change();f.media.matches=false;f.mediaEvents.change();assert.ok(f.classes.has('is-still'));});
+test('hidden tabs pause work without replacing the visitor preference',()=>{const f=fixture();f.document.hidden=true;f.events.visibilitychange();assert.ok(f.classes.has('is-paused'));assert.equal(f.pageClasses.has('motion-disabled'),false);f.document.hidden=false;f.events.visibilitychange();assert.equal(f.classes.has('is-paused'),false);});
+test('blocked storage leaves the control usable',()=>{const f=fixture({storageBlocked:true});f.control.events.click();assert.ok(f.classes.has('is-still'));});
+test('pages without a footer still honor system preferences',()=>{const f=fixture({footer:false,reduced:true});assert.ok(f.pageClasses.has('motion-disabled'));});
+console.log(total+' site motion preference checks passed.');

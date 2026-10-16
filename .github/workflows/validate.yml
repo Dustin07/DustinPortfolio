@@ -30,7 +30,7 @@ jobs:
         run: node tests/portfolio.test.cjs
       - name: Check related work and project contact paths
         run: node tests/related.test.cjs
-      - name: Check motion controls and geometry
+      - name: Check site motion preferences
         run: node tests/ambient.test.cjs
       - name: Check technical figure viewer
         run: node tests/figures.test.cjs

@@ -223,10 +223,10 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .case-toc {border-bottom: 0}
 .case-layout {padding-top: 28px}
 }
-.timeline-heading {max-width: 760px}
+.timeline-heading {width:100%;max-width:none}
 .timeline-heading .eyebrow {margin-bottom: 12px}
 .timeline-heading h2 {font-size: clamp(2rem,4vw,3.15rem);max-width: 720px}
-.timeline-heading>p:last-child {font-size: 1.05rem;max-width: 680px}
+.timeline-heading>p:last-child {font-size:1.05rem;max-width:none;line-height:1.75}
 .timeline {position: relative;list-style: none;margin: 0;padding: 0}
 .timeline:before {content: "";position: absolute;left: 144px;top: 14px;bottom: 14px;width: 4px;border-radius: 999px}
 .timeline-item {position: relative;display: grid;grid-template-columns: 116px 28px minmax(0,1fr);gap: 14px;align-items: start}
@@ -385,21 +385,16 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 }
 body {isolation: isolate}
 .ambient-field {position: fixed;inset: 0;z-index: -1;overflow: hidden;pointer-events: none}
-.ambient-flow {position: absolute;transform: translate3d(var(--flow-x,0px),var(--flow-y,0px),0);transition: transform .7s ease-out}
-.ambient-color {position: absolute;inset: 0}
-.ambient-glint {position: absolute;inset: 0;will-change: transform}
+
 .topbar {border-bottom: 1px solid rgba(255,203,5,.65)}
 .projects {border-top: 1px solid rgba(255,255,255,.75);border-bottom: 1px solid rgba(255,255,255,.75)}
 .about {border-top: 1px solid rgba(255,255,255,.75);border-bottom: 1px solid rgba(255,255,255,.75)}
 .project-files {background: rgba(239,244,248,.92)}
 .case-bottom {background: rgba(239,244,248,.92)}
 .case-hero {background: transparent}
-@media(max-width:760px) {.ambient-color {animation-duration: 32s}
-.ambient-glint {animation-duration: 38s}
-}
-@media(prefers-reduced-motion:reduce) {.ambient-color {animation: none;will-change: auto}
-.ambient-glint {will-change: auto}
-.ambient-flow {transition: none}
+
+@media(prefers-reduced-motion:reduce) {
+
 .project-card {transition: none}
 }
 .project-card[hidden] {display: none}
@@ -408,24 +403,7 @@ body {isolation: isolate}
 .skills {grid-template-columns: repeat(2,minmax(0,1fr));overflow-wrap: anywhere}
 body {background: #e8eef3}
 .ambient-field {background: #e8eef3}
-.ambient-flow {inset: -8%}
-.ambient-color {background: radial-gradient(ellipse at 8% 25%,rgba(0,39,76,.18),transparent 55%),radial-gradient(ellipse at 92% 60%,rgba(0,39,76,.12),transparent 52%),radial-gradient(ellipse at 82% 18%,rgba(255,203,5,.12),transparent 36%),radial-gradient(ellipse at 18% 90%,rgba(215,63,9,.09),transparent 38%);animation: none;will-change: auto}
-.ambient-glint {background: linear-gradient(120deg,transparent 20%,rgba(255,255,255,.52) 45%,transparent 70%);filter: none;animation: flow-light 30s ease-in-out infinite alternate}
-.ambient-streamlines {position: absolute;width: 100%;height: 100%;inset: 0;animation: flow-breathe 26s ease-in-out infinite alternate}
-.ambient-streamlines path {stroke: #00274c;stroke-width: 1.2;stroke-opacity: .055;vector-effect: non-scaling-stroke}
-.ambient-streamlines .flow-orange {stroke: #d73f09;stroke-width: 2;stroke-opacity: .14}
-.ambient-streamlines .flow-maize {stroke: #ffcb05;stroke-width: 2.4;stroke-opacity: .24}
-@keyframes flow-breathe {from{transform:translate3d(-8px,0,0)}
-to{transform:translate3d(8px,-14px,0)}
-}
-@keyframes flow-light {from{transform:translate3d(-4%,0,0);opacity:.65}
-to{transform:translate3d(4%,0,0);opacity:1}
-}
-@media(max-width:760px) {.ambient-streamlines {width: 160%;left: -30%;opacity: .7}
-}
-@media(prefers-reduced-motion:reduce) {.ambient-streamlines {animation: none}
-.ambient-glint {animation: none}
-}
+
 .projects {background: transparent;border-color: rgba(255,255,255,.4)}
 .about {background: transparent;border-color: rgba(255,255,255,.4)}
 .topbar {width: min(1150px,calc(100% - 28px));margin: 12px auto 0;top: 12px;border: 1px solid rgba(255,255,255,.8);border-radius: 24px;background: rgba(255,255,255,.32);backdrop-filter: blur(24px) saturate(170%);-webkit-backdrop-filter: blur(24px) saturate(170%);box-shadow: inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,39,76,.12),0 12px 32px rgba(0,39,76,.12)}
@@ -859,8 +837,8 @@ html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
 .about-grid {grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:40px}
 @media screen {
   body,.ambient-field {background:#f4f7f9}
-  .ambient-color {opacity:.38}
-  .ambient-glint {background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.16) 45%,transparent 70%)}
+  
+  
   .projects,.about {background:#f4f7f9}
   .project-card,.project-card:nth-child(even),.timeline-card,.award,.skills>div {background:rgba(255,255,255,.96);border-color:#dce4eb;box-shadow:0 5px 18px rgba(0,39,76,.035)}
   .project-card:hover,.project-card:nth-child(even):hover {background:#fff;border-color:#7f98af;box-shadow:0 8px 22px rgba(0,39,76,.07)}
@@ -1050,3 +1028,17 @@ html.motion-disabled .related-card:hover .related-action>span:last-child {transf
 .table-scroll-hint {margin:18px 0 8px;color:#425568;font-size:12px;line-height:1.5}
 .table-wrap {overscroll-behavior-inline:contain;scrollbar-width:thin;scrollbar-color:#8ba1b4 #eef3f7}
 @media print {.table-scroll-hint{display:none!important}}
+
+/* Static neutral ground gives text and engineering evidence a clean surface. */
+@media screen and (forced-colors:none) {
+ body,.ambient-field {background:#f7f8fa}
+ .ambient-field {opacity:1}
+ .projects,.about {background:#fff;border-top:1px solid #e5e9ed;border-bottom:1px solid #e5e9ed}
+ .timeline-heading {width:100%;max-width:none}
+ .timeline-heading h2 {max-width:none}
+ .timeline-heading>p:last-child {max-width:none;margin-bottom:0}
+ .timeline-card {width:100%;min-width:0}
+ .timeline-card p,.timeline-card .job {max-width:none;line-height:1.7}
+ .timeline-card .job {margin-bottom:8px}
+ .timeline-proof {margin-top:14px}
+}
