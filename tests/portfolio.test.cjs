@@ -150,6 +150,7 @@ test('project section selection collapses phone contents',()=>{const f=navigatio
 test('section navigation focuses the destination',()=>{const f=navigationFixture();f.links[1].events.click({});assert.equal(f.sections.results.tabIndex,-1);assert.equal(f.sections.results.focused,true);});
 test('modified clicks retain normal browser behavior',()=>{const f=navigationFixture();f.links[1].events.click({ctrlKey:true});assert.equal(f.sections.results.focused,undefined);});
 test('active section follows scroll position',()=>{const f=navigationFixture();f.context.scrollY=1000;f.events.scroll();assert.equal(f.links[1].getAttribute('aria-current'),'location');assert.equal(f.links[0].getAttribute('aria-current'),undefined);});
+test('compact contents track a heading visible below the sticky bar',()=>{const f=navigationFixture();f.context.scrollY=640;f.events.scroll();assert.equal(f.links[1].getAttribute('aria-current'),'location');f.context.innerWidth=1280;f.events.resize();assert.equal(f.links[0].getAttribute('aria-current'),'location');});
 test('last section is active at page bottom',()=>{const f=navigationFixture();f.context.scrollY=1400;f.events.scroll();assert.equal(f.links[2].getAttribute('aria-current'),'location');});
 test('print control invokes the browser print workflow',()=>{const f=navigationFixture();f.bottom.children[0].events.click();assert.equal(f.printed(),1);});
 console.log(`${cases} portfolio regression tests passed.`);

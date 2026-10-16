@@ -1079,3 +1079,12 @@ html.motion-disabled .related-card:hover .related-action>span:last-child {transf
  .contact .contact-links .contact-primary {padding:10px 20px;background:#fff;border:1px solid #fff;border-radius:999px;color:var(--blue);text-decoration:none}
  .contact .contact-links .contact-primary:hover {background:#edf2f7;color:var(--blue);border-color:#edf2f7}
 }
+
+/* Keep project navigation available while reading long case studies on phones. */
+@media screen and (max-width:1000px) {
+ .case-toc.enhanced {position:sticky;top:calc(var(--nav-clearance,145px) - 16px);z-index:8;max-height:calc(100vh - var(--nav-clearance,145px) - 8px);max-height:calc(100dvh - var(--nav-clearance,145px) - 8px);overflow:auto}
+ .case-toc.enhanced~.case-content h2[id] {scroll-margin-top:calc(var(--nav-clearance,145px) + 80px)}
+}
+@media screen and (max-width:1000px) and (forced-colors:none) {
+ .case-toc.enhanced {background:#fff;box-shadow:0 4px 14px rgba(0,39,76,.04)}
+}

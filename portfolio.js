@@ -205,7 +205,8 @@
     let scheduled = false;
     const highlight = () => {
       scheduled = false;
-      const offset = (header?.getBoundingClientRect().bottom || 80) + 32;
+      // Compact contents occupy another 70px plus a small reading gap.
+      const offset = (header?.getBoundingClientRect().bottom || 80) + 32 + (toc && innerWidth <= 1000 ? 80 : 0);
       let current = null;
       sections.forEach(item => { if (item.section.getBoundingClientRect().top <= offset) current = item; });
       if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) current = sections.at(-1);
