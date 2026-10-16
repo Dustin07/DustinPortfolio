@@ -1093,3 +1093,7 @@ html.motion-disabled .related-card:hover .related-action>span:last-child {transf
 .case-toc a.toc-subsection {padding-left:20px;font-size:12px}
 .case-content h3[id] {font-size:1.35rem;line-height:1.35;margin:32px 0 14px;scroll-margin-top:var(--nav-clearance,145px)}
 @media screen and (max-width:1000px) {.case-toc.enhanced~.case-content h3[id] {scroll-margin-top:calc(var(--nav-clearance,145px) + 80px)}}
+
+/* Keep the enlargement cue outside engineering images and chart labels. */
+.figure-zoom-cue {position:static;display:flex;align-items:center;justify-content:center;width:max-content;max-width:calc(100% - 24px);min-height:32px;margin:10px 12px 10px auto;padding:6px 10px}
+.test-photo .figure-zoom-cue {font-size:12px}
