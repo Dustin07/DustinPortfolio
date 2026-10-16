@@ -1042,3 +1042,11 @@ html.motion-disabled .related-card:hover .related-action>span:last-child {transf
  .timeline-card .job {margin-bottom:8px}
  .timeline-proof {margin-top:14px}
 }
+
+/* Search feedback stays visible on phones; single-column cards size to their text. */
+.library-content .section-heading {align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+.library-content #project-count {display:inline-flex;align-items:center;min-height:22px;font-size:13px;color:#425568;white-space:nowrap}
+@media screen and (max-width:599px) {
+ .featured-grid {grid-auto-rows:auto}
+ .featured-card h3,.project-card h3,.project-card>p,.project-card .tools {min-height:0}
+}
