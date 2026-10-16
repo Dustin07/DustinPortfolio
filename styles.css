@@ -260,9 +260,9 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .timeline-type {font-size: 12px}
 .timeline-card h3 {font-size: 1.18rem}
 }
-@media(min-width:761px) {.timeline-date {grid-column: 1}
-.timeline-marker {grid-column: 2}
-.timeline-card {grid-column: 3}
+@media(min-width:761px) {.timeline-date {grid-column:1;grid-row:1}
+.timeline-marker {grid-column:2;grid-row:1}
+.timeline-card {grid-column:3;grid-row:1}
 }
 :root {--radius-card: 24px;--radius-panel: 40px;--radius-control: 999px;--space-section: clamp(64px,7vw,92px);--space-card: 24px}
 .hero-aside {gap: var(--space-card)}
