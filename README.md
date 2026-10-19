@@ -2,6 +2,8 @@
 
 Live site: https://dustin07.github.io/DustinPortfolio/
 
+Project memory: read [CHANGELOG.md](CHANGELOG.md) for completed improvements, retired approaches, verification notes, and the complete historical commit index. [AGENTS.md](AGENTS.md) directs future contributors to consult and maintain that record before making more changes.
+
 ## Structure
 
 - `index.html`: introduction, NASA research spotlight, project library, experience timeline, education, capabilities, and contact.
@@ -63,3 +65,5 @@ Project-file rows show PDF format and rounded decimal transfer sizes in both vis
 
 When a responsive breakpoint hides a focused menu control, focus moves to its visible toggle or first link without scrolling the page. Normal focus changes and leaving the browser retain their native behavior. Verify both directions when changing compact-navigation breakpoints.
 Expanded navigation disclosures also close when keyboard focus leaves their contents, while focus continues to its requested destination. Moving between controls inside the disclosure keeps it open.
+
+The putter and carabiner playback buttons are disabled while the page-wide pause is active, with a hint pointing to the footer control. Their operation and design buttons still allow static inspection. Resuming the page retains any pause the visitor chose within an illustration.

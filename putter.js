@@ -66,9 +66,11 @@
   const sync = () => {
     if (frame !== null) cancelAnimationFrame(frame);
     frame = null; last = null;
+    const pagePaused = ambient?.classList.contains('is-still') || false;
     control.textContent = paused ? 'Play Animation' : 'Pause Animation';
-    control.disabled = reduced.matches;
-    control.title = reduced.matches ? 'Animation is disabled by your reduced-motion preference. Select an operation to inspect it.' : 'Select an operation to pause and inspect it.';
+    control.disabled = reduced.matches || pagePaused;
+    control.title = reduced.matches ? 'Animation is disabled by your reduced-motion preference. Select an operation to inspect it.' :
+      pagePaused ? 'Resume page animations in the footer to use playback. Select an operation to inspect it.' : 'Select an operation to pause and inspect it.';
     if (reduced.matches) render();
     if (!blocked()) frame = requestAnimationFrame(tick);
   };

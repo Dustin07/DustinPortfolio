@@ -50,8 +50,10 @@
   };
   const sync=()=>{
     if(frame!==null)cancelAnimationFrame(frame);frame=null;last=null;
-    control.textContent=paused?'Play Animation':'Pause Animation';control.disabled=reduced.matches;
-    control.title=reduced.matches?'Animation is disabled by your reduced-motion preference. Select a design to inspect it.':'Select a design to pause and inspect it.';
+    const pagePaused=ambient?.classList.contains('is-still')||false;
+    control.textContent=paused?'Play Animation':'Pause Animation';control.disabled=reduced.matches||pagePaused;
+    control.title=reduced.matches?'Animation is disabled by your reduced-motion preference. Select a design to inspect it.':
+      pagePaused?'Resume page animations in the footer to use playback. Select a design to inspect it.':'Select a design to pause and inspect it.';
     if(reduced.matches){elapsed=Math.floor(elapsed/4000)*4000+900;render();}
     if(!blocked())frame=requestAnimationFrame(tick);
   };
