@@ -83,6 +83,15 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Verification: 16 putter and 16 carabiner checks passed, including focus retention, resume timing, and pause precedence. The 24 figure-viewer and 20 engineering checks passed, along with all 13 pages, 392 references, 15 images, metadata, and 70 asset references. Real browser checks at 390px for the carabiner and 1280px for the putter confirmed stable image focus and viewer return focus; the desktop putter had no root overflow.
 - Deployment gate: GitHub Actions and Pages runs were still queued before this batch. The change is locally verified; successful deployment and live verification remain required.
 
+## 2026-10-19 — Reduce repeated work in the machining sequence
+
+- Putter labels, selected-operation attributes, and report visibility now update when the stage changes. Constant toolpath dash lengths are initialized once. Per-frame geometry and the existing 18-second timing remain intact.
+- An instrumented unchanged-stage check previously counted 61 label writes, 366 selection writes, 366 reference-visibility writes, and 183 constant dash-length writes across 61 frame callbacks. Those 976 repeated writes now remain at zero until a stage changes: 16 measured redundant writes removed per unchanged frame. This is a DOM-work measurement, not an FPS or battery-life benchmark.
+- A local comparison against the preceding committed script matched all 1,081 sampled geometry/control/reference states over the full 18-second cycle at 60 Hz. The one-time comparison fixture stays outside the published repository.
+- Files: putter.js, tests/putter.test.cjs, the putter case's content-hash reference, and this record.
+- Verification: 17 putter checks, 20 engineering checks, all 13 pages/392 references/15 images, metadata, and 70 asset references passed. Browser inspection confirmed exactly one selected operation and one visible report for each of all six manual stages.
+- Deployment gate: the preceding focus-retention commit passed Portfolio Checks; its Pages deployment was still pending when this batch was prepared. This optimization needs its own successful checks/deployment and live verification.
+
 ## Verification and deployment notes
 
 - The previously committed selection-aware navigation passed 89 portfolio regression checks and real local browser flows for Boeing and FEA selections. Clearing filters restored the original project order.

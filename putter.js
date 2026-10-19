@@ -21,19 +21,24 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const ambient = document.querySelector('.ambient-field');
   const lengths = paths.map(path => path.getTotalLength());
-  let elapsed = 0, last = null, frame = null, paused = false, visible = true, referenceFocused = false;
+  paths.forEach((path, i) => { path.style.strokeDasharray = String(lengths[i]); });
+  let elapsed = 0, last = null, frame = null, paused = false, visible = true, referenceFocused = false, current = -1;
   const blocked = () => paused || referenceFocused || reduced.matches || document.hidden || !visible ||
     ambient?.classList.contains('is-paused') || document.documentElement.classList.contains('figure-viewer-open');
   const render = () => {
     const step = Math.floor(elapsed / duration) % buttons.length;
     const progress = Math.min(1, (elapsed % duration) / 2400);
-    demo.dataset.step = String(step);
-    label.textContent = labels[step];
+    if (step !== current) {
+      current = step;
+      demo.dataset.step = String(step);
+      label.textContent = labels[step];
+      buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === step)));
+      references.forEach((reference, i) => { reference.hidden = i !== step; });
+    }
     const pathIndex = step === 2 ? 0 : step === 3 ? (progress < .72 ? 1 : 2) : -1;
     const pathProgress = step === 3 ? (pathIndex === 1 ? progress / .72 : (progress - .72) / .28) : progress;
     paths.forEach((path, i) => {
       path.style.opacity = i === pathIndex ? '1' : '0';
-      path.style.strokeDasharray = String(lengths[i]);
       path.style.strokeDashoffset = String(lengths[i] * (1 - pathProgress));
     });
     if (pathIndex >= 0) {
@@ -52,8 +57,6 @@
     ribs.style.opacity = step >= 3 ? '1' : '0';
     hole.style.opacity = step >= 4 || (step === 3 && progress >= .72) ? '1' : '0';
     cleanup.style.opacity = step === 4 ? String(1 - progress) : '0';
-    buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === step)));
-    references.forEach((reference, i) => { reference.hidden = i !== step; });
   };
   const tick = time => {
     frame = null;

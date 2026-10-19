@@ -16,6 +16,19 @@ function fixture(reduce = false) {
 let count=0; const test=(name,fn)=>{fn();count++;console.log('PASS '+name);};
 test('static markup has genuine report references and a clear illustration qualifier',()=>{const h=fs.readFileSync(path.join(root,'projects/cnc-putter.html'),'utf8');assert.match(h,/not an NX simulation or exact toolpath playback/);for(const n of ['back-model','fixture','bottom-ipw','top-ipw'])assert.ok(fs.existsSync(path.join(root,'images/putter-'+n+'.png')));assert.match(h,/aria-labelledby="putter-title putter-description"/);assert.match(h,/planned, not verified production/);});
 test('initial frame enhances accessible controls',()=>{const f=fixture();assert.equal(f.control.hidden,false);assert.equal(f.demo.dataset.step,'0');assert.equal(f.buttons[0].attrs['aria-pressed'],'true');assert.ok(f.running());});
+test('frame-only movement does not rewrite stage labels, selection, or references',()=>{
+  const f=fixture(),writes={label:0,selection:0,references:0,dashes:0};
+  const watch=(object,key,counter)=>{let value=object[key];Object.defineProperty(object,key,{get:()=>value,set:next=>{value=next;writes[counter]++;},configurable:true});};
+  watch(f.label,'textContent','label');
+  f.refs.forEach(reference=>watch(reference,'hidden','references'));
+  f.paths.forEach(p=>watch(p.style,'strokeDasharray','dashes'));
+  f.buttons.forEach(button=>{const set=button.setAttribute;button.setAttribute=function(key,value){if(key==='aria-pressed')writes.selection++;set.call(this,key,value);};});
+  f.tick(0);for(let n=1;n<=60;n++)f.tick(n*1000/60);
+  assert.deepEqual(writes,{label:0,selection:0,references:0,dashes:0});
+  for(let t=1100;t<=3100;t+=100)f.tick(t);
+  assert.deepEqual(writes,{label:1,selection:6,references:6,dashes:0});
+  assert.equal(f.label.textContent,'Secure the Workpiece');assert.equal(f.refs[1].hidden,false);assert.equal(f.buttons[1].attrs['aria-pressed'],'true');
+});
 test('local pause stops frame work and play restarts it',()=>{const f=fixture();f.control.events.click();assert.equal(f.running(),false);assert.equal(f.control.textContent,'Play Animation');f.control.events.click();assert.ok(f.running());});
 test('selecting an operation pauses and reveals its original image',()=>{const f=fixture();f.buttons[2].events.click();assert.equal(f.demo.dataset.step,'2');assert.equal(f.refs[2].hidden,false);assert.equal(f.refs[0].hidden,true);assert.equal(f.running(),false);});
 test('reduced motion is static while manual operation selection remains available',()=>{const f=fixture(true);assert.equal(f.running(),false);assert.equal(f.control.disabled,true);assert.equal(f.cutter.style.opacity,'0');f.buttons[1].events.click();assert.equal(f.demo.dataset.step,'1');});
