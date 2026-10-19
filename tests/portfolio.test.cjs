@@ -86,6 +86,53 @@ test('one-letter queries do not match arbitrary words',()=>{const f=fixture();f.
 test('adjacent DOM text blocks retain exact skill boundaries',()=>{const f=fixture(undefined,null,false,{categories:['All','Academic'],cards:[{text:'Siemens NX · Ansys · FEAView Project',dataset:{category:'Academic'},childNodes:[{childNodes:[{nodeType:3,textContent:'Siemens NX · Ansys · FEA'}]},{childNodes:[{nodeType:3,textContent:'View Project'}]}]}]});f.search('FEA');assert.equal(f.shown().length,1);f.search('NX');assert.equal(f.shown().length,1);f.search('Ansys');assert.equal(f.shown().length,1);});
 
 const home = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
+function caseReturnFixture(saved = null, storageBlocked = false) {
+  const links = [new Element(), new Element()];
+  const content = new Element();
+  const context = {
+    document: {
+      querySelector: selector => selector === '.case-content' ? content : null,
+      querySelectorAll: selector => selector.startsWith('.back,') ? links : [],
+    },
+    URLSearchParams,
+    sessionStorage: {getItem: () => {
+      if (storageBlocked) throw Error('blocked');
+      return saved === null ? null : JSON.stringify(saved);
+    }},
+  };
+  vm.runInNewContext(source, context);
+  return links.map(link => link.attrs.href);
+}
+test('case return links open the library directly for a fresh visitor', () => {
+  assert.deepEqual(caseReturnFixture(), ['../index.html#project-library', '../index.html#project-library']);
+});
+test('case return links preserve the category and keyword as an explicit URL', () => {
+  const destinations = caseReturnFixture({category:'Boeing', query:'  TPU  '});
+  for (const destination of destinations) {
+    const url = new URL(destination, 'https://example.test/projects/case.html');
+    assert.equal(url.hash, '#project-library');
+    assert.equal(url.searchParams.get('category'), 'Boeing');
+    assert.equal(url.searchParams.get('q'), 'TPU');
+  }
+});
+test('case return links encode punctuation instead of changing URL structure', () => {
+  const destination = caseReturnFixture({category:'All', query:'GD&T #? C++'})[0];
+  const url = new URL(destination, 'https://example.test/projects/case.html');
+  assert.equal(url.searchParams.get('q'), 'GD&T #? C++');
+  assert.equal(url.searchParams.has('category'), false);
+  assert.equal(url.hash, '#project-library');
+});
+test('case return links discard unknown categories and bound long queries', () => {
+  const destination = caseReturnFixture({category:'unknown', query:'x'.repeat(250)})[0];
+  const url = new URL(destination, 'https://example.test/projects/case.html');
+  assert.equal(url.searchParams.has('category'), false);
+  assert.equal(url.searchParams.get('q').length, 120);
+});
+test('case return navigation survives blocked or corrupt storage', () => {
+  for (const destination of [caseReturnFixture(null, true), caseReturnFixture(['Boeing']), caseReturnFixture({category:123,query:null})]) {
+    assert.ok(destination.every(link => link === '../index.html#project-library'));
+  }
+});
 test('selected work features research, production design, and experimental evidence',()=>{
   const featured=home.match(/<div class="featured-grid"[^>]*>([\s\S]*?)<\/div>\s*<details class="project-library"/)[1];
   assert.equal((featured.match(/class="featured-card"/g)||[]).length,3);

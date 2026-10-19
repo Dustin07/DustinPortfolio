@@ -17,7 +17,7 @@
   };
   const cards = [...document.querySelectorAll('.project-card')];
   const buttons = [...document.querySelectorAll('.filter')];
-    const search = document.querySelector('#project-search');
+  const search = document.querySelector('#project-search');
   if (cards.length && search) {
     const library = document.querySelector('#project-library');
     document.querySelector('.project-toolbar').hidden = false;
@@ -109,6 +109,22 @@
     });
     addEventListener('pageshow', () => apply(false));
     apply();
+  }
+
+  // Case-study return links name the saved view explicitly, so the library
+  // opens at its results rather than above the unrelated featured cards.
+  if (!cards.length && document.querySelector('.case-content')) {
+    const previous = recalled();
+    const params = new URLSearchParams();
+    const categories = ['All', 'NASA', 'Academic', 'Boeing', 'PCC'];
+    if (previous && categories.includes(previous.category) && previous.category !== 'All') {
+      params.set('category', previous.category);
+    }
+    if (previous?.query.trim()) params.set('q', previous.query.trim());
+    const query = params.toString();
+    document.querySelectorAll('.back, .case-bottom a[href="../index.html#project-library"]').forEach(link => {
+      link.setAttribute('href', '../index.html' + (query ? '?' + query : '') + '#project-library');
+    });
   }
 
   const toc = document.querySelector('.case-toc');
