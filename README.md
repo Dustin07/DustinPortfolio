@@ -57,6 +57,7 @@ Also run `node tests/related.test.cjs`, `python tests/assets.test.py`, `node too
 Search indexes separated DOM text nodes, not concatenated `textContent` from minified cards. Verify exact acronyms in the real browser as well as in the tests. Empty category searches can widen to all projects while retaining the visitor's keyword; this option appears only when actual matches exist elsewhere.
 
 Case-study return links open the full project library directly. When a tab has a saved category or keyword, the links include that view in their URL so returning visitors see the same results below the header. Fresh visitors and blocked-storage browsers still have a plain library destination.
+Filtered views also remember a bounded list of matching project links in that tab. When the current case belongs to a selection with multiple results, its Next link follows that displayed order and wraps to the first match. Plain browsing, single results, and cases outside the selection retain the original project order. Saved paths are restricted to relative case-study addresses; labels are bounded and inserted as plain text.
 
 Project-file rows show PDF format and rounded decimal transfer sizes in both visible text and accessible link labels. The document checks compare those cues with the original files. If an approved document replacement changes size, update its cues along with the integrity baseline.
 

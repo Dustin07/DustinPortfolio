@@ -27,7 +27,14 @@
     try {
       const value = JSON.parse(sessionStorage.getItem(storageKey) || 'null');
       if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
-      return {category:typeof value.category === 'string' ? value.category : 'All', query:typeof value.query === 'string' ? value.query.slice(0,120) : ''};
+      const seen = new Set();
+      const matches = (Array.isArray(value.matches) ? value.matches : []).slice(0,24).filter(item => {
+        if (!item || typeof item !== 'object' || Array.isArray(item) ||
+            typeof item.href !== 'string' || item.href.length > 160 || !/^projects\/[a-z0-9-]+\.html$/.test(item.href) ||
+            typeof item.title !== 'string' || !item.title.trim() || seen.has(item.href)) return false;
+        seen.add(item.href); return true;
+      }).map(item => ({href:item.href, title:item.title.trim().slice(0,160)}));
+      return {category:typeof value.category === 'string' ? value.category : 'All', query:typeof value.query === 'string' ? value.query.slice(0,120) : '', matches};
     } catch (_) { return null; }
   };
   const cards = [...document.querySelectorAll('.project-card')];
@@ -65,17 +72,22 @@
       const text = normalize(nodeText(card) + ' ' + (card.dataset.keywords || ''));
       return {text, tokens:new Set(text.split(/\s+/).filter(Boolean))};
     });
+    const resultLinks = cards.map(card => {
+      const link = card.querySelector?.('h3 a');
+      return link ? {href:link.getAttribute('href'), title:link.textContent.trim()} : null;
+    });
     const apply = (syncURL = true, historyMode = 'replace') => {
       document.dispatchEvent?.(new Event('portfolio:before-filter'));
       const query = search.value.trim().slice(0, 120);
       const words = normalize(query).split(/\s+/).filter(Boolean);
       if (library && (category !== 'All' || query)) library.open = true;
       let visible = 0, matchesAcrossCategories = 0;
+      const matchingProjects = [];
       cards.forEach((card, index) => {
         const matches = words.every(word => acronyms.has(word) || word.length <= 2 ? searchable[index].tokens.has(word) : searchable[index].text.includes(word));
         if (matches) matchesAcrossCategories++;
         card.hidden = (category !== 'All' && card.dataset.category !== category) || !matches;
-        if (!card.hidden) visible++;
+        if (!card.hidden) { visible++; if (resultLinks[index]) matchingProjects.push(resultLinks[index]); }
       });
       buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === category)));
       const countLabel = `${visible} ${visible === 1 ? 'Project' : 'Projects'}`;
@@ -90,7 +102,7 @@
         expandSearch.textContent = `Search All Projects (${matchesAcrossCategories} ${matchesAcrossCategories === 1 ? 'Match' : 'Matches'})`;
       }
       reset.hidden = category === 'All' && !query;
-      remember({ category, query });
+      remember({ category, query, ...(category !== 'All' || query ? {matches:matchingProjects} : {}) });
       if (syncURL) {
         const url = new URL(location.href);
         if (category === 'All') url.searchParams.delete('category'); else url.searchParams.set('category', category);
@@ -140,6 +152,19 @@
     document.querySelectorAll('.back, .case-bottom a[href="../index.html#project-library"]').forEach(link => {
       link.setAttribute('href', '../index.html' + (query ? '?' + query : '') + '#project-library');
     });
+    const selection = previous?.matches || [];
+    if (previous && categories.includes(previous.category) &&
+        (previous.category !== 'All' || previous.query.trim()) && selection.length > 1) {
+      const current = 'projects/' + location.pathname.split('/').pop();
+      const index = selection.findIndex(item => item.href === current);
+      const next = document.querySelector('.case-bottom a[aria-label^="Next Project:"]');
+      if (index !== -1 && next) {
+        const result = selection[(index + 1) % selection.length];
+        next.setAttribute('href', result.href.slice('projects/'.length));
+        next.setAttribute('aria-label', 'Next Matching Project: ' + result.title);
+        next.textContent = 'Next Result: ' + result.title + ' →';
+      }
+    }
   }
 
   const toc = document.querySelector('.case-toc');

@@ -17,7 +17,13 @@ class Element {
 function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, storageBlocked = false, library = null) {
   const cards = library ? library.cards.map(card => new Element(card.text, card.dataset)) : [new Element('Protective Covers CATIA TPU', {category:'Boeing'}), new Element('Rocket Testing FEA', {category:'Academic'}), new Element('Carabiner FEA Ansys', {category:'Academic'}), new Element('Casting Tooling SolidWorks', {category:'PCC'})];
   const buttons = (library?.categories || ['All','Academic','Boeing','PCC']).map(value => new Element(value, {filter:value}));
-  if (library) library.cards.forEach((card,index) => {if(card.childNodes) cards[index].childNodes=card.childNodes;});
+  if (library) library.cards.forEach((card,index) => {
+    if (card.childNodes) cards[index].childNodes=card.childNodes;
+    if (card.href) {
+      const link=new Element(card.title || card.text);link.setAttribute('href',card.href);
+      cards[index].querySelector=selector=>selector==='h3 a'?link:null;
+    }
+  });
   const elements = {'#project-search':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-empty-message':new Element(), '#project-expand-search':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
   const timers = new Map(); let timerId = 0; let stored = saved; const events = {};
   elements['#project-library'] = new Element();
@@ -87,22 +93,29 @@ test('one-letter queries do not match arbitrary words',()=>{const f=fixture();f.
 test('adjacent DOM text blocks retain exact skill boundaries',()=>{const f=fixture(undefined,null,false,{categories:['All','Academic'],cards:[{text:'Siemens NX · Ansys · FEAView Project',dataset:{category:'Academic'},childNodes:[{childNodes:[{nodeType:3,textContent:'Siemens NX · Ansys · FEA'}]},{childNodes:[{nodeType:3,textContent:'View Project'}]}]}]});f.search('FEA');assert.equal(f.shown().length,1);f.search('NX');assert.equal(f.shown().length,1);f.search('Ansys');assert.equal(f.shown().length,1);});
 
 const home = fs.readFileSync(path.join(__dirname, '../index.html'), 'utf8');
-function caseReturnFixture(saved = null, storageBlocked = false) {
+function caseNavigationFixture(saved = null, storageBlocked = false, page = 'protective-covers.html') {
   const links = [new Element(), new Element()];
   const content = new Element();
+  const next = new Element('Next: Other Project →');
+  next.setAttribute('href', 'rocket-structures.html');
+  next.setAttribute('aria-label', 'Next Project: Other Project');
   const context = {
     document: {
-      querySelector: selector => selector === '.case-content' ? content : null,
+      querySelector: selector => selector === '.case-content' ? content : selector === '.case-bottom a[aria-label^="Next Project:"]' ? next : null,
       querySelectorAll: selector => selector.startsWith('.back,') ? links : [],
     },
     URLSearchParams,
+    location: new URL('https://example.test/DustinPortfolio/projects/' + page),
     sessionStorage: {getItem: () => {
       if (storageBlocked) throw Error('blocked');
       return saved === null ? null : JSON.stringify(saved);
     }},
   };
   vm.runInNewContext(source, context);
-  return links.map(link => link.attrs.href);
+  return {links,next};
+}
+function caseReturnFixture(saved = null, storageBlocked = false) {
+  return caseNavigationFixture(saved,storageBlocked).links.map(link => link.attrs.href);
 }
 test('case return links open the library directly for a fresh visitor', () => {
   assert.deepEqual(caseReturnFixture(), ['../index.html#project-library', '../index.html#project-library']);
@@ -134,6 +147,17 @@ test('case return navigation survives blocked or corrupt storage', () => {
     assert.ok(destination.every(link => link === '../index.html#project-library'));
   }
 });
+const selectedBoeing = {category:'Boeing',query:'',matches:[
+  {href:'projects/protective-covers.html',title:'Protective Covers'},
+  {href:'projects/ergonomic-tools.html',title:'Ergonomic Attachments'},
+]};
+test('Next follows the saved matching project order',()=>{const f=caseNavigationFixture(selectedBoeing);assert.equal(f.next.attrs.href,'ergonomic-tools.html');assert.equal(f.next.attrs['aria-label'],'Next Matching Project: Ergonomic Attachments');assert.equal(f.next.textContent,'Next Result: Ergonomic Attachments →');});
+test('the last matching case wraps to the first without a self link',()=>{const f=caseNavigationFixture(selectedBoeing,false,'ergonomic-tools.html');assert.equal(f.next.attrs.href,'protective-covers.html');});
+test('keyword-only selections also retain their matching order',()=>{const f=caseNavigationFixture({category:'All',query:'FEA',matches:[{href:'projects/carabiner-fea.html',title:'Carabiner'},{href:'projects/gating-optimization.html',title:'Gating'}]},false,'carabiner-fea.html');assert.equal(f.next.attrs.href,'gating-optimization.html');});
+test('single results and unrelated cases retain ordinary project navigation',()=>{for(const saved of [{...selectedBoeing,matches:selectedBoeing.matches.slice(0,1)},{...selectedBoeing,category:'All'},{...selectedBoeing,category:'unknown'}])assert.equal(caseNavigationFixture(saved).next.attrs['aria-label'],'Next Project: Other Project');assert.equal(caseNavigationFixture(selectedBoeing,false,'nasa-manufacturing.html').next.attrs['aria-label'],'Next Project: Other Project');});
+test('saved selections reject external and malformed project paths',()=>{for(const href of ['https://example.invalid/steal.html','javascript:alert(1)','../index.html','projects/../index.html','projects/ergonomic-tools.html?q=redirect']){const saved={...selectedBoeing,matches:[selectedBoeing.matches[0],{href,title:'Invalid'}]};assert.equal(caseNavigationFixture(saved).next.attrs['aria-label'],'Next Project: Other Project');}});
+test('duplicate saved entries cannot turn Next into the same case',()=>{const f=caseNavigationFixture({...selectedBoeing,matches:[selectedBoeing.matches[0],selectedBoeing.matches[0]]});assert.equal(f.next.attrs['aria-label'],'Next Project: Other Project');});
+test('saved labels are bounded and inserted as plain text',()=>{const f=caseNavigationFixture({...selectedBoeing,matches:[selectedBoeing.matches[0],{href:'projects/ergonomic-tools.html',title:'<b>'+ 'x'.repeat(200)+'</b>'}]});assert.equal(f.next.textContent.length,'Next Result: '.length+160+' →'.length);assert.ok(f.next.textContent.startsWith('Next Result: <b>'));assert.equal(f.next.innerHTML,undefined);});
 test('selected work features research, production design, and experimental evidence',()=>{
   const featured=home.match(/<div class="featured-grid"[^>]*>([\s\S]*?)<\/div>\s*<details class="project-library"/)[1];
   assert.equal((featured.match(/class="featured-card"/g)||[]).length,3);
@@ -147,11 +171,16 @@ test('full degree details appear once, in the timeline',()=>{
 });
 const decode = text => text.replace(/&amp;/g,'&').replace(/<[^>]*>/g,' ');
 const realLibrary = {
-  cards:[...home.matchAll(/<article class="project-card"([^>]*)>([\s\S]*?)<\/article>/g)].map(([,attributes,content])=>({text:decode(content),dataset:{category:attributes.match(/data-category="([^"]+)"/)[1],keywords:decode(attributes.match(/data-keywords="([^"]*)"/)?.[1] || '')}})),
+  cards:[...home.matchAll(/<article class="project-card"([^>]*)>([\s\S]*?)<\/article>/g)].map(([,attributes,content])=>{
+    const link=content.match(/<h3><a href="([^"]+)">([\s\S]*?)<\/a>/);
+    return {text:decode(content),href:link?.[1],title:decode(link?.[2] || ''),dataset:{category:attributes.match(/data-category="([^"]+)"/)[1],keywords:decode(attributes.match(/data-keywords="([^"]*)"/)?.[1] || '')}};
+  }),
   categories:[...home.matchAll(/data-filter="([^"]+)"/g)].map(match=>match[1]),
 };
 test('published library includes every case study',()=>{const f=fixture(undefined,null,false,realLibrary);const cases=fs.readdirSync(path.join(__dirname,'../projects')).filter(file=>file.endsWith('.html'));assert.equal(f.shown().length,cases.length);assert.equal(f.elements['#project-count'].textContent,`${cases.length} Projects`);});
 test('NASA category finds the research case',()=>{const f=fixture(undefined,null,false,realLibrary);f.click('NASA');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/In-Space Manufacturing Research/);});
+test('the real library saves matching destinations in displayed order',()=>{const f=fixture(undefined,null,false,realLibrary);f.click('Boeing');assert.deepEqual(f.stored().matches.map(item=>item.href),['projects/protective-covers.html','projects/ergonomic-tools.html']);f.search('TPU');assert.deepEqual(f.stored().matches.map(item=>item.href),['projects/protective-covers.html']);});
+test('clearing the selection removes its restricted navigation order',()=>{const f=fixture(undefined,null,false,realLibrary);f.click('Boeing');f.elements['#project-reset'].events.click();assert.equal(f.stored().matches,undefined);assert.equal(f.stored().category,'All');});
 test('research keywords find the NASA case',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('sensing automation');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/In-Space Manufacturing Research/);});
 test('full FEA terms find structural and solidification studies',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('finite element');assert.equal(f.shown().length,2);assert.ok(f.shown().some(text=>/Pocket Carabiner/.test(text)));assert.ok(f.shown().some(text=>/Gating System/.test(text)));});
 test('3D printing search finds both Boeing projects',()=>{const f=fixture(undefined,null,false,realLibrary);f.click('Boeing');f.search('3d printing');assert.equal(f.shown().length,2);});
