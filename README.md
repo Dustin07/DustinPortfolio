@@ -67,3 +67,5 @@ When a responsive breakpoint hides a focused menu control, focus moves to its vi
 Expanded navigation disclosures also close when keyboard focus leaves their contents, while focus continues to its requested destination. Moving between controls inside the disclosure keeps it open.
 
 The putter and carabiner playback buttons are disabled while the page-wide pause is active, with a hint pointing to the footer control. Their operation and design buttons still allow static inspection. Resuming the page retains any pause the visitor chose within an illustration.
+
+Those two sequences also wait while a report-image control has keyboard focus, so automatic stage changes cannot hide the focused control. Leaving the reference resumes only playback that was already running. Opening and closing the figure viewer retains this hold and returns focus to the same reference.

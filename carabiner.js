@@ -18,8 +18,8 @@
   ];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const ambient = document.querySelector('.ambient-field');
-  let elapsed=0,last=null,frame=null,paused=false,visible=true,current=-1;
-  const blocked=()=>paused||reduced.matches||document.hidden||!visible||ambient?.classList.contains('is-paused')||document.documentElement.classList.contains('figure-viewer-open');
+  let elapsed=0,last=null,frame=null,paused=false,visible=true,current=-1,referenceFocused=false;
+  const blocked=()=>paused||referenceFocused||reduced.matches||document.hidden||!visible||ambient?.classList.contains('is-paused')||document.documentElement.classList.contains('figure-viewer-open');
   const render=()=>{
     const step=Math.floor(elapsed/4000)%3;
     const progress=Math.min(1,(elapsed%4000)/900);
@@ -60,6 +60,14 @@
   control.hidden=false;
   control.addEventListener('click',()=>{paused=!paused;sync();});
   buttons.forEach((button,i)=>button.addEventListener('click',()=>{paused=true;elapsed=i*4000+900;render();sync();}));
+  // Do not hide a report image while its enlargement button has keyboard focus.
+  // This temporary hold is separate from the visitor's local playback choice.
+  references.forEach(reference=>{
+    reference.addEventListener('focusin',()=>{referenceFocused=true;sync();});
+    reference.addEventListener('focusout',event=>{
+      referenceFocused=references.some(item=>item.contains(event.relatedTarget));sync();
+    });
+  });
   reduced.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);
   if('IntersectionObserver' in window)new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();}).observe(demo);
   if(ambient)new MutationObserver(sync).observe(ambient,{attributes:true,attributeFilter:['class']});

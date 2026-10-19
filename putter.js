@@ -21,8 +21,8 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const ambient = document.querySelector('.ambient-field');
   const lengths = paths.map(path => path.getTotalLength());
-  let elapsed = 0, last = null, frame = null, paused = false, visible = true;
-  const blocked = () => paused || reduced.matches || document.hidden || !visible ||
+  let elapsed = 0, last = null, frame = null, paused = false, visible = true, referenceFocused = false;
+  const blocked = () => paused || referenceFocused || reduced.matches || document.hidden || !visible ||
     ambient?.classList.contains('is-paused') || document.documentElement.classList.contains('figure-viewer-open');
   const render = () => {
     const step = Math.floor(elapsed / duration) % buttons.length;
@@ -79,6 +79,14 @@
   buttons.forEach((button, i) => button.addEventListener('click', () => {
     paused = true; elapsed = i * duration + 2400; render(); sync();
   }));
+  // Keep the report image and its enlargement button present during keyboard
+  // inspection. Leaving it resumes only playback that was already running.
+  references.forEach(reference => {
+    reference.addEventListener('focusin', () => { referenceFocused = true; sync(); });
+    reference.addEventListener('focusout', event => {
+      referenceFocused = references.some(item => item.contains(event.relatedTarget)); sync();
+    });
+  });
   reduced.addEventListener('change', sync);
   document.addEventListener('visibilitychange', sync);
   if ('IntersectionObserver' in window) new IntersectionObserver(entries => {

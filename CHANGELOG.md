@@ -74,6 +74,15 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - The historical index below contains every repository commit returned through c096d2cbe7bc7458ff1e195b93341b9adf7f87d8, including intermediate and retired experiments. Each link opens the exact patch; a historical title does not mean its approach is still active.
 - This entry is included in the commit introducing this document. Later batches should append their own dated entries rather than rewriting this baseline.
 
+## 2026-10-19 — Keep focused report images stable during playback
+
+- Confirmed a keyboard defect in the automatic carabiner sequence: advancing to another design hid the focused report-image enlargement button and returned focus to the page body. The putter used the same changing-reference pattern.
+- Both sequences now hold their current frame while a report reference contains focus. Moving within a reference retains the hold; leaving it resumes only playback that was already running, without catching up the time spent inspecting it.
+- Opening and closing the figure viewer returns focus to the same visible reference. The temporary hold does not clear a local pause, the page-wide pause, or system reduced motion, and it does not prevent manual operation/design selection.
+- Files: putter.js, carabiner.js, both illustration tests, the two case pages' content-hash references, README.md, and this record.
+- Verification: 16 putter and 16 carabiner checks passed, including focus retention, resume timing, and pause precedence. The 24 figure-viewer and 20 engineering checks passed, along with all 13 pages, 392 references, 15 images, metadata, and 70 asset references. Real browser checks at 390px for the carabiner and 1280px for the putter confirmed stable image focus and viewer return focus; the desktop putter had no root overflow.
+- Deployment gate: GitHub Actions and Pages runs were still queued before this batch. The change is locally verified; successful deployment and live verification remain required.
+
 ## Verification and deployment notes
 
 - The previously committed selection-aware navigation passed 89 portfolio regression checks and real local browser flows for Boeing and FEA selections. Clearing filters restored the original project order.

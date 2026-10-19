@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
 const root=path.join(__dirname,'..'),source=fs.readFileSync(path.join(root,'carabiner.js'),'utf8');
 function fixture(reduce=false){
-  const el=()=>({style:{},attrs:{},events:{},setAttribute(k,v){this.attrs[k]=v;},addEventListener(k,v){this.events[k]=v;}});
+  const el=()=>({style:{},attrs:{},events:{},contains(target){return this===target||(this.children||[]).includes(target);},setAttribute(k,v){this.attrs[k]=v;},addEventListener(k,v){this.events[k]=v;}});
   const control=el(),buttons=[el(),el(),el()],refs=[el(),el(),el()],body=el(),spine=el(),tube=el(),removedSpine=el(),label=el();
   const results={};for(const n of ['volume','stress','deflection','volume-change','stress-change','deflection-change'])results[n]=el();
   let globalPause=false,callback,next=0,intersection,mutations=[];
@@ -25,6 +25,12 @@ test('hidden tab and offscreen states stop frame work',()=>{const f=fixture();f.
 test('global pause preserves the visitor-selected pause',()=>{const f=fixture();f.globalPause(true);assert.equal(f.running(),false);f.globalPause(false);assert.ok(f.running());f.buttons[1].events.click();f.globalPause(true);f.globalPause(false);assert.equal(f.running(),false);});
 test('page pause disables playback while static design inspection remains available',()=>{const f=fixture();f.globalPause(true);assert.equal(f.control.disabled,true);assert.match(f.control.title,/footer/);f.buttons[2].events.click();assert.equal(f.demo.dataset.step,'2');assert.equal(f.refs[2].hidden,false);f.globalPause(false);assert.equal(f.control.disabled,false);assert.equal(f.control.textContent,'Play Animation');assert.equal(f.running(),false);});
 test('system reduced motion stays authoritative after a page-wide resume',()=>{const f=fixture(true);f.globalPause(true);f.globalPause(false);assert.equal(f.control.disabled,true);assert.match(f.control.title,/reduced-motion/);});
+
+test('a focused report image cannot be replaced by automatic playback',()=>{const f=fixture();f.tick(0);f.tick(100);f.refs[0].events.focusin();assert.equal(f.running(),false);for(let t=200;t<=13000;t+=100)f.tick(t);assert.equal(f.demo.dataset.step,'0');assert.equal(f.refs[0].hidden,false);f.refs[0].events.focusout({relatedTarget:f.buttons[0]});assert.ok(f.running());f.tick(14000);f.tick(14100);assert.equal(f.demo.dataset.step,'0');for(let t=14200;t<=18000;t+=100)f.tick(t);assert.equal(f.demo.dataset.step,'1');});
+
+test('focus moving within report references retains the temporary hold',()=>{const f=fixture();const child={};f.refs[1].children=[child];f.refs[0].events.focusin();f.refs[0].events.focusout({relatedTarget:child});assert.equal(f.running(),false);f.refs[1].events.focusout({relatedTarget:null});assert.ok(f.running());});
+
+test('leaving a focused report never clears a local or global pause',()=>{for(const state of ['local','page','system']){const f=fixture(state==='system');f.refs[0].events.focusin();if(state==='local')f.control.events.click();if(state==='page')f.globalPause(true);f.refs[0].events.focusout({relatedTarget:f.control});assert.equal(f.running(),false);if(state==='local')assert.equal(f.control.textContent,'Play Animation');}});
 test('comparison loops through all three alternatives',()=>{const f=fixture();f.tick(0);for(let t=100;t<=12100;t+=100){f.tick(t);if(t%4000===100)assert.equal(f.demo.dataset.step,String(Math.floor(t/4000)%3));}});
 test('animation data agrees with the case table and references use mesh images',()=>{const h=fs.readFileSync(path.join(root,'projects/carabiner-fea.html'),'utf8');for(const [i,row]of [[0,['1734.4','349.82','1.63']],[1,['1627.8','358.76','1.79']],[2,['1251.5','416.18','1.94']]]){const f=fixture();f.buttons[i].events.click();for(const value of row)assert.ok(h.includes('<td>'+value+'</td>'));assert.equal(f.results.volume.textContent,row[0]+' mm³');}for(const n of ['standard','reduced-spine','whole-tube'])assert.ok(fs.existsSync(path.join(root,'images/carabiner-'+n+'.png')));assert.match(h,/mesh images show geometry only/);});
 console.log(`${count} carabiner illustration checks passed.`);

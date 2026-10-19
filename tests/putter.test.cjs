@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict'), fs = require('node:fs'), vm = require('node:vm'), path = require('node:path');
 const root = path.join(__dirname, '..'), source = fs.readFileSync(path.join(root, 'putter.js'), 'utf8');
 function fixture(reduce = false) {
-  const el = () => ({ style: {}, attrs: {}, events: {}, setAttribute(k,v){this.attrs[k]=v;}, addEventListener(k,v){this.events[k]=v;} });
+  const el = () => ({ style: {}, attrs: {}, events: {}, contains(target){return this===target||(this.children||[]).includes(target);}, setAttribute(k,v){this.attrs[k]=v;}, addEventListener(k,v){this.events[k]=v;} });
   const control=el(), buttons=Array.from({length:6},el), refs=Array.from({length:6},el), cutter=el(), stock=el();
   const fixture=el(), supports=el(), part=el(), ribs=el(), hole=el(), cleanup=el(), preparation=el(), label=el();
   const paths=[el(),el(),el()].map(p=>Object.assign(p,{getTotalLength:()=>100,getPointAtLength:n=>({x:n,y:n})}));
@@ -23,6 +23,12 @@ test('tab and viewport visibility stop background work',()=>{const f=fixture();f
 test('global motion pause is respected without overriding a local pause',()=>{const f=fixture();f.globalPause(true);assert.equal(f.running(),false);f.globalPause(false);assert.ok(f.running());f.control.events.click();f.globalPause(true);f.globalPause(false);assert.equal(f.running(),false);});
 test('page pause disables playback with a useful explanation but preserves operation inspection',()=>{const f=fixture();f.globalPause(true);assert.equal(f.control.disabled,true);assert.match(f.control.title,/footer/);f.buttons[3].events.click();assert.equal(f.demo.dataset.step,'3');assert.equal(f.refs[3].hidden,false);f.globalPause(false);assert.equal(f.control.disabled,false);assert.equal(f.control.textContent,'Play Animation');assert.equal(f.running(),false);});
 test('system reduced motion remains authoritative after the page pause is cleared',()=>{const f=fixture(true);f.globalPause(true);f.globalPause(false);assert.equal(f.control.disabled,true);assert.match(f.control.title,/reduced-motion/);});
+
+test('a focused CAM reference stays present until keyboard inspection ends',()=>{const f=fixture();f.tick(0);f.tick(100);f.refs[0].events.focusin();assert.equal(f.running(),false);for(let t=200;t<=19000;t+=100)f.tick(t);assert.equal(f.demo.dataset.step,'0');assert.equal(f.refs[0].hidden,false);f.refs[0].events.focusout({relatedTarget:f.buttons[0]});assert.ok(f.running());f.tick(20000);f.tick(20100);assert.equal(f.demo.dataset.step,'0');for(let t=20200;t<=23000;t+=100)f.tick(t);assert.equal(f.demo.dataset.step,'1');});
+
+test('moving focus inside the report references does not restart playback',()=>{const f=fixture();const child={};f.refs[1].children=[child];f.refs[0].events.focusin();f.refs[0].events.focusout({relatedTarget:child});assert.equal(f.running(),false);f.refs[1].events.focusout({relatedTarget:null});assert.ok(f.running());});
+
+test('leaving report focus preserves local, page, and system pauses',()=>{for(const state of ['local','page','system']){const f=fixture(state==='system');f.refs[0].events.focusin();if(state==='local')f.control.events.click();if(state==='page')f.globalPause(true);f.refs[0].events.focusout({relatedTarget:f.control});assert.equal(f.running(),false);if(state==='local')assert.equal(f.control.textContent,'Play Animation');}});
 test('sequence advances through all six stages then loops',()=>{const f=fixture();f.tick(0);for(let t=100;t<=18100;t+=100){f.tick(t);if(t%3000===100)assert.equal(f.demo.dataset.step,String(Math.floor(t/3000)%6));}assert.equal(f.demo.dataset.step,'0');});
 test('supports stay attached through bottom and top machining',()=>{const f=fixture();for(const i of [2,3]){f.buttons[i].events.click();assert.equal(f.supports.style.opacity,'1');assert.equal(f.fixture.style.opacity,'1');}assert.equal(f.hole.style.opacity,'1');});
 test('cleanup and finished stages detach supports without claiming manufactured evidence',()=>{const f=fixture();for(const i of [4,5]){f.buttons[i].events.click();assert.equal(f.supports.style.opacity,'0');assert.equal(f.fixture.style.opacity,'0');assert.equal(f.part.attrs.transform,'translate(18 0)');}assert.equal(f.label.textContent,'Deburr, Polish & Inspect');});
