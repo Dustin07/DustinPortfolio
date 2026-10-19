@@ -1097,3 +1097,23 @@ html.motion-disabled .related-card:hover .related-action>span:last-child {transf
 /* Keep the enlargement cue outside engineering images and chart labels. */
 .figure-zoom-cue {position:static;display:flex;align-items:center;justify-content:center;width:max-content;max-width:calc(100% - 24px);min-height:32px;margin:10px 12px 10px auto;padding:6px 10px}
 .test-photo .figure-zoom-cue {font-size:12px}
+
+/* Document rows keep titles, format, and transfer size easy to scan. */
+.file-links {display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.file-links a {display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;padding:14px 16px;border:1px solid #dce4eb;border-radius:10px;background:#fff;color:var(--blue);text-decoration:none}
+.file-links .file-title {font-size:14px;line-height:1.5}
+.file-links .file-meta {flex:none;white-space:nowrap;font-size:12px;font-weight:400;color:#425568;line-height:1.5}
+.file-links a:hover {background:#eaf1f7;border-color:#8ba1b4;text-decoration:none}
+.file-links a:hover .file-title {text-decoration:underline;text-underline-offset:4px}
+@media screen and (max-width:600px) {
+ .case-content .project-files {padding:20px}
+ .file-links a {align-items:flex-start;flex-direction:column;gap:4px;padding:12px 14px}
+}
+@media (forced-colors:active) {
+ .file-links a {border-color:LinkText;background:Canvas;color:LinkText}
+ .file-links .file-meta {color:CanvasText}
+}
+@media print {
+ .file-links a {break-inside:avoid;background:#fff;color:#111;border-color:#aaa}
+ .file-links .file-meta {color:#333}
+}
