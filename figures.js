@@ -94,6 +94,9 @@
     const captionHeading = originalCaption?.querySelector('strong')?.textContent.trim();
     const heading = captionHeading || 'Project Figure';
     const description = vector ? image.querySelector('title')?.textContent.trim() || heading : image.alt || heading;
+    const details = vector ? image.querySelector('desc')?.textContent.trim() : '';
+    const enlargedDescription = details && details !== description
+      ? description.replace(/[.!?]\s*$/, '') + '. ' + details : description;
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'figure-zoom';
@@ -120,7 +123,7 @@
         // title, description, or gradient IDs in the live page document.
         enlarged.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(copy));
       } else enlarged.src = image.currentSrc || image.src;
-      enlarged.alt = description;
+      enlarged.alt = enlargedDescription;
       const fullCaption = originalCaption?.textContent.trim() || description;
       const captionBody = captionHeading && fullCaption.startsWith(captionHeading)
         ? fullCaption.slice(captionHeading.length).trim().replace(/^\.\s+/, '') : fullCaption;

@@ -15,11 +15,11 @@ class Element {
   close(){this.open=false;this.events.close();}
   getBoundingClientRect(){return {left:100,top:100,right:600,bottom:500};}
 }
-function fixture({count=2,supported=true,linked=false,caption=true,currentSrc=true,vector=false,serializer=true}={}) {
+function fixture({count=2,supported=true,linked=false,caption=true,currentSrc=true,vector=false,serializer=true,vectorDetails=true}={}) {
   const body=new Element('body'),root=new Element('html'),created=[];
   const images=Array.from({length:count},(_,index)=>{
     const img=new Element(vector?'svg':'img');img.alt=`Geometry ${index}`;img.src=`https://example.test/image-${index}.jpg`;img.currentSrc=currentSrc?`https://example.test/selected-${index}.jpg`:'';
-    if(vector){img.querySelector=()=>new Element('title','Vector Geometry');img.viewBox={baseVal:{width:640,height:320}};img.cloneNode=()=>{const copy=new Element('svg');copy.original=img;return copy;};}
+    if(vector){img.querySelector=selector=>selector==='title'?new Element('title','Vector Geometry'):vectorDetails?new Element('desc','Dimensions and model scope.'):null;img.viewBox={baseVal:{width:640,height:320}};img.cloneNode=()=>{const copy=new Element('svg');copy.original=img;return copy;};}
     const label=new Element('figcaption',`Figure ${index}. Source and model scope.`);
     label.querySelector=()=>new Element('strong',`Figure ${index}`);
     const figure=new Element('figure');figure.querySelector=()=>caption?label:null;
@@ -47,7 +47,9 @@ test('backdrop dismissal requires pointerdown and click outside',()=>{const f=fi
 test('dragging from the image to the backdrop keeps the viewer open',()=>{const f=fixture();f.images[0].previous.events.click();f.dialog.events.pointerdown({target:f.image,clientX:200,clientY:200});f.dialog.events.click({target:f.dialog,clientX:50,clientY:50});assert.equal(f.dialog.open,true);});
 test('clicking dialog padding does not dismiss the image',()=>{const f=fixture();f.images[0].previous.events.click();const e={target:f.dialog,clientX:110,clientY:110};f.dialog.events.pointerdown(e);f.dialog.events.click(e);assert.equal(f.dialog.open,true);});
 test('each subsequent opening updates the single shared viewer',()=>{const f=fixture();f.images[0].previous.events.click();f.close.events.click();f.images[1].previous.events.click();assert.equal(f.image.alt,'Geometry 1');assert.equal(f.created.filter(e=>e.tag==='dialog').length,1);});
-test('vector figures use isolated data images and preserve dimensions',()=>{const f=fixture({vector:true});f.images[0].previous.events.click();assert.equal(f.image.alt,'Vector Geometry');assert.ok(f.image.src.startsWith('data:image/svg+xml;charset=utf-8,'));assert.match(decodeURIComponent(f.image.src),/<svg width="640" height="320"/);assert.equal(f.images[0].attrs.width,undefined);});
+test('vector figures use isolated data images and preserve dimensions',()=>{const f=fixture({vector:true});f.images[0].previous.events.click();assert.equal(f.image.alt,'Vector Geometry. Dimensions and model scope.');assert.ok(f.image.src.startsWith('data:image/svg+xml;charset=utf-8,'));assert.match(decodeURIComponent(f.image.src),/<svg width="640" height="320"/);assert.equal(f.images[0].attrs.width,undefined);});
+test('vector descriptions remain available after opening the viewer while trigger names stay concise',()=>{const f=fixture({vector:true});assert.equal(f.images[0].previous.attrs['aria-label'],'Enlarge: Vector Geometry');f.images[0].previous.events.click();assert.ok(f.image.alt.includes('Dimensions and model scope.'));});
+test('vectors without a detailed description retain their title as the image alternative',()=>{const f=fixture({vector:true,vectorDetails:false});f.images[0].previous.events.click();assert.equal(f.image.alt,'Vector Geometry');});
 test('SVG export is optional and unsupported vectors stay readable',()=>{const f=fixture({vector:true,serializer:false});assert.equal(f.images[0].previous,undefined);});
 test('actual-size control exposes a keyboard-scrollable detail region',()=>{const f=fixture();f.images[0].previous.events.click();f.size.events.click();assert.equal(f.size.attrs['aria-pressed'],'true');assert.equal(f.media.tabIndex,0);assert.equal(f.dialog.classList.values.has('is-actual-size'),true);assert.equal(f.media.attrs['aria-label'],'Figure Detail');});
 test('fit mode removes the extra pan stop and resets its offsets',()=>{const f=fixture();f.images[0].previous.events.click();f.size.events.click();f.media.scrollLeft=100;f.media.scrollTop=50;f.size.events.click();assert.equal(f.media.tabIndex,-1);assert.equal(f.media.scrollLeft,0);assert.equal(f.media.scrollTop,0);assert.equal(f.size.attrs['aria-pressed'],'false');});
