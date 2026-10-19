@@ -7,7 +7,10 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const preferenceKey = 'dustin-portfolio-motion-paused';
   let paused = false;
-  try { paused = sessionStorage.getItem(preferenceKey) === 'true'; } catch (_) { /* Storage is optional. */ }
+  const readPreference = () => {
+    try { paused = sessionStorage.getItem(preferenceKey) === 'true'; } catch (_) { /* Keep this page's state if storage is unavailable. */ }
+  };
+  readPreference();
   const footer = document.querySelector('footer');
   const control = footer ? document.createElement('button') : null;
   const syncMotion = () => {
@@ -34,5 +37,15 @@
   }
   reducedMotion.addEventListener('change', syncMotion);
   document.addEventListener('visibilitychange', syncMotion);
+  const restoreMotion = () => { readPreference(); syncMotion(); };
+  addEventListener('pageshow', restoreMotion);
+  // Native cross-page transitions share the same pause preference on both
+  // sides of navigation, including restored browser-history pages.
+  const skipStillTransition = event => {
+    if (event.type === 'pagereveal') restoreMotion();
+    if (paused || reducedMotion.matches || document.hidden) event.viewTransition?.skipTransition();
+  };
+  addEventListener('pageswap', skipStillTransition);
+  addEventListener('pagereveal', skipStillTransition);
   syncMotion();
 })();
