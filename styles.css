@@ -1133,4 +1133,4 @@ html.motion-disabled::view-transition-new(*) {animation:none!important}
 @media (prefers-reduced-motion:reduce) {
  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*) {animation:none!important}
 }
-@media screen and (max-width:360px) {.case-hero h1 {font-size:1.95rem}}
+@media screen and (max-width:600px) {.case-hero h1 {font-size:clamp(1.95rem,calc(8vw + .35rem),2.3rem)}}
