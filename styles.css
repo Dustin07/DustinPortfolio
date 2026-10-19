@@ -1071,6 +1071,7 @@ html.motion-disabled .related-card:hover .related-action>span:last-child {transf
 /* Progressive line wrapping avoids isolated words in headings and summaries. */
 .hero h1,.case-hero h1,.section-heading h2,.timeline-heading h2,.about h2 {text-wrap:balance}
 .intro,.case-summary,.featured-card>p,.timeline-card p,.skills p {text-wrap:pretty}
+.hero .actions>a {display:inline-flex;align-items:center;gap:6px;min-height:44px}
 
 /* One clear contact action, with quieter supporting destinations. */
 @media screen and (forced-colors:none) {
