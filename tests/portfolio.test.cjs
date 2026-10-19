@@ -11,6 +11,7 @@ class Element {
   getAttribute(name) { return this.attrs[name]; }
   removeAttribute(name) { delete this.attrs[name]; }
   focus() { this.focused = true; }
+  getClientRects() { return this.hidden ? [] : [{width:100,height:44}]; }
   contains(target) {return this===target || (this.children||[]).some(child=>child.contains(target));}
 }
 function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, storageBlocked = false, library = null) {
@@ -175,6 +176,7 @@ function navigationFixture() {
   toc.querySelector=selector=>selector==='strong'?heading:null;
   toc.querySelectorAll=()=>links;
   const navLink=new Element('Projects');navigation.children=[navLink];
+  navigation.querySelector=selector=>selector==='a'?navLink:null;
   nav.contains=target=>target===nav||navigation.contains(target)||nav.children.some(child=>child.contains(target));
   const properties={};const events={},documentEvents={};
   const context={
@@ -186,6 +188,11 @@ function navigationFixture() {
   return {nav,navigation,navLink,header,toc,bottom,links,sections,context,properties,events,menu:nav.children[0],toggle:toc.children[0],tocLinks:toc.children[1],printed:()=>printed,pointer:target=>(documentEvents.pointerdown||[]).forEach(fn=>fn({target}))};
 }
 test('phone menu has associated controls and starts collapsed',()=>{const f=navigationFixture();assert.equal(f.menu.getAttribute('aria-controls'),'primary-links');assert.equal(f.menu.getAttribute('aria-expanded'),'false');assert.equal(f.properties['--nav-clearance'],'104px');});
+test('a contents link hidden by a compact breakpoint returns focus to its toggle',()=>{const f=navigationFixture();f.links[1].hidden=true;f.toc.events.focusout({target:f.links[1],relatedTarget:null});assert.equal(f.toggle.focused,true);});
+test('a main-menu toggle hidden by a wide breakpoint moves focus to visible navigation',()=>{const f=navigationFixture();f.menu.hidden=true;f.nav.events.focusout({target:f.menu,relatedTarget:null});assert.equal(f.navLink.focused,true);});
+test('a contents toggle hidden by a wide breakpoint moves focus into the visible contents',()=>{const f=navigationFixture();f.toggle.hidden=true;f.tocLinks.querySelector=()=>f.links[0];f.toc.events.focusout({target:f.toggle,relatedTarget:null});assert.equal(f.links[0].focused,true);});
+test('responsive focus recovery does not override an ordinary destination',()=>{const f=navigationFixture();f.links[1].hidden=true;f.toc.events.focusout({target:f.links[1],relatedTarget:f.sections.results});assert.equal(f.toggle.focused,undefined);});
+test('blurring a rendered control does not force focus back into navigation',()=>{const f=navigationFixture();f.toc.events.focusout({target:f.links[1],relatedTarget:null});assert.equal(f.toggle.focused,undefined);});
 test('phone menu toggles and Escape restores focus',()=>{const f=navigationFixture();f.menu.events.click();assert.equal(f.menu.getAttribute('aria-expanded'),'true');f.nav.events.keydown({key:'Escape'});assert.equal(f.menu.getAttribute('aria-expanded'),'false');assert.equal(f.menu.focused,true);});
 test('navigation selection closes the menu',()=>{const f=navigationFixture();f.menu.events.click();f.navigation.events.click({target:f.links[0]});assert.equal(f.menu.getAttribute('aria-expanded'),'false');});
 test('outside taps dismiss the phone menu without leaving focus hidden',()=>{const f=navigationFixture();f.menu.events.click();f.context.document.activeElement=f.navLink;f.pointer(new Element('outside'));assert.equal(f.menu.getAttribute('aria-expanded'),'false');assert.equal(f.menu.focused,true);});

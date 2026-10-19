@@ -3,6 +3,17 @@
   const year = document.querySelector('#year');
   if (year) year.textContent = String(new Date().getFullYear());
 
+  // Responsive CSS can hide a focused link or toggle and send focus to body.
+  // Move only when that control actually loses its rendered box; ordinary
+  // focus changes and leaving the browser keep their native behavior.
+  const keepNavigationFocusVisible = (container, toggle, links) => {
+    container.addEventListener('focusout', event => {
+      if (event.relatedTarget || event.target.getClientRects().length) return;
+      const visible = toggle.getClientRects().length ? toggle : links.querySelector('a');
+      if (visible?.getClientRects().length) visible.focus({preventScroll:true});
+    });
+  };
+
   // Store only project-view preferences in this tab, never visitor analytics.
   const storageKey = 'dustin-portfolio-library';
   const remember = value => {
@@ -144,6 +155,7 @@
     toc.insertBefore(toggle, heading);
     toc.append(links);
     toc.classList.add('enhanced');
+    keepNavigationFocusVisible(toc, toggle, links);
     toggle.addEventListener('click', () => toggle.setAttribute('aria-expanded', String(toggle.getAttribute('aria-expanded') !== 'true')));
     toc.addEventListener('keydown', event => {
       if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
@@ -190,6 +202,7 @@
     navigation.id = 'primary-links';
     nav.insertBefore(menu, navigation);
     nav.classList.add('nav-enhanced');
+    keepNavigationFocusVisible(nav, menu, navigation);
     menu.addEventListener('click', () => menu.setAttribute('aria-expanded', String(menu.getAttribute('aria-expanded') !== 'true')));
     navigation.addEventListener('click', event => {
       if (event.target.closest('a')) { menu.setAttribute('aria-expanded', 'false'); clearance(); }

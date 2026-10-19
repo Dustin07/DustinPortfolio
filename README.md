@@ -57,3 +57,5 @@ Search indexes separated DOM text nodes, not concatenated `textContent` from min
 Case-study return links open the full project library directly. When a tab has a saved category or keyword, the links include that view in their URL so returning visitors see the same results below the header. Fresh visitors and blocked-storage browsers still have a plain library destination.
 
 Project-file rows show PDF format and rounded decimal transfer sizes in both visible text and accessible link labels. The document checks compare those cues with the original files. If an approved document replacement changes size, update its cues along with the integrity baseline.
+
+When a responsive breakpoint hides a focused menu control, focus moves to its visible toggle or first link without scrolling the page. Normal focus changes and leaving the browser retain their native behavior. Verify both directions when changing compact-navigation breakpoints.
