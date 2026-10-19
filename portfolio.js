@@ -8,7 +8,11 @@
   // focus changes and leaving the browser keep their native behavior.
   const keepNavigationFocusVisible = (container, toggle, links) => {
     container.addEventListener('focusout', event => {
-      if (event.relatedTarget || event.target.getClientRects().length) return;
+      if (event.relatedTarget) {
+        if (!container.contains(event.relatedTarget)) toggle.setAttribute('aria-expanded', 'false');
+        return;
+      }
+      if (event.target.getClientRects().length) return;
       const visible = toggle.getClientRects().length ? toggle : links.querySelector('a');
       if (visible?.getClientRects().length) visible.focus({preventScroll:true});
     });

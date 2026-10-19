@@ -61,3 +61,4 @@ Case-study return links open the full project library directly. When a tab has a
 Project-file rows show PDF format and rounded decimal transfer sizes in both visible text and accessible link labels. The document checks compare those cues with the original files. If an approved document replacement changes size, update its cues along with the integrity baseline.
 
 When a responsive breakpoint hides a focused menu control, focus moves to its visible toggle or first link without scrolling the page. Normal focus changes and leaving the browser retain their native behavior. Verify both directions when changing compact-navigation breakpoints.
+Expanded navigation disclosures also close when keyboard focus leaves their contents, while focus continues to its requested destination. Moving between controls inside the disclosure keeps it open.
