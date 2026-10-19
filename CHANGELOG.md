@@ -92,6 +92,14 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Verification: 17 putter checks, 20 engineering checks, all 13 pages/392 references/15 images, metadata, and 70 asset references passed. Browser inspection confirmed exactly one selected operation and one visible report for each of all six manual stages.
 - Deployment gate: the preceding focus-retention commit passed Portfolio Checks; its Pages deployment was still pending when this batch was prepared. This optimization needs its own successful checks/deployment and live verification.
 
+### Deployment verified after recovery
+
+- The focus fix is [31a91d4](https://github.com/Dustin07/DustinPortfolio/commit/31a91d4fad1d57ba257cf7acfd4e1402c55aa2ac); the machining optimization is [d3888e3](https://github.com/Dustin07/DustinPortfolio/commit/d3888e3385adda43c1cee64006783a8e37cfbc14).
+- The optimization's full [Portfolio Checks run](https://github.com/Dustin07/DustinPortfolio/actions/runs/39288109739) and [Pages deployment](https://github.com/Dustin07/DustinPortfolio/actions/runs/39288108696) both completed successfully on 2026-10-19. This supersedes the pending gates for these code changes above.
+- Live browser inspection confirmed putter.js?v=4116476f2a1a and carabiner.js?v=177b7847e64f, matching the committed sources. The putter at 1280px and carabiner at 390px retained visible report-image focus through opening/closing the modal, with no root overflow. The live putter also disabled playback during page pause, retained the local pause after page resume, and allowed playback after explicit local resume. The page-wide preference was restored to unpaused after the checks.
+- The earlier selection-aware navigation is also verified live: the Boeing filter showed two projects, Next Result advanced from protective covers to ergonomic attachments, and the last matching case wrapped to protective covers.
+- No paid hosting, services, dependencies, or usage-credit purchase was introduced. The original PDFs were not changed.
+
 ## Verification and deployment notes
 
 - The previously committed selection-aware navigation passed 89 portfolio regression checks and real local browser flows for Boeing and FEA selections. Clearing filters restored the original project order.
