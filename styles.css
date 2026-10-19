@@ -30,9 +30,9 @@ h3 {font-size: 1.3rem}
 .intro {max-width: 650px;font-size: 1.06rem}
 .actions {display: flex;align-items: center;flex-wrap: wrap;margin-top: 24px;font-size: 14px}
 .button {display: inline-block;color: white;text-decoration: none;font-weight: 600}
-.hero-aside {align-self: center;border-left: 2px solid var(--line);padding-left: 26px}
-.hero-aside span {display: block;color: var(--muted);font-size: 14px}
-.hero-aside strong {display: block;font-size: 1rem;margin: 5px 0 18px}
+
+
+
 .credibility {padding-top: 22px;flex-wrap: wrap;font-size: 14px;color: var(--muted)}
 .credibility strong {color: var(--ink)}
 .section-heading {display: flex;justify-content: space-between;align-items: end;gap: 24px}
@@ -62,17 +62,17 @@ details p {margin: 16px 0 0;color: var(--muted);font-size: 15px}
 .barline i {height: 9px;border-radius: 2px}
 .barline b {font-weight: 500;text-align: right;color: var(--blue)}
 .notice {font-size: 13px;line-height: 1.6;color: var(--muted);margin: 24px 0 0;max-width: 850px}
-.experience-layout {display: grid;grid-template-columns: 1fr 2fr;gap: 60px}
-.experience-intro p {color: var(--muted)}
-.role {display: grid;grid-template-columns: 125px 1fr;gap: 22px;border-bottom: 1px solid var(--line)}
-.date {font-size: 13px;color: var(--muted)}
-.role h3 {font-size: 1.1rem;margin: 0 0 5px}
-.role .job {font-size: 14px;color: var(--blue);margin-bottom: 8px}
-.role p {color: var(--muted);font-size: 15px;margin: 0}
+
+
+
+
+
+
+
 .about-grid {display: grid;grid-template-columns: 1fr 1fr}
-.education-item {margin: 24px 0}
-.education-item h3 {font-size: 1.06rem;margin-bottom: 5px}
-.education-item p {color: var(--muted);margin: 0;font-size: 15px}
+
+
+
 .award {font-size: 14px;margin-top: 24px}
 .award p {color: var(--muted);margin: 6px 0 0}
 .skills {display: grid;margin-top: 24px}
@@ -89,10 +89,10 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .nav {align-items: start;gap: 12px;flex-direction: column;min-height: 0}
 .hero {grid-template-columns: 1fr}
 .grid {grid-template-columns: 1fr}
-.experience-layout {grid-template-columns: 1fr}
+
 .about-grid {grid-template-columns: 1fr}
-.experience-layout {gap: 26px}
-.role {grid-template-columns: 1fr;gap: 8px}
+
+
 .contact-inner {flex-direction: column;align-items: start}
 .section-heading {align-items: start}
 .count {display: none}
@@ -102,11 +102,11 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .brand b {background: #000;color: var(--maize)}
 .eyebrow {color: var(--blue)}
 .hero h1 {color: #000}
-.hero-aside {border: 0;padding: 0;display: grid}
-.school.michigan {color: white}
-.school.oregon {color: white}
-.school span {color: #e0e1e4}
-.school strong {margin: 4px 0 0}
+
+
+
+
+
 .button {background: #000}
 .credibility {padding-bottom: 22px}
 .project-card {position: relative}
@@ -118,9 +118,9 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .barline i {background: var(--blue)}
 .barline:nth-child(3) i {background: var(--orange)}
 .barline:nth-child(4) i {background: #565656}
-.education-item {background: #f7f3ee}
-.education-item.michigan {border-left-color: var(--maize);color: #fff}
-.education-item.michigan p {color: #e2e7ed}
+
+
+
 .contact {background: var(--blue)}
 .contact a {color: var(--maize)}
 :focus-visible {outline: 3px solid var(--orange);outline-offset: 5px}
@@ -160,21 +160,21 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .file-links a:hover {text-decoration: underline}
 .file-format {font-size:.75em;font-weight:500;letter-spacing:.02em;opacity:.85;margin-left:6px}
 .case-bottom {padding-top: 24px;display: flex;gap: 18px;flex-wrap: wrap}
-@media(max-width:760px) {.hero-aside {grid-template-columns: 1fr 1fr}
-.school strong {font-size: 14px}
+@media(max-width:760px) {
+
 .case-shell {width: calc(100% - 32px)}
 .case-toc {position: static;padding-bottom: 18px}
 .case-toc a {display: inline-block;margin-right: 14px}
 .case-content h2 {scroll-margin-top: 145px}
 }
-@media(max-width:440px) {.hero-aside {grid-template-columns: 1fr}
+@media(max-width:440px) {
 .case-hero {padding-top: 26px}
 }
 .navlinks a {padding: 7px 10px;border-radius: 999px}
 .navlinks a:hover {text-decoration: none}
 .hero {align-items: center}
-.school.michigan {border-left: 0}
-.school.oregon {border-left: 0}
+
+
 .button {border: 0;border-bottom: 0;padding: 11px 20px;transition: transform .18s ease,box-shadow .18s ease}
 .button:hover {text-decoration: none}
 .credibility {border-top: 0}
@@ -186,13 +186,13 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .project-card[data-category="Academic"]:before {background: var(--orange)}
 .result {border-left: 0}
 .chart {border-left: 0}
-.role {border: 0;border-radius: 18px;padding: 20px 22px;margin-bottom: 8px;transition: background .18s ease,transform .18s ease}
-.role:first-child {padding-top: 20px}
-.role:nth-child(odd) {background: rgba(0,39,76,.035)}
-.role:hover {background: rgba(255,203,5,.13);transform: translateX(5px)}
+
+
+
+
 .about {border: 0}
-.education-item {border-left: 0;padding: 22px 24px}
-.education-item.michigan {border-left: 0}
+
+
 .award {padding: 22px}
 .skills>div {padding: 18px}
 .contact {border-top: 0}
@@ -209,10 +209,10 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .file-links a {border-radius: 999px;padding: 10px 16px}
 .case-bottom {border-top: 0;padding: 20px;margin-top: 30px}
 @media(max-width:760px) {.hero {padding-top: 46px}
-.hero-aside {display: grid}
-.school {transform: none}
-.school.michigan {transform: none}
-.school.oregon {transform: none}
+
+
+
+
 .credibility {border-radius: 22px}
 .projects {padding-top: 48px}
 .project-card {transform: none;border-radius: 22px}
@@ -265,10 +265,10 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .timeline-card {grid-column:3;grid-row:1}
 }
 :root {--radius-card: 24px;--radius-panel: 40px;--radius-control: 999px;--space-section: clamp(64px,7vw,92px);--space-card: 24px}
-.hero-aside {gap: var(--space-card)}
-.school {transform: none;padding: 22px 24px}
-.school.michigan {transform: none;padding: 22px 24px}
-.school.oregon {transform: none;padding: 22px 24px}
+
+
+
+
 .credibility {display: flex;align-items: center;justify-content: center;gap: 34px;min-height: 68px;margin: 0 0 36px;padding: 16px 28px}
 .credibility-label {color: var(--muted);white-space: nowrap}
 .credibility-list {display: flex;align-items: center;gap: 34px}
@@ -289,10 +289,10 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .contact {padding: 52px 0}
 .contact-inner {gap: 40px}
 @media(max-width:760px) {:root {--radius-card: 20px;--radius-panel: 30px;--space-section: 56px;--space-card: 18px}
-.hero-aside {gap: 16px}
-.school {padding: 18px}
-.school.michigan {padding: 18px}
-.school.oregon {padding: 18px}
+
+
+
+
 .credibility {align-items: flex-start;justify-content: flex-start;gap: 10px;min-height: 0;margin-bottom: 28px;padding: 18px 20px}
 .credibility-label {font-size: 14px}
 .credibility-list {align-items: flex-start;gap: 6px 20px;flex-wrap: wrap}
@@ -318,10 +318,10 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .brand b {display: grid;place-items: center;width: 38px;height: 38px;flex: 0 0 38px;padding: 0;border: 1.5px solid rgba(255,255,255,.75);border-radius: 50%;line-height: 1}
 .nav {min-height: 70px}
 .hero h1 {letter-spacing: -.045em}
-.school {border-radius: 14px;transition: none}
-.school.michigan {border-radius: 14px;box-shadow: none;transition: none}
-.school.oregon {border-radius: 14px;box-shadow: none;transition: none}
-.school:hover {transform: none;box-shadow: none}
+
+
+
+
 .button {border-radius: 9px;box-shadow: none}
 .button:hover {transform: none;box-shadow: none;background: #123c61}
 .projects {border-radius: 0}
@@ -365,7 +365,7 @@ footer {padding: 22px 0;font-size: 13px;color: var(--muted)}
 .oregon-step .timeline-card {box-shadow: inset 3px 0 0 var(--orange)}
 .michigan-step .timeline-card {border-color: var(--blue)}
 .about {border-radius: 0;margin: 0;padding: var(--space-section) 0}
-.education-item {border-radius: 14px;box-shadow: none}
+
 .contact {border-radius: 0}
 .case-hero {border-radius: 0}
 .case-toc {border-radius: 12px;box-shadow: none}
@@ -416,8 +416,7 @@ body {background: #e8eef3}
 .credibility,
 .timeline-card,
 .award,
-.skills>div,
-.education-item:not(.michigan) {background: linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border: 1px solid rgba(255,255,255,.85);border-radius: 22px;backdrop-filter: blur(20px) saturate(155%);-webkit-backdrop-filter: blur(20px) saturate(155%);box-shadow: inset 0 2px 2px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,39,76,.14),inset 1px 0 2px rgba(255,255,255,.75),0 14px 34px rgba(0,39,76,.10)}
+.skills>div{background: linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.28));border: 1px solid rgba(255,255,255,.85);border-radius: 22px;backdrop-filter: blur(20px) saturate(155%);-webkit-backdrop-filter: blur(20px) saturate(155%);box-shadow: inset 0 2px 2px rgba(255,255,255,.95),inset 0 -1px 2px rgba(0,39,76,.14),inset 1px 0 2px rgba(255,255,255,.75),0 14px 34px rgba(0,39,76,.10)}
 .project-card[data-category="Academic"] {border-top-color: rgba(255,255,255,.85)}
 .project-card:after {content: "";position: absolute;inset: 0;border-radius: inherit;pointer-events: none;background: linear-gradient(125deg,rgba(255,255,255,.28),transparent 28% 73%,rgba(255,255,255,.20));box-shadow: inset 0 0 12px rgba(255,255,255,.24)}
 .project-card:hover {background: linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,255,255,.38));border-color: #fff;box-shadow: inset 0 2px 2px #fff,inset 0 -1px 2px rgba(0,39,76,.14),0 18px 40px rgba(0,39,76,.15)}
@@ -431,11 +430,11 @@ body {background: #e8eef3}
 .intro {color: #1c2e3d}
 .timeline-heading>p:last-child {color: #354b5d}
 .project-link {border-top-color: rgba(0,39,76,.14)}
-.school {border: 1px solid rgba(255,255,255,.6);box-shadow: inset 0 1px 1px rgba(255,255,255,.45),0 12px 26px rgba(0,39,76,.15);backdrop-filter: blur(20px);-webkit-backdrop-filter: blur(20px)}
-.school.michigan {background: rgba(0,39,76,.82)}
+
+
 .michigan-step .timeline-card {background: rgba(0,39,76,.82)}
-.education-item.michigan {background: rgba(0,39,76,.82)}
-.school.oregon {background: rgba(17,17,17,.82)}
+
+
 @media(max-width:760px) {.topbar {top: 8px;margin-top: 8px;border-radius: 22px;width: calc(100% - 20px)}
 .nav {padding: 14px 18px}
 .project-card {background: linear-gradient(135deg,rgba(255,255,255,.76),rgba(255,255,255,.46));backdrop-filter: blur(12px);-webkit-backdrop-filter: blur(12px)}
@@ -640,9 +639,9 @@ main[id] {scroll-margin-top: var(--nav-clearance,145px)}
 .case-toc {background: #f7fafc;backdrop-filter: none;-webkit-backdrop-filter: none}
 .case-brief {background: #f7fafc;backdrop-filter: none;-webkit-backdrop-filter: none}
 .michigan-step .timeline-card {background: var(--blue)}
-.school.michigan {background: var(--blue)}
-.education-item.michigan {background: var(--blue)}
-.school.oregon {background: #111}
+
+
+
 }
 .case-bottom>a {min-height: 44px;display: inline-flex;align-items: center}
 .case-bottom>button {min-height: 44px;display: inline-flex;align-items: center}
@@ -718,15 +717,15 @@ a {color: #111;text-decoration: underline}
 .file-links a {color: #111;background: white;border: 1px solid #aaa}
 .project-card {background: white!important;color: #111!important;backdrop-filter: none;box-shadow: none;break-inside: avoid;border: 1px solid #ccc}
 .timeline-card {background: white!important;color: #111!important;backdrop-filter: none;box-shadow: none;break-inside: avoid;border: 1px solid #ccc}
-.school {background: white!important;color: #111!important;backdrop-filter: none;box-shadow: none;break-inside: avoid;border: 1px solid #ccc}
-.education-item {background: white!important;color: #111!important;backdrop-filter: none;box-shadow: none;break-inside: avoid;border: 1px solid #ccc}
+
+
 .skills>div {background: white!important;color: #111!important;backdrop-filter: none;box-shadow: none;break-inside: avoid;border: 1px solid #ccc}
 .award {background: white!important;color: #111!important;backdrop-filter: none;box-shadow: none;break-inside: avoid;border: 1px solid #ccc}
 .research-spotlight {background: white!important;color: #111!important;backdrop-filter: none;box-shadow: none;break-inside: avoid;border: 1px solid #ccc}
 .credibility {background: white!important;color: #111!important;backdrop-filter: none;box-shadow: none;break-inside: avoid;border: 1px solid #ccc}
-.school span {color: #111!important}
-.school strong {color: #111!important}
-.education-item p {color: #111!important}
+
+
+
 .hero {padding: 20pt 0;background: #fff!important;color: #111!important}
 .projects {padding: 20pt 0;background: #fff!important;color: #111!important}
 .about {padding: 20pt 0;background: #fff!important;color: #111!important}
