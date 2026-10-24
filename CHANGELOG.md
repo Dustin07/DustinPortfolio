@@ -166,6 +166,13 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Deployment gate: local layout verified; repository checks, Pages deployment, and live asset/target measurements remain required.
 - Deployment verified: [69aefe3](https://github.com/Dustin07/DustinPortfolio/commit/69aefe3cba2e3002bfd0f04574312f96b1269d74) passed [Portfolio Checks](https://github.com/Dustin07/DustinPortfolio/actions/runs/40078734302) and [Pages deployment](https://github.com/Dustin07/DustinPortfolio/actions/runs/40078734180). Live inspection confirmed putter.css?v=c6bd3da8ab81 and carabiner.css?v=c7349e1a7ef6, both 44px playback targets at 520px, working putter pause, and no root overflow. Local checks also passed 19 putter, 17 carabiner, 20 engineering, original-document integrity, all 13 pages/392 references/15 images, and 70 asset references. This supersedes the pending gate above.
 
+## 2026-10-24 — Final narrow-layout review
+
+- Reviewed all eleven published case studies at 320px viewport width. None had root horizontal overflow or overflowing visible paragraph, heading, list-item, link, or button text in the DOM measurements. Wide table regions retain their intended internal scrolling; this check is not a claim of complete assistive-technology coverage.
+- On the live home page, the Experience & Education descriptive paragraph occupied its full 1,100px desktop heading container with no maximum-width constraint. At 320px, the section and timeline occupied the same 273px content width without root overflow.
+- The live body and its pseudo-elements reported no background image, the ambient preference element had no decorative children, and both home-page document actions used the unaccented label Download Resume.
+- This was a verification pass against the deployed site, with no product source changes. Temporary viewport sizing was reset afterward. The earlier successful code deployments and their verification remain authoritative.
+
 ## Verification and deployment notes
 
 - The previously committed selection-aware navigation passed 89 portfolio regression checks and real local browser flows for Boeing and FEA selections. Clearing filters restored the original project order.
