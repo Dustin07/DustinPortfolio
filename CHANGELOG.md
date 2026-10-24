@@ -118,6 +118,7 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Verification: all 14 JavaScript suites passed, including 27 figure-viewer and 93 portfolio checks; all 13 pages/392 references/15 images and 70 asset references passed. Existing original-document checks passed.
 - Browser checks covered vector and raster images at 667×320, actual-size layouts at 844×390, 390×844, and 1280×800, horizontal/vertical keyboard panning, visible Close controls, Escape, and return focus. The three additional viewport layouts had no root overflow; full-height layouts continued to fit the original figure dimensions.
 - Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this batch.
+- Deployment verified: [d7b641a](https://github.com/Dustin07/DustinPortfolio/commit/d7b641a22f8a92532ca13c7f19a063e474dac56c) passed [Portfolio Checks](https://github.com/Dustin07/DustinPortfolio/actions/runs/40074635736) and [Pages deployment](https://github.com/Dustin07/DustinPortfolio/actions/runs/40074635147). Live inspection confirmed styles.css?v=9911ac4debc6 and figures.js?v=e81470620e53. At 667×320, the live vector viewer had a 125px visible image area, horizontal and vertical arrows moved the drawing, a repeated arrow advanced its pan from 40px to 80px without changing the surrounding dialog's scroll position, Close remained visible, and Escape from the focused image restored the original trigger. This supersedes the pending gate above.
 
 ## Verification and deployment notes
 
