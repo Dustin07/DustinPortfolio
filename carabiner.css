@@ -1,7 +1,7 @@
 .carabiner-demo{margin:24px 0 30px;border:1px solid #cbd9e3;border-radius:22px;overflow:hidden;background:#f7fafc}
 .carabiner-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:20px 22px}
 .carabiner-head strong{color:#00274c;font-size:1.1rem}.carabiner-head small{display:block;margin-top:4px;color:#344d63;font-size:.84rem}
-.carabiner-toggle,.carabiner-stage{font:inherit;color:#00274c;background:white;border:1px solid #aebecb;border-radius:12px;padding:10px 12px;cursor:pointer}
+.carabiner-toggle,.carabiner-stage{font:inherit;color:#00274c;background:white;border:1px solid #aebecb;border-radius:12px;padding:10px 12px;cursor:pointer;min-height:44px}
 .carabiner-toggle:disabled{opacity:.6;cursor:default}.carabiner-toggle:focus-visible,.carabiner-stage:focus-visible{outline:3px solid #c34500;outline-offset:3px}
 .carabiner-visual{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:12px;padding:0 22px}
 .carabiner-art{width:100%;height:280px;display:block}

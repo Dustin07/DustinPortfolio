@@ -158,6 +158,13 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this batch.
 - Deployment verified: [4d3698c](https://github.com/Dustin07/DustinPortfolio/commit/4d3698cd5c26590f922a8730ca79826666b71f2d) passed [Portfolio Checks](https://github.com/Dustin07/DustinPortfolio/actions/runs/40077897663) and [Pages deployment](https://github.com/Dustin07/DustinPortfolio/actions/runs/40077897643). Live pages served putter.js?v=6b9cae430522 and carabiner.js?v=12f864bad3b5. At 1280px, putter playback advanced beyond the held bottom-machining pose to later operations, then paused with one selected operation and one visible reference. At 390px, carabiner playback advanced to Whole Tube with the documented 1251.5 mm³ volume and a drawing stroke-width of 32. Neither live page had root overflow. This supersedes the pending gate above.
 
+## 2026-10-24 — Preserve comfortable phone playback targets
+
+- At the 520px compact breakpoint, the putter playback button measured 39.1px high and the carabiner button 38.6px. Both illustration control groups now retain a 44px minimum height when compact padding and type are applied.
+- Files: putter.css, carabiner.css, the two case pages' content-hash references, README.md, and this record. Existing larger controls retain their natural height; no illustration timing, geometry, content, documents, or services changed.
+- Browser verification: both playback targets measured 44px at 520px. Wrapped controls at 320px and desktop controls at 1280px retained their larger natural heights. Neither case had root overflow at any of those three widths.
+- Deployment gate: local layout verified; repository checks, Pages deployment, and live asset/target measurements remain required.
+
 ## Verification and deployment notes
 
 - The previously committed selection-aware navigation passed 89 portfolio regression checks and real local browser flows for Boeing and FEA selections. Clearing filters restored the original project order.

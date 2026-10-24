@@ -2,7 +2,7 @@
 .putter-demo-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px 0}
 .putter-demo-header strong{color:#00274c;font-size:1.1rem}
 .putter-demo-header small{display:block;margin-top:5px;color:#344d63;font-size:.84rem;min-height:1.5em}
-.putter-toggle,.putter-stage{font:inherit;cursor:pointer;border:1px solid #aebecb;border-radius:12px;background:white;color:#00274c;padding:10px 14px}
+.putter-toggle,.putter-stage{font:inherit;cursor:pointer;border:1px solid #aebecb;border-radius:12px;background:white;color:#00274c;padding:10px 14px;min-height:44px}
 .putter-toggle:disabled{cursor:default;opacity:.6}
 .putter-toggle:focus-visible,.putter-stage:focus-visible{outline:3px solid #c34500;outline-offset:3px}
 .putter-art{display:block;width:100%;height:auto}
