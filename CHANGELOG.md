@@ -164,6 +164,7 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Files: putter.css, carabiner.css, the two case pages' content-hash references, README.md, and this record. Existing larger controls retain their natural height; no illustration timing, geometry, content, documents, or services changed.
 - Browser verification: both playback targets measured 44px at 520px. Wrapped controls at 320px and desktop controls at 1280px retained their larger natural heights. Neither case had root overflow at any of those three widths.
 - Deployment gate: local layout verified; repository checks, Pages deployment, and live asset/target measurements remain required.
+- Deployment verified: [69aefe3](https://github.com/Dustin07/DustinPortfolio/commit/69aefe3cba2e3002bfd0f04574312f96b1269d74) passed [Portfolio Checks](https://github.com/Dustin07/DustinPortfolio/actions/runs/40078734302) and [Pages deployment](https://github.com/Dustin07/DustinPortfolio/actions/runs/40078734180). Live inspection confirmed putter.css?v=c6bd3da8ab81 and carabiner.css?v=c7349e1a7ef6, both 44px playback targets at 520px, working putter pause, and no root overflow. Local checks also passed 19 putter, 17 carabiner, 20 engineering, original-document integrity, all 13 pages/392 references/15 images, and 70 asset references. This supersedes the pending gate above.
 
 ## Verification and deployment notes
 
