@@ -130,6 +130,21 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Browser checks: a legacy FEA link at 1280px landed with the library at 108px below an 84px header, retaining body focus. At 390px, typing FEA retained the search focus and scroll position and generated #project-library; reloading the shared link showed two results below the header with no root overflow. An explicit Experience link remained at Experience. Back and Forward restored the two Boeing and three PCC results respectively.
 - Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this batch.
 
+### Shared-filter deployment and follow-up
+
+- [25b42ab](https://github.com/Dustin07/DustinPortfolio/commit/25b42abd2dd90b7660f24a16ad60e273f44b2504) passed [Portfolio Checks](https://github.com/Dustin07/DustinPortfolio/actions/runs/40075569203) and [Pages deployment](https://github.com/Dustin07/DustinPortfolio/actions/runs/40075568095). Live phone inspection confirmed portfolio.js?v=23ef2beb8a33, the normalized FEA address, two results below the header, body focus on entry, and unchanged search focus/scroll during typing.
+- The live explicit-section check exposed a separate initial disclosure-animation shift. The follow-up below completes the downstream-positioning verification rather than treating the initial URL's unchanged fragment as sufficient proof.
+
+## 2026-10-24 — Stabilize section links during library restoration
+
+- The filtered library's opening transition could move a downstream fragment destination after the browser initially positioned it. A fresh live FEA + Experience link left the Experience section around 598px below the viewport top rather than just below the header.
+- The library now suppresses its disclosure transition during initial setup, through the first rendered frame. Later user-triggered opening/closing retains the existing optional motion. This stabilizes initial geometry without scripted repositioning of explicit section links.
+- Added deferred-frame regressions for the setup lifecycle and for a newer explicit destination taking precedence over a queued legacy-result repositioning.
+- Files: portfolio.js, styles.css, tests/portfolio.test.cjs, README.md, and all 13 pages' content-hash references. No content, claims, documents, or hosting services changed.
+- Verification: all 14 JavaScript suites passed, including 102 portfolio checks, plus all 13 pages/392 references/15 images, 70 asset references, original-document integrity, and related-work checks.
+- Browser checks: desktop Experience stayed at approximately 108px below an 84px header on fresh entry, after settling, and after reload, with body focus retained. The setup class was removed and the ordinary disclosure transition returned to 0.4s. At 390px, a legacy FEA link still landed at approximately 104px below an 80px header.
+- Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this follow-up.
+
 ## Verification and deployment notes
 
 - The previously committed selection-aware navigation passed 89 portfolio regression checks and real local browser flows for Boeing and FEA selections. Clearing filters restored the original project order.

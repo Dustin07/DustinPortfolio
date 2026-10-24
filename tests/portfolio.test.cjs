@@ -5,7 +5,7 @@ const vm = require('node:vm');
 const source = fs.readFileSync(path.join(__dirname, '../portfolio.js'), 'utf8');
 
 class Element {
-  constructor(text = '', dataset = {}) { this.textContent = text; this.dataset = dataset; this.attrs = {}; this.events = {}; this.value = ''; this.hidden = false; }
+  constructor(text = '', dataset = {}) { this.textContent = text; this.dataset = dataset; this.attrs = {}; this.events = {}; this.value = ''; this.hidden = false; this.classList={values:new Set(),add(value){this.values.add(value);},remove(value){this.values.delete(value);},contains(value){return this.values.has(value);}}; }
   addEventListener(name, action) { this.events[name] = action; }
   setAttribute(name, value) { this.attrs[name] = value; }
   getAttribute(name) { return this.attrs[name]; }
@@ -15,7 +15,7 @@ class Element {
   getClientRects() { return this.hidden ? [] : [{width:100,height:44}]; }
   contains(target) {return this===target || (this.children||[]).some(child=>child.contains(target));}
 }
-function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, storageBlocked = false, library = null) {
+function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, storageBlocked = false, library = null, deferFrames = false) {
   const cards = library ? library.cards.map(card => new Element(card.text, card.dataset)) : [new Element('Protective Covers CATIA TPU', {category:'Boeing'}), new Element('Rocket Testing FEA', {category:'Academic'}), new Element('Carabiner FEA Ansys', {category:'Academic'}), new Element('Casting Tooling SolidWorks', {category:'PCC'})];
   const buttons = (library?.categories || ['All','Academic','Boeing','PCC']).map(value => new Element(value, {filter:value}));
   if (library) library.cards.forEach((card,index) => {
@@ -26,7 +26,7 @@ function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, st
     }
   });
   const elements = {'#project-search':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-empty-message':new Element(), '#project-expand-search':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
-  const timers = new Map(); let timerId = 0; let stored = saved; const events = {};
+  const timers = new Map(), frames = []; let timerId = 0; let stored = saved; const events = {};
   elements['#project-library'] = new Element();
   elements['#project-library'].open = false;
   const context = {
@@ -38,10 +38,11 @@ function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, st
     URL, URLSearchParams, location:new URL(url), history:{replaceState:(_, __, next) => { context.location = new URL(next); },pushState:(_, __, next) => {context.location = new URL(next);context.pushes=(context.pushes||0)+1;}},
     sessionStorage:{getItem:() => {if(storageBlocked) throw Error('blocked'); return stored ? JSON.stringify(stored) : null;},setItem:(_,value) => {if(storageBlocked) throw Error('blocked'); stored=JSON.parse(value);}},
     setTimeout: callback => { const id=++timerId;timers.set(id, callback);return id; }, clearTimeout:id => timers.delete(id),
-    addEventListener:(name,action) => {events[name]=action;}, requestAnimationFrame:action => action(),
+    addEventListener:(name,action) => {events[name]=action;}, requestAnimationFrame:action => deferFrames ? frames.push(action) : action(),
   };
   vm.runInNewContext(source, context);
   return {cards,buttons,elements,context,events,
+    flushFrame:()=>frames.splice(0).forEach(action=>action()),
     click:value => buttons.find(button=>button.dataset.filter===value).events.click(),
     search:value => {elements['#project-search'].value=value;elements['#project-search'].events.input();[...timers.values()].forEach(action=>action());timers.clear();},
     shown:()=>cards.filter(card=>!card.hidden).map(card=>card.textContent),
@@ -65,6 +66,8 @@ test('native library searches and categories generate direct result addresses wi
 test('clearing and widening filters keep the share address at the library',()=>{const f=fixture();f.click('Boeing');f.search('FEA');f.elements['#project-expand-search'].events.click();assert.equal(f.context.location.hash,'#project-library');f.elements['#project-reset'].events.click();assert.equal(f.context.location.hash,'#project-library');assert.equal(f.context.location.search,'');});
 test('legacy saved selections return to the library while a fresh unfiltered home stays unchanged',()=>{const f=fixture('https://example.test/DustinPortfolio/#work',{category:'Boeing',query:'TPU'});assert.equal(f.context.location.hash,'#project-library');assert.equal(f.elements['#project-library'].scrollCalls,1);assert.equal(fixture().context.location.hash,'');});
 test('Back and Forward retain their fragment and scroll restoration authority',()=>{const f=fixture();f.search('FEA');f.context.location=new URL('https://example.test/DustinPortfolio/?category=Academic#work');f.events.popstate();assert.equal(f.context.location.hash,'#work');assert.equal(f.elements['#project-library'].scrollCalls,undefined);assert.equal(f.shown().length,2);});
+test('initial library restoration settles before normal disclosure motion is enabled',()=>{const f=fixture('https://example.test/DustinPortfolio/?q=FEA#experience',null,false,null,true);const library=f.elements['#project-library'];assert.equal(library.classList.contains('is-initial-view'),true);f.flushFrame();assert.equal(library.classList.contains('is-initial-view'),true);f.flushFrame();assert.equal(library.classList.contains('is-initial-view'),false);assert.equal(f.context.location.hash,'#experience');assert.equal(library.scrollCalls,undefined);});
+test('legacy result positioning occurs during initial setup, without overriding a newer destination',()=>{const f=fixture('https://example.test/DustinPortfolio/?q=FEA',null,false,null,true);assert.equal(f.elements['#project-library'].scrollCalls,undefined);f.context.location.hash='contact';f.flushFrame();f.flushFrame();assert.equal(f.elements['#project-library'].scrollCalls,undefined);assert.equal(f.context.location.hash,'#contact');});
 test('returning from a case study reveals even an unfiltered library',()=>assert.equal(fixture('https://example.test/DustinPortfolio/#work',{category:'All',query:''}).elements['#project-library'].open,true));
 test('category filtering and URL',()=>{const f=fixture();f.click('Boeing');assert.equal(f.shown().length,1);assert.equal(f.context.location.searchParams.get('category'),'Boeing');assert.equal(f.elements['#project-count'].textContent,'1 Project');});
 test('case-insensitive skill search',()=>{const f=fixture();f.search('fEa');assert.equal(f.shown().length,2);assert.equal(f.context.location.searchParams.get('q'),'fEa');});

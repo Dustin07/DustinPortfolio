@@ -42,6 +42,12 @@
   const search = document.querySelector('#project-search');
   if (cards.length && search) {
     const library = document.querySelector('#project-library');
+    // Initial filter restoration must settle before native fragment positioning.
+    // Keep later user-triggered disclosure transitions available.
+    if (library) {
+      library.classList.add('is-initial-view');
+      requestAnimationFrame(() => requestAnimationFrame(() => library.classList.remove('is-initial-view')));
+    }
     document.querySelector('.project-toolbar').hidden = false;
     document.querySelector('.filters').hidden = false;
     const count = document.querySelector('#project-count');

@@ -951,6 +951,7 @@ html.figure-viewer-open .ambient-field * {animation-play-state:paused!important}
 .ambient-field.is-still~main .motion-enter {animation:none}
 .ambient-field.is-still~main *,.ambient-field.is-still~header * {transition:none!important}
 .ambient-field.is-still~main .toc-links,.ambient-field.is-still~header .navlinks {animation:none!important}
+.project-library.is-initial-view::details-content {transition:none!important}
 @media(max-width:760px) {.featured-card{padding:26px}.hero{padding-top:44px}.hero h1{font-size:clamp(2.8rem,12vw,4rem)}}
 @media print {.motion-enter{animation:none!important;transform:none!important;opacity:1!important}}
 
