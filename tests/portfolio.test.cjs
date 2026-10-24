@@ -239,4 +239,21 @@ test('active section follows scroll position',()=>{const f=navigationFixture();f
 test('compact contents track a heading visible below the sticky bar',()=>{const f=navigationFixture();f.context.scrollY=640;f.events.scroll();assert.equal(f.links[1].getAttribute('aria-current'),'location');f.context.innerWidth=1280;f.events.resize();assert.equal(f.links[0].getAttribute('aria-current'),'location');});
 test('last section is active at page bottom',()=>{const f=navigationFixture();f.context.scrollY=1400;f.events.scroll();assert.equal(f.links[2].getAttribute('aria-current'),'location');});
 test('print control invokes the browser print workflow',()=>{const f=navigationFixture();f.bottom.children[0].events.click();assert.equal(f.printed(),1);});
+
+function tableFixture({width=700,content=700,resizeObserver=true,description=null}={}) {
+  const wrap=Object.assign(new Element(),{clientWidth:width,scrollWidth:content,tabIndex:0});
+  const table=new Element(),events={},observed=[];let hint,update;
+  wrap.querySelector=selector=>selector==='table'?table:null;
+  wrap.before=value=>{hint=value;};
+  wrap.setAttribute('role','region');wrap.setAttribute('aria-label','Engineering Results');
+  if(description)wrap.setAttribute('aria-describedby',description);
+  class ResizeObserver {constructor(fn){update=fn;}observe(target){observed.push(target);}}
+  const context={document:{querySelector:()=>null,querySelectorAll:selector=>selector==='.table-wrap'?[wrap]:[],createElement:()=>new Element()},window:resizeObserver?{ResizeObserver}:{},ResizeObserver,addEventListener:(name,fn)=>{events[name]=fn;}};
+  vm.runInNewContext(source,context);
+  return {wrap,table,observed,hint:()=>hint,resize:(width,content)=>{wrap.clientWidth=width;wrap.scrollWidth=content;(update||events.resize)();}};
+}
+test('fully visible tables do not add a noninteractive keyboard stop',()=>{const f=tableFixture();assert.equal(f.wrap.tabIndex,-1);assert.equal(f.hint().hidden,true);assert.equal(f.wrap.getAttribute('role'),'region');assert.equal(f.wrap.getAttribute('aria-label'),'Engineering Results');});
+test('overflowing tables retain keyboard panning and its description',()=>{const f=tableFixture({width:320,content:700});assert.equal(f.wrap.tabIndex,0);assert.equal(f.hint().hidden,false);assert.equal(f.wrap.getAttribute('aria-describedby'),'table-scroll-hint-1');assert.deepEqual(f.observed,[f.wrap,f.table]);});
+test('table keyboard access follows layout changes without moving focus',()=>{const f=tableFixture();f.wrap.focus();f.resize(320,700);assert.equal(f.wrap.tabIndex,0);assert.equal(f.wrap.focused,true);f.resize(700,700);assert.equal(f.wrap.tabIndex,-1);assert.equal(f.wrap.focused,true);assert.equal(f.wrap.getAttribute('aria-describedby'),undefined);});
+test('table resize fallback preserves existing descriptions in both layouts',()=>{const f=tableFixture({resizeObserver:false,description:'source-note'});assert.equal(f.wrap.getAttribute('aria-describedby'),'source-note');f.resize(320,700);assert.equal(f.wrap.tabIndex,0);assert.equal(f.wrap.getAttribute('aria-describedby'),'source-note table-scroll-hint-1');f.resize(700,700);assert.equal(f.wrap.tabIndex,-1);assert.equal(f.wrap.getAttribute('aria-describedby'),'source-note');});
 console.log(`${cases} portfolio regression tests passed.`);

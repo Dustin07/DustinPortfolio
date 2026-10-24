@@ -69,3 +69,5 @@ Expanded navigation disclosures also close when keyboard focus leaves their cont
 The putter and carabiner playback buttons are disabled while the page-wide pause is active, with a hint pointing to the footer control. Their operation and design buttons still allow static inspection. Resuming the page retains any pause the visitor chose within an illustration.
 
 Those two sequences also wait while a report-image control has keyboard focus, so automatic stage changes cannot hide the focused control. Leaving the reference resumes only playback that was already running. Opening and closing the figure viewer retains this hold and returns focus to the same reference.
+
+Table regions enter the Tab order when their content needs horizontal scrolling. Fully visible tables retain their names and native table semantics without adding a noninteractive keyboard stop. This follows layout changes without moving an existing focus; the original HTML keeps keyboard scrolling available when JavaScript is unavailable.

@@ -293,6 +293,9 @@
     const update = () => {
       const overflow = wrap.scrollWidth > wrap.clientWidth + 1;
       hint.hidden = !overflow;
+      // A keyboard stop is useful for panning, but not for a table that fits.
+      // Changing tabindex does not move focus during a viewport resize.
+      wrap.tabIndex = overflow ? 0 : -1;
       if (overflow) wrap.setAttribute('aria-describedby', [existingDescription, hint.id].filter(Boolean).join(' '));
       else if (existingDescription) wrap.setAttribute('aria-describedby', existingDescription);
       else wrap.removeAttribute('aria-describedby');

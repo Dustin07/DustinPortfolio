@@ -100,6 +100,15 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - The earlier selection-aware navigation is also verified live: the Boeing filter showed two projects, Next Result advanced from protective covers to ergonomic attachments, and the last matching case wrapped to protective covers.
 - No paid hosting, services, dependencies, or usage-credit purchase was introduced. The original PDFs were not changed.
 
+## 2026-10-24 — Match table keyboard stops to actual scrolling
+
+- The aircraft case had four fully visible desktop tables that still added noninteractive Tab stops. Table regions now enter the sequential keyboard order only while their content overflows horizontally. Their names, captions, and native table semantics remain available in both layouts.
+- The existing overflow measurement and ResizeObserver update the scroll hint, description, and tabindex together. Layout changes do not move focus. The window-resize fallback preserves this behavior; the original HTML still supplies keyboard access when JavaScript is unavailable.
+- Files: portfolio.js, tests/portfolio.test.cjs, README.md, and all 13 pages' content-hash references. No table data, original documents, or visual styles changed.
+- Verification: 93 portfolio checks include fitted/overflowing regions, layout changes, existing descriptions, and the resize fallback. All 14 JavaScript suites, all 13 pages/392 references/15 images, 10 asset-version tests, 70 asset references, original-document integrity, and related-work checks passed.
+- Browser verification: at 1280px, Tab after the aircraft contribution heading skipped the four fitted tables and reached the project-report link. At 390px, the wider carabiner results table retained tabindex=0 and ArrowRight panned it by 40px. Returning to 1280px changed it to tabindex=-1 without moving its existing focus; the next Tab reached the chart's enlargement button.
+- Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this batch.
+
 ## Verification and deployment notes
 
 - The previously committed selection-aware navigation passed 89 portfolio regression checks and real local browser flows for Boeing and FEA selections. Clearing filters restored the original project order.
