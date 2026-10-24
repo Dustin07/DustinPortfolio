@@ -144,6 +144,7 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Verification: all 14 JavaScript suites passed, including 102 portfolio checks, plus all 13 pages/392 references/15 images, 70 asset references, original-document integrity, and related-work checks.
 - Browser checks: desktop Experience stayed at approximately 108px below an 84px header on fresh entry, after settling, and after reload, with body focus retained. The setup class was removed and the ordinary disclosure transition returned to 0.4s. At 390px, a legacy FEA link still landed at approximately 104px below an 80px header.
 - Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this follow-up.
+- Deployment verified: [ae1ea9a](https://github.com/Dustin07/DustinPortfolio/commit/ae1ea9a2c9f505f36aaf63edf35523822e775ead) passed [Portfolio Checks](https://github.com/Dustin07/DustinPortfolio/actions/runs/40076162631) and [Pages deployment](https://github.com/Dustin07/DustinPortfolio/actions/runs/40076162534). Fresh live entries served portfolio.js?v=bce1dd541c05 and styles.css?v=9f9840482a0d. At 1280px, Experience stayed at approximately 108px below an 84px header after settling, while ordinary disclosure transitions were available at 0.4s. At 390px, the legacy FEA entry normalized to the library, showed two results at approximately 104px below an 80px header, and retained body focus. This completes the shared-filter and downstream-positioning gates above.
 
 ## Verification and deployment notes
 
