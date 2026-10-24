@@ -18,11 +18,14 @@
   ];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const ambient = document.querySelector('.ambient-field');
-  let elapsed=0,last=null,frame=null,paused=false,visible=true,current=-1,referenceFocused=false;
+  let elapsed=0,last=null,frame=null,paused=false,visible=true,current=-1,referenceFocused=false,renderedProgress=-1;
   const blocked=()=>paused||referenceFocused||reduced.matches||document.hidden||!visible||ambient?.classList.contains('is-paused')||document.documentElement.classList.contains('figure-viewer-open');
   const render=()=>{
     const step=Math.floor(elapsed/4000)%3;
     const progress=Math.min(1,(elapsed%4000)/900);
+    // Keep timing active during a hold without rewriting an identical pose.
+    if(current===step&&renderedProgress===progress)return;
+    renderedProgress=progress;
     const ease=progress*progress*(3-2*progress);
     demo.dataset.step=String(step);
     body.setAttribute('stroke-width',String(step===2?42-10*ease:42));

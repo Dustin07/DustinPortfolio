@@ -76,3 +76,5 @@ In an actual-size figure, unmodified arrow keys pan the focused detail area. Mod
 
 Project-library searches, categories, resets, and widened searches keep their shareable address at #project-library. Older active-filter links without a fragment or using #work land at the library once on entry, after header clearance is ready. Explicit links to other sections keep their destination. Typing and browser-history restoration do not trigger additional scripted scrolling or focus changes.
 Initial library restoration skips its opening transition for the first rendered frame so downstream fragment destinations have a stable layout. Normal user-triggered disclosure motion resumes after setup.
+
+Putter and carabiner loops keep their existing timing but skip geometry writes when the rendered stage and progress have not changed. The putter also tracks reduced motion as a render input, refreshing the static cutter when that preference changes without clearing a local pause. This extends the earlier stage-only metadata updates; it is not an FPS benchmark.

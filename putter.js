@@ -23,11 +23,16 @@
   const lengths = paths.map(path => path.getTotalLength());
   paths.forEach((path, i) => { path.style.strokeDasharray = String(lengths[i]); });
   let elapsed = 0, last = null, frame = null, paused = false, visible = true, referenceFocused = false, current = -1;
+  let renderedProgress = -1, renderedReduced = null;
   const blocked = () => paused || referenceFocused || reduced.matches || document.hidden || !visible ||
     ambient?.classList.contains('is-paused') || document.documentElement.classList.contains('figure-viewer-open');
   const render = () => {
     const step = Math.floor(elapsed / duration) % buttons.length;
     const progress = Math.min(1, (elapsed % duration) / 2400);
+    // A completed pose holds until the next stage. Reduced motion is also a
+    // render input because it changes the visibility of the cutting tool.
+    if (step === current && progress === renderedProgress && reduced.matches === renderedReduced) return;
+    renderedProgress = progress; renderedReduced = reduced.matches;
     if (step !== current) {
       current = step;
       demo.dataset.step = String(step);
@@ -74,7 +79,7 @@
     control.disabled = reduced.matches || pagePaused;
     control.title = reduced.matches ? 'Animation is disabled by your reduced-motion preference. Select an operation to inspect it.' :
       pagePaused ? 'Resume page animations in the footer to use playback. Select an operation to inspect it.' : 'Select an operation to pause and inspect it.';
-    if (reduced.matches) render();
+    render();
     if (!blocked()) frame = requestAnimationFrame(tick);
   };
   control.hidden = false;

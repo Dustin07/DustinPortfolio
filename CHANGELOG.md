@@ -146,6 +146,17 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this follow-up.
 - Deployment verified: [ae1ea9a](https://github.com/Dustin07/DustinPortfolio/commit/ae1ea9a2c9f505f36aaf63edf35523822e775ead) passed [Portfolio Checks](https://github.com/Dustin07/DustinPortfolio/actions/runs/40076162631) and [Pages deployment](https://github.com/Dustin07/DustinPortfolio/actions/runs/40076162534). Fresh live entries served portfolio.js?v=bce1dd541c05 and styles.css?v=9f9840482a0d. At 1280px, Experience stayed at approximately 108px below an 84px header after settling, while ordinary disclosure transitions were available at 0.4s. At 390px, the legacy FEA entry normalized to the library, showed two results at approximately 104px below an 80px header, and retained body focus. This completes the shared-filter and downstream-positioning gates above.
 
+## 2026-10-24 — Skip identical held-pose geometry updates
+
+- This extends the earlier stage-only metadata optimization. The putter and carabiner still advance on the same schedules, but completed poses no longer rewrite identical geometry during their hold intervals.
+- Before the change, instrumented held frames counted 72 geometry writes across four putter callbacks and 145 writes across 29 carabiner callbacks. Both checks now record zero repeated geometry writes, and the next scheduled stage still updates its selection, reference, and pose. These are DOM-work counts, not FPS or battery-life measurements.
+- The putter includes reduced motion in its render key. Preference changes refresh the static cutter even while locally paused; restoring motion no longer leaves that cutter stale or restarts playback.
+- An offline comparison against the exact preceding scripts matched 1,081 putter and 721 carabiner sampled cycle states at 60 Hz, all six machining operations and three design selections, and enabled reduced-motion states. Comparison sources and fixtures remain outside the published repository.
+- Files: putter.js, carabiner.js, their two regression suites, the two case pages' content-hash references, README.md, and this record. No CSS, source images, engineering values, original PDFs, or hosting services changed.
+- Verification: all 14 JavaScript suites passed, including 19 putter, 17 carabiner, and 102 portfolio checks; all 13 pages/392 references/15 images, 70 asset references, original-document integrity, and related-work checks passed. Browser checks covered all six operations at 1280px, all three designs at 390px, page-pause/manual-inspection behavior, retained local pause, and no phone root overflow.
+- Print review: a temporary screen emulation of the print stylesheet confirmed that navigation and enlargement cues were already hidden. No print-style change was needed. Pagination/system printing was not tested, and both temporary repository preview files were removed before publication.
+- Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this batch.
+
 ## Verification and deployment notes
 
 - The previously committed selection-aware navigation passed 89 portfolio regression checks and real local browser flows for Boeing and FEA selections. Clearing filters restored the original project order.
