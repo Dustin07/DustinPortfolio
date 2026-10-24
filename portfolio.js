@@ -76,7 +76,7 @@
       const link = card.querySelector?.('h3 a');
       return link ? {href:link.getAttribute('href'), title:link.textContent.trim()} : null;
     });
-    const apply = (syncURL = true, historyMode = 'replace') => {
+    const apply = (syncURL = true, historyMode = 'replace', anchorLibrary = false) => {
       document.dispatchEvent?.(new Event('portfolio:before-filter'));
       const query = search.value.trim().slice(0, 120);
       const words = normalize(query).split(/\s+/).filter(Boolean);
@@ -107,6 +107,7 @@
         const url = new URL(location.href);
         if (category === 'All') url.searchParams.delete('category'); else url.searchParams.set('category', category);
         if (query) url.searchParams.set('q', query); else url.searchParams.delete('q');
+        if (anchorLibrary) url.hash = 'project-library';
         if (url.href !== location.href) {
           if (historyMode === 'push') history.pushState(null, '', url);
           else history.replaceState(null, '', url);
@@ -114,19 +115,19 @@
       }
       document.dispatchEvent?.(new Event('portfolio:filtered'));
     };
-    buttons.forEach(button => button.addEventListener('click', () => { category = button.dataset.filter; apply(true, 'push'); }));
+    buttons.forEach(button => button.addEventListener('click', () => { category = button.dataset.filter; apply(true, 'push', true); }));
     // Eleven local cards are cheap to filter immediately. This also keeps a
     // typed query safe when a visitor opens a project before a timer would fire.
-    search.addEventListener('input', () => apply());
-    search.addEventListener('search', () => apply());
+    search.addEventListener('input', () => apply(true, 'replace', true));
+    search.addEventListener('search', () => apply(true, 'replace', true));
     search.addEventListener('keydown', event => {
-      if (event.key === 'Escape') { search.value = ''; apply(); }
+      if (event.key === 'Escape') { search.value = ''; apply(true, 'replace', true); }
     });
     reset.addEventListener('click', () => {
-      category = 'All'; search.value = ''; apply(true, 'push'); search.focus();
+      category = 'All'; search.value = ''; apply(true, 'push', true); search.focus();
     });
     expandSearch?.addEventListener('click', () => {
-      category = 'All'; apply(true, 'push'); search.focus();
+      category = 'All'; apply(true, 'push', true); search.focus();
     });
     addEventListener('popstate', () => {
       const restored = new URLSearchParams(location.search);
@@ -135,7 +136,15 @@
       apply(false);
     });
     addEventListener('pageshow', () => apply(false));
-    apply();
+    // Older filtered links may name the whole work section or omit a fragment.
+    // Position once after navigation clearance is ready; keep explicit links to
+    // other sections, later history restoration, and typing under native control.
+    const initialResults = (category !== 'All' || Boolean(search.value.trim())) &&
+      (!location.hash || location.hash === '#work');
+    apply(true, 'replace', initialResults);
+    if (initialResults && library) requestAnimationFrame(() => {
+      if (location.hash === '#project-library') library.scrollIntoView({block:'start', behavior:'instant'});
+    });
   }
 
   // Case-study return links name the saved view explicitly, so the library

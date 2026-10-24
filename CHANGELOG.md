@@ -120,6 +120,16 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this batch.
 - Deployment verified: [d7b641a](https://github.com/Dustin07/DustinPortfolio/commit/d7b641a22f8a92532ca13c7f19a063e474dac56c) passed [Portfolio Checks](https://github.com/Dustin07/DustinPortfolio/actions/runs/40074635736) and [Pages deployment](https://github.com/Dustin07/DustinPortfolio/actions/runs/40074635147). Live inspection confirmed styles.css?v=9911ac4debc6 and figures.js?v=e81470620e53. At 667×320, the live vector viewer had a 125px visible image area, horizontal and vertical arrows moved the drawing, a repeated arrow advanced its pan from 40px to 80px without changing the surrounding dialog's scroll position, Close remained visible, and Escape from the focused image restored the original trigger. This supersedes the pending gate above.
 
+## 2026-10-24 — Land shared project filters at their results
+
+- Confirmed that searching from the native library disclosure generated a URL such as ?q=FEA without a results fragment. Opening it in another tab showed the introduction at scroll position 0, with the filtered library 1,424px below the viewport top.
+- Search, category, clear, and widen interactions now keep the generated address at #project-library. Typing updates the address without scripted scrolling or focus changes.
+- Older active-filter links without a fragment or using #work are normalized with history replacement and positioned once at the library after header clearance is ready. Explicit destinations such as #experience, #contact, #about, and #top remain authoritative. Plain/unfiltered entries and subsequent Back/Forward restoration do not receive this initial repositioning.
+- Files: portfolio.js, tests/portfolio.test.cjs, README.md, and all 13 pages' content-hash references. Existing categories, search matching, remembered selections, case links, and original documents remain intact.
+- Verification: all 14 JavaScript suites passed, including 100 portfolio regression checks, plus all 13 pages/392 references/15 images, metadata, 70 asset references, original-document integrity, and related-work checks.
+- Browser checks: a legacy FEA link at 1280px landed with the library at 108px below an 84px header, retaining body focus. At 390px, typing FEA retained the search focus and scroll position and generated #project-library; reloading the shared link showed two results below the header with no root overflow. An explicit Experience link remained at Experience. Back and Forward restored the two Boeing and three PCC results respectively.
+- Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this batch.
+
 ## Verification and deployment notes
 
 - The previously committed selection-aware navigation passed 89 portfolio regression checks and real local browser flows for Boeing and FEA selections. Clearing filters restored the original project order.

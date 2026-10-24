@@ -11,6 +11,7 @@ class Element {
   getAttribute(name) { return this.attrs[name]; }
   removeAttribute(name) { delete this.attrs[name]; }
   focus() { this.focused = true; }
+  scrollIntoView(options) { this.scrollOptions = options; this.scrollCalls = (this.scrollCalls || 0) + 1; }
   getClientRects() { return this.hidden ? [] : [{width:100,height:44}]; }
   contains(target) {return this===target || (this.children||[]).some(child=>child.contains(target));}
 }
@@ -56,6 +57,14 @@ test('direct project-library link reveals the library without a stored preferenc
 test('shared category and query links reveal the full library',()=>{
   for(const suffix of ['?category=Boeing#work','?q=Ansys#work']) assert.equal(fixture('https://example.test/DustinPortfolio/'+suffix).elements['#project-library'].open,true);
 });
+
+test('legacy filtered links position the library once without adding history or stealing focus',()=>{for(const suffix of ['?category=Boeing','?q=Ansys','?category=Academic&q=FEA#work']){const f=fixture('https://example.test/DustinPortfolio/'+suffix);assert.equal(f.context.location.hash,'#project-library');assert.equal(f.elements['#project-library'].scrollCalls,1);assert.equal(f.elements['#project-library'].scrollOptions.behavior,'instant');assert.equal(f.elements['#project-library'].focused,undefined);assert.equal(f.context.pushes,undefined);f.events.pageshow();assert.equal(f.elements['#project-library'].scrollCalls,1);}});
+test('active shared filters preserve an explicit destination outside the library',()=>{for(const hash of ['#experience','#about','#contact','#top']){const f=fixture('https://example.test/DustinPortfolio/?q=FEA'+hash);assert.equal(f.context.location.hash,hash);assert.equal(f.elements['#project-library'].scrollCalls,undefined);assert.equal(f.shown().length,2);}});
+test('plain or invalid-filter entries keep their original landing destination',()=>{for(const suffix of ['','?category=unknown#work','?category=All#work','?q=%20%20#work']){const f=fixture('https://example.test/DustinPortfolio/'+suffix);assert.notEqual(f.context.location.hash,'#project-library');assert.equal(f.elements['#project-library'].scrollCalls,undefined);}});
+test('native library searches and categories generate direct result addresses without scrolling again',()=>{const f=fixture();f.search('FEA');assert.equal(f.context.location.hash,'#project-library');assert.equal(f.elements['#project-library'].scrollCalls,undefined);f.click('Academic');assert.equal(f.context.location.hash,'#project-library');assert.equal(f.context.location.searchParams.get('q'),'FEA');assert.equal(f.elements['#project-library'].scrollCalls,undefined);});
+test('clearing and widening filters keep the share address at the library',()=>{const f=fixture();f.click('Boeing');f.search('FEA');f.elements['#project-expand-search'].events.click();assert.equal(f.context.location.hash,'#project-library');f.elements['#project-reset'].events.click();assert.equal(f.context.location.hash,'#project-library');assert.equal(f.context.location.search,'');});
+test('legacy saved selections return to the library while a fresh unfiltered home stays unchanged',()=>{const f=fixture('https://example.test/DustinPortfolio/#work',{category:'Boeing',query:'TPU'});assert.equal(f.context.location.hash,'#project-library');assert.equal(f.elements['#project-library'].scrollCalls,1);assert.equal(fixture().context.location.hash,'');});
+test('Back and Forward retain their fragment and scroll restoration authority',()=>{const f=fixture();f.search('FEA');f.context.location=new URL('https://example.test/DustinPortfolio/?category=Academic#work');f.events.popstate();assert.equal(f.context.location.hash,'#work');assert.equal(f.elements['#project-library'].scrollCalls,undefined);assert.equal(f.shown().length,2);});
 test('returning from a case study reveals even an unfiltered library',()=>assert.equal(fixture('https://example.test/DustinPortfolio/#work',{category:'All',query:''}).elements['#project-library'].open,true));
 test('category filtering and URL',()=>{const f=fixture();f.click('Boeing');assert.equal(f.shown().length,1);assert.equal(f.context.location.searchParams.get('category'),'Boeing');assert.equal(f.elements['#project-count'].textContent,'1 Project');});
 test('case-insensitive skill search',()=>{const f=fixture();f.search('fEa');assert.equal(f.shown().length,2);assert.equal(f.context.location.searchParams.get('q'),'fEa');});

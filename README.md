@@ -73,3 +73,5 @@ Those two sequences also wait while a report-image control has keyboard focus, s
 Table regions enter the Tab order when their content needs horizontal scrolling. Fully visible tables retain their names and native table semantics without adding a noninteractive keyboard stop. This follows layout changes without moving an existing focus; the original HTML keeps keyboard scrolling available when JavaScript is unavailable.
 
 In an actual-size figure, unmodified arrow keys pan the focused detail area. Modified arrows, page-scroll keys, fit mode, and Escape retain their native behavior. Short landscape windows preserve a usable detail area while the surrounding dialog remains scrollable to the source caption.
+
+Project-library searches, categories, resets, and widened searches keep their shareable address at #project-library. Older active-filter links without a fragment or using #work land at the library once on entry, after header clearance is ready. Explicit links to other sections keep their destination. Typing and browser-history restoration do not trigger additional scripted scrolling or focus changes.
