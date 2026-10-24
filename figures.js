@@ -57,6 +57,20 @@
   };
   size.addEventListener('click', () => setSize(!actualSize));
 
+  // Nested scrolling can send native arrow keys to the dialog's caption.
+  // Keep unmodified arrows within the focused detail area at actual size.
+  const panKeys = new Map([
+    ['ArrowLeft', [-40, 0]], ['ArrowRight', [40, 0]],
+    ['ArrowUp', [0, -40]], ['ArrowDown', [0, 40]]
+  ]);
+  media.addEventListener('keydown', event => {
+    const delta = panKeys.get(event.key);
+    if (!actualSize || !delta || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+    event.preventDefault();
+    if (delta[0]) media.scrollLeft += delta[0];
+    if (delta[1]) media.scrollTop += delta[1];
+  });
+
   close.addEventListener('click', () => dialog.close());
   // Cycle through viewer controls, including keyboard panning at actual size.
   dialog.addEventListener('keydown', event => {

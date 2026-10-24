@@ -108,6 +108,16 @@ These behaviors already exist. Improve a verified defect in them; do not recreat
 - Verification: 93 portfolio checks include fitted/overflowing regions, layout changes, existing descriptions, and the resize fallback. All 14 JavaScript suites, all 13 pages/392 references/15 images, 10 asset-version tests, 70 asset references, original-document integrity, and related-work checks passed.
 - Browser verification: at 1280px, Tab after the aircraft contribution heading skipped the four fitted tables and reached the project-report link. At 390px, the wider carabiner results table retained tabindex=0 and ArrowRight panned it by 40px. Returning to 1280px changed it to tabindex=-1 without moving its existing focus; the next Tab reached the chart's enlargement button.
 - Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this batch.
+- Deployment verified: [88db256](https://github.com/Dustin07/DustinPortfolio/commit/88db256c20d4eef2cab3001c53a7cd07cb55932e) passed [Portfolio Checks](https://github.com/Dustin07/DustinPortfolio/actions/runs/40073923572) and [Pages deployment](https://github.com/Dustin07/DustinPortfolio/actions/runs/40073922987). Live pages served portfolio.js?v=8ddd0e039d04. The live phone table panned by 40px; the refreshed desktop aircraft page skipped its fitted tables and reached the project-report link. This supersedes the pending gate above.
+
+## 2026-10-24 — Keep figure inspection usable in short windows
+
+- At 667×320, the actual-size vector viewer had a 60px outer media limit, leaving only 45px of visible image height after the horizontal scrollbar. It now preserves a 140px minimum media limit, providing 125px of visible image height in the same case. The surrounding dialog can scroll to the caption, and Close stays available.
+- The same review found native vertical arrow keys scrolling the surrounding dialog while the focused image remained still. Unmodified arrows now pan the actual-size detail area directly in 40px increments. Fit mode, modified arrows, Page Up/Down, Home/End, Tab, and Escape retain their existing behavior.
+- Files: styles.css, figures.js, tests/figures.test.cjs, README.md, and all 13 pages' content-hash references. No source images, chart descriptions, engineering claims, or original PDFs changed.
+- Verification: all 14 JavaScript suites passed, including 27 figure-viewer and 93 portfolio checks; all 13 pages/392 references/15 images and 70 asset references passed. Existing original-document checks passed.
+- Browser checks covered vector and raster images at 667×320, actual-size layouts at 844×390, 390×844, and 1280×800, horizontal/vertical keyboard panning, visible Close controls, Escape, and return focus. The three additional viewport layouts had no root overflow; full-height layouts continued to fit the original figure dimensions.
+- Deployment gate: locally verified; successful GitHub checks, Pages deployment, and live verification remain required for this batch.
 
 ## Verification and deployment notes
 

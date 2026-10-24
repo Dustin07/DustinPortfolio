@@ -71,3 +71,5 @@ The putter and carabiner playback buttons are disabled while the page-wide pause
 Those two sequences also wait while a report-image control has keyboard focus, so automatic stage changes cannot hide the focused control. Leaving the reference resumes only playback that was already running. Opening and closing the figure viewer retains this hold and returns focus to the same reference.
 
 Table regions enter the Tab order when their content needs horizontal scrolling. Fully visible tables retain their names and native table semantics without adding a noninteractive keyboard stop. This follows layout changes without moving an existing focus; the original HTML keeps keyboard scrolling available when JavaScript is unavailable.
+
+In an actual-size figure, unmodified arrow keys pan the focused detail area. Modified arrows, page-scroll keys, fit mode, and Escape retain their native behavior. Short landscape windows preserve a usable detail area while the surrounding dialog remains scrollable to the source caption.
