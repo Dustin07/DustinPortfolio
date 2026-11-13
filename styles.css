@@ -1157,3 +1157,25 @@ html.motion-disabled::view-transition-new(*) {animation:none!important}
 .waam-context-photo figcaption {margin-top:10px;color:#435867;font-size:.88rem;line-height:1.65}
 .waam-photo-credit {font-size:.8rem;color:#435867}
 @media(max-width:520px) {.waam-examples {padding:16px}.waam-photo-credit {overflow-wrap:anywhere}}
+
+/* Make ongoing work discoverable before the full project library. */
+.current-research {display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);align-items:center;gap:56px;padding-top:56px;padding-bottom:56px}
+.current-research-copy {min-width:0}
+.current-research h2 {font-size:clamp(1.7rem,3vw,2.3rem);line-height:1.18;letter-spacing:-.025em;max-width:22ch;text-wrap:balance;margin-bottom:18px}
+.current-research-copy>p {max-width:62ch;color:#435867;line-height:1.75}
+.current-research-copy .eyebrow {color:var(--blue)}
+.current-research-copy .current-research-tools {font-size:.83rem;color:var(--blue);font-weight:600;margin:20px 0 10px}
+.current-research-copy .research-status {display:flex;align-items:baseline;gap:8px;font-size:.82rem;margin:0 0 22px}
+.research-status>span {width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#58738b}
+.current-research-actions {display:flex;align-items:center;flex-wrap:wrap;gap:12px 22px}
+.current-research-actions>a {display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:.85rem}
+.current-research-figure {min-width:0;margin:0}
+.current-research-figure .waam-photo-window {border:1px solid #dce4eb;border-radius:12px}
+.current-research-figure figcaption {margin:12px 0 0;font-size:.72rem;line-height:1.7;color:#587080;max-width:56ch}
+.about-intro {grid-column:1/-1;max-width:800px;margin-bottom:12px}
+.about-intro h2 {font-size:clamp(1.65rem,3vw,2rem);max-width:30ch;line-height:1.25}
+.about-intro>p:not(.eyebrow) {max-width:72ch;color:#435867;line-height:1.8}
+.about-journey-link {display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:.85rem;font-weight:600}
+@media(max-width:900px) {.current-research {gap:32px;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}}
+@media(max-width:700px) {.current-research {grid-template-columns:1fr;gap:28px;padding-top:40px;padding-bottom:40px}.current-research h2 {max-width:24ch}.current-research-figure {max-width:520px}}
+@media print {.current-research {display:block;padding:20pt 0}.current-research-figure {max-width:110mm;break-inside:avoid}.current-research-actions {display:none}.about-intro {max-width:none}}

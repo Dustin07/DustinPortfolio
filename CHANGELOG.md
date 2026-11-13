@@ -431,3 +431,12 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Files: WAAM case, two source figure images, shared styles, all asset-version references, and this record.
 - Deployment gate: repository checks and live responsive verification remain required.
 - Responsive review: the live desktop portrait fits beside the introduction. The first phone version used 300px of height before the name; the compact portrait now uses 180px to bring identity and actions higher. The repaired publication passed both Portfolio Checks and Pages deployment.
+
+## 2026-11-13 — Add current-research spotlight and About introduction
+
+- Added a dedicated Current Research section before Selected Work so visitors can discover the Michigan WAAM work directly. It introduces the research question and methods, links the case and S2A Lab, and reuses the credited published example photo. Research results and performance figures remain unpublished.
+- Added an About introduction connecting the existing public Michigan, NASA, Boeing, and PCC background, with a link to the experience timeline. This batch follows Dustin’s request to prioritize useful additions and sections.
+- Files: index.html, styles.css, README.md, all stylesheet-version references, and this record. No new external requests, original-document changes, or paid services.
+- Verification: all 14 JavaScript suites, 10 asset tests, 14 pages/435 references/19 images, related-work generation, and 75 asset versions passed. Real local browser review covered desktop (1280px), phone (390px), and narrow phone (320px) layouts with no root overflow. The new research action opened the correct case study.
+- Previous batch verified: 0f5e4acc35db3784a8026bbf591b1c29a0fcce50 passed Portfolio Checks and Pages deployment. Live review confirmed both example photos, their credits, and the 144×180px compact portrait. This supersedes its pending deployment gate above.
+- Deployment gate: successful GitHub checks, Pages deployment, and live verification remain required for these new sections.
