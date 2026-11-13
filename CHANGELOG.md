@@ -401,3 +401,10 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - [f8ac0cf](https://github.com/Dustin07/DustinPortfolio/commit/f8ac0cff503fef9049162d6a692f66f7db78ceea) — Serve portfolio as plain static HTML
 - [6049203](https://github.com/Dustin07/DustinPortfolio/commit/6049203f5bd884784d5d0c1e6ef36a2d38702e69) — Add Dustin Leung engineering portfolio
 
+
+## 2026-11-13 — Link Michigan research lab
+
+- Added a Visit S2A Lab link beneath the existing University of Michigan graduate-research entry, using the existing timeline link style and an accessible new-tab label.
+- Files: index.html and CHANGELOG.md. No new research claims were added; a description of Dustin's own research awaits his supplied details.
+- Verification: all 14 JavaScript test suites, site checks (13 pages, 393 references, 15 images), 10 asset tests, related-work checks, and 70 content-hash asset references passed. Windows checkout line endings were normalized for the asset check without changing published assets.
+- Deployment gate: GitHub Actions, Pages deployment, and live verification remain pending.
