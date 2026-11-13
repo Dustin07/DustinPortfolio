@@ -416,3 +416,10 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Linked the case from the Michigan timeline and the 12-project library; extended related-work generation, next-project navigation, sitemap, and content checks. The earlier S2A link addition passed GitHub checks and Pages deployment and was verified live.
 - Verification: all 14 JavaScript suites, including 21 engineering checks; 10 asset tests; 14 pages/422 references/15 images; 24 related links; and 75 asset references passed. Original documents remain unchanged.
 - Deployment gate: local browser preview was unreachable from the connected browser. GitHub checks, Pages deployment, and live desktop/phone review are required before reporting the research update live.
+
+## 2026-11-13 — Add portrait to the introduction
+
+- Added Dustin’s supplied headshot beside the desktop introduction and above it on phones, with responsive sizing, descriptive alternative text, reserved dimensions, and a web-sized JPEG copy. The original source photo is unchanged.
+- The research page without results passed Portfolio Checks and Pages deployment and was reviewed live on desktop and phone. The ongoing review goal preserves the instruction to keep research results unpublished.
+- Files: home page, shared stylesheet, all page asset-version references, portrait asset, and this record.
+- Verification: all 14 JavaScript suites and site checks (14 pages, 423 references, 16 images) passed. No original documents changed. Live desktop/phone crop and layout review remains the deployment gate.
