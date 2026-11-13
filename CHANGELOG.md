@@ -423,3 +423,11 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - The research page without results passed Portfolio Checks and Pages deployment and was reviewed live on desktop and phone. The ongoing review goal preserves the instruction to keep research results unpublished.
 - Files: home page, shared stylesheet, all page asset-version references, portrait asset, and this record.
 - Verification: all 14 JavaScript suites and site checks (14 pages, 423 references, 16 images) passed. No original documents changed. Live desktop/phone crop and layout review remains the deployment gate.
+
+## 2026-11-13 — Add WAAM context photos and repair publishing transfer
+
+- Added example print and gantry-machine photo panels from Arthur, Liu, and Oliveira (2025), Figures 9(a) and 8(a), under CC BY 4.0. Captions credit the authors, link the original figures and license, and identify the examples as another group’s work. Surrounding figure panels are clipped from view. No project research results are added.
+- Corrected a transfer parsing error that omitted HTML prefixes during the headshot publication. Complete document headers are restored; future transfer reads use an explicit marker and verify the doctype before publication.
+- Files: WAAM case, two source figure images, shared styles, all asset-version references, and this record.
+- Deployment gate: repository checks and live responsive verification remain required.
+- Responsive review: the live desktop portrait fits beside the introduction. The first phone version used 300px of height before the name; the compact portrait now uses 180px to bring identity and actions higher. The repaired publication passed both Portfolio Checks and Pages deployment.
