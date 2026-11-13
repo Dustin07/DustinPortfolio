@@ -478,3 +478,12 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: local before/after copying measurements retained exactly the same email and contact-group rectangles at desktop size. The contact area also fit 761px and 320px layouts without root overflow. Site and asset-version checks passed.
 - The preceding Copy Email commit f2482853843d65a686d5ef8c0246f3f0d5d13761 passed all GitHub checks and Pages deployment; real live copying succeeded. This entry completes the layout issue found during that live review.
 - Deployment gate: GitHub checks, Pages deployment, and live stable-layout verification remain required for this correction.
+
+## 2026-11-13 — Connect WAAM photos to a process schematic
+
+- Added an original static vector schematic showing wire feed, torch travel, a deposition bead, earlier layers, and a build plate. An accessible title, detailed description, and visible caption explain the general manufacturing process; the figure is explicitly not to scale and contains no research results.
+- Kept this illustration separate from the existing methods workflow and credited example photographs. Page-local presentation requires no new shared assets, network requests, or scripts.
+- Files: projects/waam-thermal-planning.html, README.md, and this record.
+- Verification: engineering-content checks (21), figure behavior checks (27), site links/metadata (14 pages, 451 references, 19 images), and 77 asset versions passed. A broad unpublished-results check initially matched an inline CSS width percentage; presentation moved into the page head, retaining the original check unchanged. Real desktop, 390px, and 320px browser layouts fit; the narrow view had equal 305px client and scroll widths.
+- Previous correction verified: 4fe689258fa090ec666f13a558325cfb54b1281d passed Portfolio Checks and Pages deployment. Live Copy Email kept the email and contact-group rectangles unchanged and retained button focus, superseding its pending gate above.
+- Deployment gate: GitHub checks, Pages deployment, and live schematic verification remain required for this addition.
