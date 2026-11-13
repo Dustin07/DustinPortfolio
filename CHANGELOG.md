@@ -487,3 +487,14 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: engineering-content checks (21), figure behavior checks (27), site links/metadata (14 pages, 451 references, 19 images), and 77 asset versions passed. A broad unpublished-results check initially matched an inline CSS width percentage; presentation moved into the page head, retaining the original check unchanged. Real desktop, 390px, and 320px browser layouts fit; the narrow view had equal 305px client and scroll widths.
 - Previous correction verified: 4fe689258fa090ec666f13a558325cfb54b1281d passed Portfolio Checks and Pages deployment. Live Copy Email kept the email and contact-group rectangles unchanged and retained button focus, superseding its pending gate above.
 - Deployment gate: GitHub checks, Pages deployment, and live schematic verification remain required for this addition.
+
+## 2026-11-13 — Offer direct recovery from unmatched project searches
+
+- Added Show All Projects beside an empty library message when keyword-preserving widening cannot find alternatives. It clears category, focus, and query, preserves unrelated URL parameters, updates the shareable library address, and returns focus to search. Only one empty-state recovery action appears at a time.
+- Reused the existing Clear Filters handler. Added three regression cases for full reset, exclusive recovery choices, and an empty category/focus intersection without a keyword.
+- Corrected the WAAM schematic accessible name to reference only its concise title, with the longer explanation associated as its description. Updated the README spotlight label to Michigan.
+- Files: portfolio.js, homepage markup, portfolio tests, asset-version references on 14 pages, WAAM visual accessibility attributes, README.md, and this record.
+- Local browser review at 320px confirmed the recovery action fits, restores all 12 projects, clears the filtered address, returns focus to search, and retains zero root overflow. The prior keyword-preserving action was also verified live. Browser accessibility inspection resolved the schematic by its exact concise name.
+- Previous addition verified: 98f1af1139cc1b320b88f17238cd2918160fa5d9 passed Portfolio Checks and Pages deployment; live review confirmed the original process schematic and its explanation, superseding its pending gate above.
+- Deployment gate: required checks and live recovery verification remain pending for this update.
+- Verification completed: all 15 JavaScript suites passed, including 118 portfolio cases, plus 11 asset tests, 14-page link/metadata checks, 77 asset references, 24 related-work links, and original-PDF integrity.

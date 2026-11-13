@@ -6,7 +6,7 @@ Project memory: read [CHANGELOG.md](CHANGELOG.md) for completed improvements, re
 
 ## Structure
 
-- `index.html`: introduction, NASA research spotlight, project library, experience timeline, education, capabilities, and contact.
+- `index.html`: introduction, Michigan research spotlight, project library, experience timeline, education, capabilities, and contact.
 - `projects/`: case studies with contribution, decision, outcome, and evidence summaries.
 - `styles.css`: responsive visual system, restrained surfaces, reading panels, and accessibility fallbacks.
 - `ambient.js`: site-wide motion preferences on a static neutral background. The tab-local pause control covers explanatory animations, smooth scrolling, and hover movement; system reduced motion takes priority. No decorative waves or scroll-linked background work is rendered.
@@ -90,3 +90,5 @@ The homepage’s Current Research spotlight introduces the Michigan WAAM work wi
 Engineering Focus adds a cross-employer facet to the project library. It combines with employer/category and keyword filters, uses shareable `focus` URLs, and follows the tab-local selection through case-study return and Next Result links. The focus labels describe project subject matter, not new validation or production claims. Research is also reachable from the main navigation; the WAAM contents menu includes its context photos.
 
 The WAAM Research Approach includes a static three-stage workflow: candidate geometry/paths, thermal-model comparisons, and physical-check preparation. Decorative icons are schematic and contain no results.
+
+Empty library views offer keyword-preserving Search All Projects when matches exist elsewhere. Otherwise Show All Projects clears all restrictions beside the empty message and returns focus to search.

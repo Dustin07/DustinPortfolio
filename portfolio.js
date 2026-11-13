@@ -60,6 +60,7 @@
     const empty = document.querySelector('#project-empty');
     const emptyMessage = document.querySelector('#project-empty-message');
     const expandSearch = document.querySelector('#project-expand-search');
+    const showAll = document.querySelector('#project-show-all');
     const reset = document.querySelector('#project-reset');
     const categories = buttons.map(button => button.dataset.filter);
     const params = new URLSearchParams(location.search);
@@ -118,6 +119,7 @@
         expandSearch.hidden = visible > 0 || (category === 'All' && focus === 'All') || !query || !matchesAcrossCategories;
         expandSearch.textContent = `Search All Projects (${matchesAcrossCategories} ${matchesAcrossCategories === 1 ? 'Match' : 'Matches'})`;
       }
+      if (showAll) showAll.hidden = visible > 0 || Boolean(expandSearch && !expandSearch.hidden);
       reset.hidden = category === 'All' && focus === 'All' && !query;
       remember({ category, focus, query, ...(category !== 'All' || focus !== 'All' || query ? {matches:matchingProjects} : {}) });
       if (syncURL) {
@@ -145,10 +147,12 @@
     search.addEventListener('keydown', event => {
       if (event.key === 'Escape') { search.value = ''; apply(true, 'replace', true); }
     });
-    reset.addEventListener('click', () => {
+    const clearFilters = () => {
       category = 'All'; focus = 'All'; if (focusSelect) focusSelect.value = focus;
       search.value = ''; apply(true, 'push', true); search.focus();
-    });
+    };
+    reset.addEventListener('click', clearFilters);
+    showAll?.addEventListener('click', clearFilters);
     expandSearch?.addEventListener('click', () => {
       category = 'All'; focus = 'All'; if (focusSelect) focusSelect.value = focus;
       apply(true, 'push', true); search.focus();

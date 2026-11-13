@@ -25,7 +25,7 @@ function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, st
       cards[index].querySelector=selector=>selector==='h3 a'?link:null;
     }
   });
-  const elements = {'#project-search':new Element(), '#project-focus':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-empty-message':new Element(), '#project-expand-search':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
+  const elements = {'#project-search':new Element(), '#project-focus':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-empty-message':new Element(), '#project-expand-search':new Element(), '#project-show-all':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
   const timers = new Map(), frames = []; let timerId = 0; let stored = saved; const events = {};
   elements['#project-library'] = new Element();
   elements['#project-library'].open = false;
@@ -286,4 +286,9 @@ test('focus-only selections retain Next Result order',()=>{const f=caseNavigatio
 test('unknown focus values cannot create a stale filter or contextual next link',()=>{const f=fixture('https://example.test/DustinPortfolio/?focus=unknown',null,false,realLibrary);assert.equal(f.shown().length,12);assert.equal(f.elements['#project-focus'].value,'All');assert.equal(f.context.location.searchParams.has('focus'),false);const c=caseNavigationFixture({...selectedBoeing,category:'All',focus:'unknown'});assert.equal(c.next.attrs['aria-label'],'Next Project: Other Project');});
 test('every published card has valid, nonduplicated engineering-focus memberships',()=>{const allowed=new Set(['additive','design','analysis','testing','software']);for(const card of realLibrary.cards){const values=card.dataset.focus.split(/\s+/);assert.ok(values.length>0);assert.equal(new Set(values).size,values.length);assert.ok(values.every(x=>allowed.has(x)));}});
 
+
+
+test('no-match recovery clears every restriction and returns focus to search',()=>{const f=fixture('https://example.test/DustinPortfolio/?category=PCC&focus=testing&q=unmatched&v=release#project-library');assert.equal(f.elements['#project-show-all'].hidden,false);assert.equal(f.elements['#project-expand-search'].hidden,true);f.elements['#project-show-all'].events.click();assert.equal(f.shown().length,4);assert.equal(f.elements['#project-search'].value,'');assert.equal(f.elements['#project-focus'].value,'All');assert.equal(f.elements['#project-search'].focused,true);assert.equal(f.context.location.search,'?v=release');assert.equal(f.context.location.hash,'#project-library');assert.equal(f.elements['#project-show-all'].hidden,true);assert.equal(f.stored().matches,undefined);});
+test('empty-state recovery offers one action and retains useful keyword widening',()=>{const f=fixture();assert.equal(f.elements['#project-show-all'].hidden,true);f.click('PCC');f.search('FEA');assert.equal(f.elements['#project-show-all'].hidden,true);assert.equal(f.elements['#project-expand-search'].hidden,false);f.search('unmatched');assert.equal(f.elements['#project-show-all'].hidden,false);assert.equal(f.elements['#project-expand-search'].hidden,true);});
+test('empty category-and-focus intersection can recover without a keyword',()=>{const f=fixture('https://example.test/DustinPortfolio/?category=NASA&focus=testing#project-library',null,false,realLibrary);assert.equal(f.shown().length,0);assert.equal(f.elements['#project-show-all'].hidden,false);f.elements['#project-show-all'].events.click();assert.equal(f.shown().length,12);});
 console.log(`${cases} portfolio regression tests passed.`);
