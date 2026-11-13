@@ -1189,3 +1189,7 @@ html.motion-disabled::view-transition-new(*) {animation:none!important}
 @media(max-width:760px) {.project-toolbar .search-field,.focus-field {flex:0 1 auto;width:100%;max-width:none}}
 
 @media(max-width:760px) {.nav-enhanced .navlinks {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 8px}.nav-enhanced .navlinks a {padding:8px 10px;min-height:44px}}
+
+/* Capability groups also open their complete project selection. */
+.skills>div .skill-browse {display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-top:4px;font-size:13px;line-height:1.5;color:#435867}
+#capabilities {scroll-margin-top:var(--nav-clearance,145px)}

@@ -92,3 +92,5 @@ Engineering Focus adds a cross-employer facet to the project library. It combine
 The WAAM Research Approach includes a static three-stage workflow: candidate geometry/paths, thermal-model comparisons, and physical-check preparation. Decorative icons are schematic and contain no results.
 
 Empty library views offer keyword-preserving Search All Projects when matches exist elsewhere. Otherwise Show All Projects clears all restrictions beside the empty message and returns focus to search.
+
+Each Technical Capabilities group retains a representative case-study link and also offers its complete Engineering Focus selection through a native, shareable library link.

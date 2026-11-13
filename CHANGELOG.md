@@ -498,3 +498,12 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Previous addition verified: 98f1af1139cc1b320b88f17238cd2918160fa5d9 passed Portfolio Checks and Pages deployment; live review confirmed the original process schematic and its explanation, superseding its pending gate above.
 - Deployment gate: required checks and live recovery verification remain pending for this update.
 - Verification completed: all 15 JavaScript suites passed, including 118 portfolio cases, plus 11 asset tests, 14-page link/metadata checks, 77 asset references, 24 related-work links, and original-PDF integrity.
+
+## 2026-11-13 — Browse complete project groups from capabilities
+
+- Each Technical Capabilities group now keeps its representative case-study link and adds a quieter link to its complete Engineering Focus selection: design/tooling, simulation/analysis, software/automation, or testing/inspection. Native links support sharing and opening in another tab; the existing library logic handles the selections.
+- Added 44px-minimum targets with the existing muted text palette. Direct #capabilities links now clear the sticky header, fixing the obscured heading found during visual review.
+- Files: homepage links, styles.css, all stylesheet-version references, README.md, and this record. No new scripts, dependencies, claims, or external requests.
+- Verification: site checks cover 14 pages, 455 references, and 19 images; 118 portfolio tests, stylesheet safeguards, and contrast checks passed. Desktop and 320px phone review confirmed readable links and a capabilities heading at approximately 104px below an 80px header. Each link opened the correct group (7 design, 5 analysis, 4 software, 2 testing projects). The settled phone library retained equal 305px client and scroll widths; transient width during the established crossfade was not persistent overflow.
+- Previous update verified: d74e137d280e129f64681b387a3f38ca0b387b65 passed Portfolio Checks and Pages deployment. Live Show All Projects restored 12 projects, cleared the filtered address, and focused search on a 320px phone view. Live WAAM reload confirmed concise title/description associations. This supersedes its pending deployment gate.
+- Deployment gate: required GitHub checks, Pages deployment, and live capability-link review remain pending for this update.
