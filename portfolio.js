@@ -20,6 +20,11 @@
 
   // Store only project-view preferences in this tab, never visitor analytics.
   const storageKey = 'dustin-portfolio-library';
+  const focusNames = new Map([
+    ['All','All Focus Areas'], ['additive','Additive Manufacturing'],
+    ['design','Design & Tooling'], ['analysis','Simulation & Analysis'],
+    ['testing','Testing & Inspection'], ['software','Software & Automation'],
+  ]);
   const remember = value => {
     try { sessionStorage.setItem(storageKey, JSON.stringify(value)); } catch (_) { /* Storage is optional. */ }
   };
@@ -34,12 +39,13 @@
             typeof item.title !== 'string' || !item.title.trim() || seen.has(item.href)) return false;
         seen.add(item.href); return true;
       }).map(item => ({href:item.href, title:item.title.trim().slice(0,160)}));
-      return {category:typeof value.category === 'string' ? value.category : 'All', query:typeof value.query === 'string' ? value.query.slice(0,120) : '', matches};
+      return {category:typeof value.category === 'string' ? value.category : 'All', focus:focusNames.has(value.focus) ? value.focus : 'All', query:typeof value.query === 'string' ? value.query.slice(0,120) : '', matches};
     } catch (_) { return null; }
   };
   const cards = [...document.querySelectorAll('.project-card')];
   const buttons = [...document.querySelectorAll('.filter')];
   const search = document.querySelector('#project-search');
+  const focusSelect = document.querySelector('#project-focus');
   if (cards.length && search) {
     const library = document.querySelector('#project-library');
     // Initial filter restoration must settle before native fragment positioning.
@@ -61,9 +67,13 @@
     // Returning from a case study restores access to the full library.
     if (library && (previous || location.hash === '#project-library')) library.open = true;
     const categoryFromURL = params.get('category');
+    const hasViewParams = ['category','q','focus'].some(key => params.has(key));
     let category = categories.includes(categoryFromURL) ? categoryFromURL :
-      (!params.has('category') && !params.has('q') && categories.includes(previous?.category) ? previous.category : 'All');
-    search.value = (params.get('q') ?? (!params.has('category') ? previous?.query : '') ?? '').slice(0, 120);
+      (!hasViewParams && categories.includes(previous?.category) ? previous.category : 'All');
+    let focus = focusNames.has(params.get('focus')) ? params.get('focus') :
+      (!hasViewParams && focusNames.has(previous?.focus) ? previous.focus : 'All');
+    if (focusSelect) focusSelect.value = focus;
+    search.value = (params.get('q') ?? (!hasViewParams ? previous?.query : '') ?? '').slice(0, 120);
     const normalize = value => value.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
       .replace(/\bc\+\+/g,' cplusplus ').replace(/\bc#/g,' csharp ').replace(/\bgd\s*&\s*t\b/g,' gdt ')
       .replace(/[^\p{L}\p{N}]+/gu,' ');
@@ -86,13 +96,14 @@
       document.dispatchEvent?.(new Event('portfolio:before-filter'));
       const query = search.value.trim().slice(0, 120);
       const words = normalize(query).split(/\s+/).filter(Boolean);
-      if (library && (category !== 'All' || query)) library.open = true;
+      if (library && (category !== 'All' || focus !== 'All' || query)) library.open = true;
       let visible = 0, matchesAcrossCategories = 0;
       const matchingProjects = [];
       cards.forEach((card, index) => {
         const matches = words.every(word => acronyms.has(word) || word.length <= 2 ? searchable[index].tokens.has(word) : searchable[index].text.includes(word));
         if (matches) matchesAcrossCategories++;
-        card.hidden = (category !== 'All' && card.dataset.category !== category) || !matches;
+        const focusMatches = focus === 'All' || (card.dataset.focus || '').split(/\s+/).includes(focus);
+        card.hidden = (category !== 'All' && card.dataset.category !== category) || !focusMatches || !matches;
         if (!card.hidden) { visible++; if (resultLinks[index]) matchingProjects.push(resultLinks[index]); }
       });
       buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === category)));
@@ -101,18 +112,19 @@
       empty.hidden = visible > 0;
       if (!visible && emptyMessage) {
         const categoryLabel = buttons.find(button => button.dataset.filter === category)?.textContent.trim();
-        emptyMessage.textContent = `No matching projects${query ? ` for “${query}”` : ''}${category !== 'All' ? ` in ${categoryLabel}` : ''}. Try another keyword or clear the filters.`;
+        emptyMessage.textContent = `No matching projects${query ? ` for “${query}”` : ''}${category !== 'All' ? ` in ${categoryLabel}` : ''}${focus !== 'All' ? ` with ${focusNames.get(focus)} focus` : ''}. Try another keyword or clear the filters.`;
       }
       if (expandSearch) {
-        expandSearch.hidden = visible > 0 || category === 'All' || !query || !matchesAcrossCategories;
+        expandSearch.hidden = visible > 0 || (category === 'All' && focus === 'All') || !query || !matchesAcrossCategories;
         expandSearch.textContent = `Search All Projects (${matchesAcrossCategories} ${matchesAcrossCategories === 1 ? 'Match' : 'Matches'})`;
       }
-      reset.hidden = category === 'All' && !query;
-      remember({ category, query, ...(category !== 'All' || query ? {matches:matchingProjects} : {}) });
+      reset.hidden = category === 'All' && focus === 'All' && !query;
+      remember({ category, focus, query, ...(category !== 'All' || focus !== 'All' || query ? {matches:matchingProjects} : {}) });
       if (syncURL) {
         const url = new URL(location.href);
         if (category === 'All') url.searchParams.delete('category'); else url.searchParams.set('category', category);
         if (query) url.searchParams.set('q', query); else url.searchParams.delete('q');
+        if (focus === 'All') url.searchParams.delete('focus'); else url.searchParams.set('focus', focus);
         if (anchorLibrary) url.hash = 'project-library';
         if (url.href !== location.href) {
           if (historyMode === 'push') history.pushState(null, '', url);
@@ -122,7 +134,11 @@
       document.dispatchEvent?.(new Event('portfolio:filtered'));
     };
     buttons.forEach(button => button.addEventListener('click', () => { category = button.dataset.filter; apply(true, 'push', true); }));
-    // Eleven local cards are cheap to filter immediately. This also keeps a
+    focusSelect?.addEventListener('change', () => {
+      focus = focusNames.has(focusSelect.value) ? focusSelect.value : 'All';
+      apply(true, 'push', true);
+    });
+    // The small local library is cheap to filter immediately. This also keeps a
     // typed query safe when a visitor opens a project before a timer would fire.
     search.addEventListener('input', () => apply(true, 'replace', true));
     search.addEventListener('search', () => apply(true, 'replace', true));
@@ -130,14 +146,18 @@
       if (event.key === 'Escape') { search.value = ''; apply(true, 'replace', true); }
     });
     reset.addEventListener('click', () => {
-      category = 'All'; search.value = ''; apply(true, 'push', true); search.focus();
+      category = 'All'; focus = 'All'; if (focusSelect) focusSelect.value = focus;
+      search.value = ''; apply(true, 'push', true); search.focus();
     });
     expandSearch?.addEventListener('click', () => {
-      category = 'All'; apply(true, 'push', true); search.focus();
+      category = 'All'; focus = 'All'; if (focusSelect) focusSelect.value = focus;
+      apply(true, 'push', true); search.focus();
     });
     addEventListener('popstate', () => {
       const restored = new URLSearchParams(location.search);
       category = categories.includes(restored.get('category')) ? restored.get('category') : 'All';
+      focus = focusNames.has(restored.get('focus')) ? restored.get('focus') : 'All';
+      if (focusSelect) focusSelect.value = focus;
       search.value = (restored.get('q') || '').slice(0, 120);
       apply(false);
     });
@@ -145,7 +165,7 @@
     // Older filtered links may name the whole work section or omit a fragment.
     // Position once after navigation clearance is ready; keep explicit links to
     // other sections, later history restoration, and typing under native control.
-    const initialResults = (category !== 'All' || Boolean(search.value.trim())) &&
+    const initialResults = (category !== 'All' || focus !== 'All' || Boolean(search.value.trim())) &&
       (!location.hash || location.hash === '#work');
     apply(true, 'replace', initialResults);
     if (initialResults && library) requestAnimationFrame(() => {
@@ -162,6 +182,7 @@
     if (previous && categories.includes(previous.category) && previous.category !== 'All') {
       params.set('category', previous.category);
     }
+    if (previous?.focus !== 'All' && focusNames.has(previous?.focus)) params.set('focus', previous.focus);
     if (previous?.query.trim()) params.set('q', previous.query.trim());
     const query = params.toString();
     document.querySelectorAll('.back, .case-bottom a[href="../index.html#project-library"]').forEach(link => {
@@ -169,7 +190,7 @@
     });
     const selection = previous?.matches || [];
     if (previous && categories.includes(previous.category) &&
-        (previous.category !== 'All' || previous.query.trim()) && selection.length > 1) {
+        (previous.category !== 'All' || previous.focus !== 'All' || previous.query.trim()) && selection.length > 1) {
       const current = 'projects/' + location.pathname.split('/').pop();
       const index = selection.findIndex(item => item.href === current);
       const next = document.querySelector('.case-bottom a[aria-label^="Next Project:"]');

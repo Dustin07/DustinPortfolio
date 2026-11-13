@@ -25,7 +25,7 @@ function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, st
       cards[index].querySelector=selector=>selector==='h3 a'?link:null;
     }
   });
-  const elements = {'#project-search':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-empty-message':new Element(), '#project-expand-search':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
+  const elements = {'#project-search':new Element(), '#project-focus':new Element(), '#project-count':new Element(), '#project-empty':new Element(), '#project-empty-message':new Element(), '#project-expand-search':new Element(), '#project-reset':new Element(), '.project-toolbar':new Element(), '.filters':new Element()};
   const timers = new Map(), frames = []; let timerId = 0; let stored = saved; const events = {};
   elements['#project-library'] = new Element();
   elements['#project-library'].open = false;
@@ -44,6 +44,7 @@ function fixture(url = 'https://example.test/DustinPortfolio/', saved = null, st
   return {cards,buttons,elements,context,events,
     flushFrame:()=>frames.splice(0).forEach(action=>action()),
     click:value => buttons.find(button=>button.dataset.filter===value).events.click(),
+    focus:value => {elements['#project-focus'].value=value;elements['#project-focus'].events.change();},
     search:value => {elements['#project-search'].value=value;elements['#project-search'].events.input();[...timers.values()].forEach(action=>action());timers.clear();},
     shown:()=>cards.filter(card=>!card.hidden).map(card=>card.textContent),
     stored:()=>stored,
@@ -185,7 +186,7 @@ const decode = text => text.replace(/&amp;/g,'&').replace(/<[^>]*>/g,' ');
 const realLibrary = {
   cards:[...home.matchAll(/<article class="project-card"([^>]*)>([\s\S]*?)<\/article>/g)].map(([,attributes,content])=>{
     const link=content.match(/<h3><a href="([^"]+)">([\s\S]*?)<\/a>/);
-    return {text:decode(content),href:link?.[1],title:decode(link?.[2] || ''),dataset:{category:attributes.match(/data-category="([^"]+)"/)[1],keywords:decode(attributes.match(/data-keywords="([^"]*)"/)?.[1] || '')}};
+    return {text:decode(content),href:link?.[1],title:decode(link?.[2] || ''),dataset:{category:attributes.match(/data-category="([^"]+)"/)[1],focus:attributes.match(/data-focus="([^"]*)"/)?.[1] || '',keywords:decode(attributes.match(/data-keywords="([^"]*)"/)?.[1] || '')}};
   }),
   categories:[...home.matchAll(/data-filter="([^"]+)"/g)].map(match=>match[1]),
 };
@@ -268,4 +269,21 @@ test('fully visible tables do not add a noninteractive keyboard stop',()=>{const
 test('overflowing tables retain keyboard panning and its description',()=>{const f=tableFixture({width:320,content:700});assert.equal(f.wrap.tabIndex,0);assert.equal(f.hint().hidden,false);assert.equal(f.wrap.getAttribute('aria-describedby'),'table-scroll-hint-1');assert.deepEqual(f.observed,[f.wrap,f.table]);});
 test('table keyboard access follows layout changes without moving focus',()=>{const f=tableFixture();f.wrap.focus();f.resize(320,700);assert.equal(f.wrap.tabIndex,0);assert.equal(f.wrap.focused,true);f.resize(700,700);assert.equal(f.wrap.tabIndex,-1);assert.equal(f.wrap.focused,true);assert.equal(f.wrap.getAttribute('aria-describedby'),undefined);});
 test('table resize fallback preserves existing descriptions in both layouts',()=>{const f=tableFixture({resizeObserver:false,description:'source-note'});assert.equal(f.wrap.getAttribute('aria-describedby'),'source-note');f.resize(320,700);assert.equal(f.wrap.tabIndex,0);assert.equal(f.wrap.getAttribute('aria-describedby'),'source-note table-scroll-hint-1');f.resize(700,700);assert.equal(f.wrap.tabIndex,-1);assert.equal(f.wrap.getAttribute('aria-describedby'),'source-note');});
+
+
+
+test('engineering-focus default leaves all projects available',()=>{const f=fixture(undefined,null,false,realLibrary);assert.equal(f.elements['#project-focus'].value,'All');assert.equal(f.shown().length,12);assert.equal(f.elements['#project-reset'].hidden,true);});
+test('additive focus connects academic, NASA, and Boeing work',()=>{const f=fixture(undefined,null,false,realLibrary);f.focus('additive');assert.equal(f.shown().length,5);assert.ok(f.shown().some(x=>x.includes('Thermal-Aware')));assert.ok(f.shown().some(x=>x.includes('In-Space')));assert.ok(f.shown().some(x=>x.includes('Protective Covers')));assert.equal(f.context.location.searchParams.get('focus'),'additive');assert.equal(f.context.location.hash,'#project-library');assert.equal(f.stored().focus,'additive');assert.equal(f.stored().matches.length,5);});
+test('focus and employer categories intersect',()=>{const f=fixture(undefined,null,false,realLibrary);f.focus('analysis');assert.equal(f.shown().length,5);f.click('Academic');assert.equal(f.shown().length,4);assert.ok(f.shown().every(x=>!x.includes('Gating System')));});
+test('focus and exact keyword search combine without moving focus',()=>{const f=fixture(undefined,null,false,realLibrary);f.focus('analysis');f.search('MATLAB');assert.equal(f.shown().length,3);assert.equal(f.context.location.searchParams.get('focus'),'analysis');assert.equal(f.elements['#project-library'].scrollCalls,undefined);assert.equal(f.elements['#project-search'].focused,undefined);assert.equal(f.elements['#project-focus'].focused,undefined);});
+test('focus-only shared URLs reveal and position the library',()=>{const f=fixture('https://example.test/DustinPortfolio/?focus=testing',null,false,realLibrary);assert.equal(f.shown().length,2);assert.equal(f.elements['#project-library'].open,true);assert.equal(f.elements['#project-focus'].value,'testing');assert.equal(f.context.location.hash,'#project-library');assert.equal(f.elements['#project-library'].scrollCalls,1);});
+test('explicit section links keep their destination with focus filters',()=>{const f=fixture('https://example.test/DustinPortfolio/?focus=testing#research',null,false,realLibrary);assert.equal(f.context.location.hash,'#research');assert.equal(f.elements['#project-library'].scrollCalls,undefined);});
+test('Back restores the focus control and corresponding cards',()=>{const f=fixture(undefined,null,false,realLibrary);f.focus('analysis');f.context.location=new URL('https://example.test/DustinPortfolio/?focus=design#project-library');f.events.popstate();assert.equal(f.elements['#project-focus'].value,'design');assert.equal(f.shown().length,7);});
+test('clear filters resets focus, category, keyword and the URL',()=>{const f=fixture('https://example.test/DustinPortfolio/?focus=testing&category=Academic&q=PA6#project-library',null,false,realLibrary);assert.equal(f.shown().length,1);f.elements['#project-reset'].events.click();assert.equal(f.shown().length,12);assert.equal(f.elements['#project-focus'].value,'All');assert.equal(f.context.location.search,'');assert.equal(f.elements['#project-search'].focused,true);});
+test('widening an empty keyword search clears both focus and employer restrictions',()=>{const f=fixture(undefined,null,false,realLibrary);f.focus('testing');f.search('TPU');assert.equal(f.shown().length,0);assert.match(f.elements['#project-empty-message'].textContent,/Testing & Inspection/);assert.equal(f.elements['#project-expand-search'].hidden,false);f.elements['#project-expand-search'].events.click();assert.equal(f.shown().length,1);assert.equal(f.elements['#project-search'].value,'TPU');assert.equal(f.elements['#project-focus'].value,'All');assert.equal(f.context.location.searchParams.has('focus'),false);});
+test('case return links retain the engineering-focus filter',()=>{const links=caseReturnFixture({category:'All',focus:'analysis',query:''});for(const href of links){const url=new URL(href,'https://example.test/projects/case.html');assert.equal(url.searchParams.get('focus'),'analysis');assert.equal(url.hash,'#project-library');}});
+test('focus-only selections retain Next Result order',()=>{const f=caseNavigationFixture({...selectedBoeing,category:'All',focus:'additive'});assert.equal(f.next.attrs.href,'ergonomic-tools.html');assert.equal(f.next.attrs['aria-label'],'Next Matching Project: Ergonomic Attachments');});
+test('unknown focus values cannot create a stale filter or contextual next link',()=>{const f=fixture('https://example.test/DustinPortfolio/?focus=unknown',null,false,realLibrary);assert.equal(f.shown().length,12);assert.equal(f.elements['#project-focus'].value,'All');assert.equal(f.context.location.searchParams.has('focus'),false);const c=caseNavigationFixture({...selectedBoeing,category:'All',focus:'unknown'});assert.equal(c.next.attrs['aria-label'],'Next Project: Other Project');});
+test('every published card has valid, nonduplicated engineering-focus memberships',()=>{const allowed=new Set(['additive','design','analysis','testing','software']);for(const card of realLibrary.cards){const values=card.dataset.focus.split(/\s+/);assert.ok(values.length>0);assert.equal(new Set(values).size,values.length);assert.ok(values.every(x=>allowed.has(x)));}});
+
 console.log(`${cases} portfolio regression tests passed.`);

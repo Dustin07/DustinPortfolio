@@ -440,3 +440,14 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: all 14 JavaScript suites, 10 asset tests, 14 pages/435 references/19 images, related-work generation, and 75 asset versions passed. Real local browser review covered desktop (1280px), phone (390px), and narrow phone (320px) layouts with no root overflow. The new research action opened the correct case study.
 - Previous batch verified: 0f5e4acc35db3784a8026bbf591b1c29a0fcce50 passed Portfolio Checks and Pages deployment. Live review confirmed both example photos, their credits, and the 144×180px compact portrait. This supersedes its pending deployment gate above.
 - Deployment gate: successful GitHub checks, Pages deployment, and live verification remain required for these new sections.
+
+## 2026-11-13 — Add cross-employer engineering-focus browsing
+
+- Added an Engineering Focus selector to the project library for additive manufacturing, design/tooling, simulation/analysis, testing/inspection, and software/automation. Curated subject memberships combine with existing employer filters and keyword search; they add no engineering-result claims.
+- Focus selections use shareable URLs, browser history, tab-local preferences, explicit case-study return links, and matching Next Result order. Clear Filters clears all restrictions; an empty keyword search can widen across focus and employer restrictions.
+- Added Research to the main navigation on the home page and all case studies, and added the WAAM example photos to that case’s contents menu. Compact navigation now uses two columns with larger tap areas.
+- Files: index.html, portfolio.js, styles.css, case headers, the WAAM contents menu, navigation tests, README.md, asset-version references, and this record. Original documents and unpublished WAAM results remain unchanged.
+- Verification: all 14 JavaScript suites passed, including 115 portfolio checks, plus 10 asset tests, 14 pages/449 references/19 images, 24 related-work links, and 75 asset references. The sandbox shell stalled before commands started; host-shell verification completed successfully.
+- Browser review confirmed five additive projects across organizations; four Academic + Simulation/Analysis projects; focus-preserving return and Next Result links; fresh 320px shared-link positioning at approximately 104px below the page top; no root overflow; 121.5×44px phone-menu targets; and a WAAM photo heading below the sticky controls. Desktop controls and the five-link navigation also fit.
+- Previous additions verified: d15b5a03a11db30b5fc9d04515b46bde0d283589 passed Portfolio Checks and Pages deployment. Live review confirmed the Current Research and About sections. This supersedes their pending gate above.
+- Deployment gate: GitHub checks, Pages deployment, and live verification remain required for this focus-browsing update.
