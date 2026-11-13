@@ -86,3 +86,5 @@ The Michigan S2A Lab case (`projects/waam-thermal-planning.html`) describes ongo
 The homepage’s Current Research spotlight introduces the Michigan WAAM work without publishing results. Its photo is an attributed published example, distinct from project evidence. The About introduction uses the existing public education and employer history.
 
 Engineering Focus adds a cross-employer facet to the project library. It combines with employer/category and keyword filters, uses shareable `focus` URLs, and follows the tab-local selection through case-study return and Next Result links. The focus labels describe project subject matter, not new validation or production claims. Research is also reachable from the main navigation; the WAAM contents menu includes its context photos.
+
+The WAAM Research Approach includes a static three-stage workflow: candidate geometry/paths, thermal-model comparisons, and physical-check preparation. Decorative icons are schematic and contain no results.

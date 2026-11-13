@@ -451,3 +451,12 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Browser review confirmed five additive projects across organizations; four Academic + Simulation/Analysis projects; focus-preserving return and Next Result links; fresh 320px shared-link positioning at approximately 104px below the page top; no root overflow; 121.5×44px phone-menu targets; and a WAAM photo heading below the sticky controls. Desktop controls and the five-link navigation also fit.
 - Previous additions verified: d15b5a03a11db30b5fc9d04515b46bde0d283589 passed Portfolio Checks and Pages deployment. Live review confirmed the Current Research and About sections. This supersedes their pending gate above.
 - Deployment gate: GitHub checks, Pages deployment, and live verification remain required for this focus-browsing update.
+
+## 2026-11-13 — Explain the WAAM research workflow visually
+
+- Added a three-stage visual to Research Approach: Plan Paths, Model Heat Flow, and Prepare Tests. The captions and text use the supplied public research methods; physical validation remains explicitly pending.
+- Added decorative schematic path, heat-flow, and measurement icons without numerical outputs, simulated temperature fields, partner details, or performance claims. The existing static workflow component supplies desktop columns and phone stacking; no scripts or shared assets changed.
+- Files: projects/waam-thermal-planning.html, README.md, and this record.
+- Verification: all 14 JavaScript suites, site links/metadata, asset checks, related-work checks, and original-PDF integrity passed. Local browser review covered desktop, 320px phone stacking, and the 601px three-column breakpoint with no horizontal overflow.
+- Previous batch verified: 1c60a736aaf6290c402320c359dd2581ad1712a6 passed Portfolio Checks and Pages deployment. Live phone review confirmed five additive-focus projects, preserved return/Next Result context, and direct filtered-library positioning. This supersedes its pending deployment gate above.
+- Deployment gate: GitHub checks, Pages deployment, and live review remain required for this visual addition.
