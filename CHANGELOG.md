@@ -524,3 +524,12 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: site checks validated 14 pages, 467 references, 19 images, and all return targets; 21 engineering checks, 118 portfolio cases, 24 related-work links, and 77 asset references passed. Local 320px review confirmed the 44px target and fitting ending actions. Activation retained the case URL, focused project-content, and returned to the title after the native smooth scroll settled.
 - Previous correction verified: 27de1ea5c4c10b71c18e5a62dd5efbe1888dba02 passed Portfolio Checks and Pages deployment. Live 700px and 521px review confirmed the intended side portraits and equal client/scroll widths. This supersedes its pending deployment gate above.
 - Deployment gate: GitHub checks, Pages deployment, and live overview-return review remain required for this addition.
+
+## 2026-11-13 — Recover missing links into the full project library
+
+- Live testing of a nested missing project address confirmed that the recovery page rendered correctly, but its Explore Projects action landed at Selected Work with the library still closed. Renamed the action Browse Project Library and pointed it directly to the library fragment, so all 12 projects are immediately available.
+- Added Research to recovery-page navigation, matching the rest of the site. Kept absolute project-site addresses for nested missing URLs and the existing noindex directive.
+- Files: 404.html, README.md, and this record. No shared assets, scripts, research claims, or documents changed.
+- Verification: local 320px review showed fitting recovery actions. The primary link opened the live full library with 12 projects and zero overflow. Site checks validated 14 pages, 468 references, 19 images, and metadata; 118 portfolio tests and 77 asset references passed.
+- Previous addition verified: d77e554a3eb14c28604b77e69dd5762f8a13fbe1 passed Portfolio Checks and Pages deployment. Live phone activation of Back to Project Overview retained the case, focused project-content, and returned to its visible heading. This supersedes its pending deployment gate above.
+- Deployment gate: GitHub checks, Pages deployment, and live nested-missing-address recovery remain required for this update.

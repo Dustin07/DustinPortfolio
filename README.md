@@ -98,3 +98,5 @@ Each Technical Capabilities group retains a representative case-study link and a
 The introduction stacks its 144px portrait through 520px. Smaller tablets use a side portrait (144px through 600px, 180px through 700px), with wider layouts retaining the existing 220px/280px sizing. Check title fit and CTA wrapping at both sides of those breakpoints when adjusting the hero.
 
 Case-study ending actions include Back to Project Overview, a native link to that same case main element. The existing anchor handler moves keyboard focus to the overview while native fragment scrolling and motion preferences remain in control.
+
+The missing-page recovery action opens #project-library directly, revealing the full library. Keep its absolute project-site addresses so recovery also works from nested missing paths; its navigation includes Current Research.
