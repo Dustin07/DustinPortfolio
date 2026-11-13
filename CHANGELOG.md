@@ -470,3 +470,11 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: all 15 JavaScript suites passed, including nine contact-copy checks and 115 project checks; all 11 asset tests, site links/metadata (14 pages, 451 references, 19 images), related-work checks, and 77 asset references passed. Original PDFs remain unchanged. Real local browser copying succeeded on desktop and a 320px phone layout; a temporary manual-fallback layout preview fit without root overflow and was removed before publication.
 - Previous batch verified: 5bf1c0a2c234cde683981a0890feb5d1d420e9bc passed Portfolio Checks and Pages deployment. Live review confirmed all three schematic workflow steps and the pending-validation caption, superseding its pending gate above.
 - Deployment gate: GitHub checks, Pages deployment, and live copy-action review remain required for this update.
+
+## 2026-11-13 — Keep copy confirmation from shifting the contact row
+
+- Live verification exposed a horizontal reflow when the copy-status text changed the contact group’s intrinsic width. The desktop group now has a stable flex basis, while compact layouts use the full available width.
+- Files: contact.css, its homepage content-hash reference, and this record. Copy behavior and the original email destination are unchanged.
+- Verification: local before/after copying measurements retained exactly the same email and contact-group rectangles at desktop size. The contact area also fit 761px and 320px layouts without root overflow. Site and asset-version checks passed.
+- The preceding Copy Email commit f2482853843d65a686d5ef8c0246f3f0d5d13761 passed all GitHub checks and Pages deployment; real live copying succeeded. This entry completes the layout issue found during that live review.
+- Deployment gate: GitHub checks, Pages deployment, and live stable-layout verification remain required for this correction.
