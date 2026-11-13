@@ -1193,3 +1193,5 @@ html.motion-disabled::view-transition-new(*) {animation:none!important}
 /* Capability groups also open their complete project selection. */
 .skills>div .skill-browse {display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-top:4px;font-size:13px;line-height:1.5;color:#435867}
 #capabilities {scroll-margin-top:var(--nav-clearance,145px)}
+@media screen and (min-width:521px) and (max-width:700px) {.hero {grid-template-columns:minmax(0,1fr) 180px;gap:24px}.hero-portrait {width:180px;grid-row:auto;justify-self:end}}
+@media screen and (min-width:521px) and (max-width:600px) {.hero {grid-template-columns:minmax(0,1fr) 144px;gap:20px}.hero-portrait {width:144px}.hero h1 {font-size:2.8rem}}

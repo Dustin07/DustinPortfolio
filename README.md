@@ -94,3 +94,5 @@ The WAAM Research Approach includes a static three-stage workflow: candidate geo
 Empty library views offer keyword-preserving Search All Projects when matches exist elsewhere. Otherwise Show All Projects clears all restrictions beside the empty message and returns focus to search.
 
 Each Technical Capabilities group retains a representative case-study link and also offers its complete Engineering Focus selection through a native, shareable library link.
+
+The introduction stacks its 144px portrait through 520px. Smaller tablets use a side portrait (144px through 600px, 180px through 700px), with wider layouts retaining the existing 220px/280px sizing. Check title fit and CTA wrapping at both sides of those breakpoints when adjusting the hero.
