@@ -1,0 +1,9 @@
+.contact .copy-email {display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid #9caec0;border-radius:8px;background:transparent;color:#fff;font:inherit;font-size:.85rem;cursor:pointer}
+.contact .copy-email:hover {background:#183e61}
+.contact .copy-email:focus-visible {outline:2px solid #ffcb05;outline-offset:4px}
+.copy-email svg {flex:0 0 18px}
+.contact .email-copy-status {flex-basis:100%;min-height:1.5em;margin:0;color:#e3ebf1;font-size:.85rem;line-height:1.5}
+.email-copy-fallback {flex-basis:100%;max-width:420px;min-width:0}
+.email-copy-fallback label {display:block;margin-bottom:8px;font-size:.85rem;color:#fff}
+.email-copy-fallback input {width:100%;min-height:46px;border:1px solid #aebbc7;border-radius:8px;padding:10px 12px;background:#fff;color:#00274c;font:inherit;font-size:1rem}
+@media print {.copy-email,.email-copy-status,.email-copy-fallback {display:none!important}}

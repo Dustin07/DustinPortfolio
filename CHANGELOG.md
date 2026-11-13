@@ -460,3 +460,13 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: all 14 JavaScript suites, site links/metadata, asset checks, related-work checks, and original-PDF integrity passed. Local browser review covered desktop, 320px phone stacking, and the 601px three-column breakpoint with no horizontal overflow.
 - Previous batch verified: 1c60a736aaf6290c402320c359dd2581ad1712a6 passed Portfolio Checks and Pages deployment. Live phone review confirmed five additive-focus projects, preserved return/Next Result context, and direct filtered-library positioning. This supersedes its pending deployment gate above.
 - Deployment gate: GitHub checks, Pages deployment, and live review remain required for this visual addition.
+
+## 2026-11-13 — Add Copy Email with a manual fallback
+
+- Added a secondary Copy Email action beside the existing primary email link. Success is announced without moving focus or disabling the focused button. Overlapping requests are ignored while a copy is pending.
+- If clipboard access is unavailable or denied, the contact section reveals a labeled readonly field and selects the address for the visitor’s device Copy command. The original email link remains available without JavaScript; the new action is hidden until its script is ready.
+- Added small homepage-only contact assets and registered their content-hash versions. Added contact behavior and markup checks to Portfolio Checks, including unsupported/denied access, retry, and focus behavior. No clipboard reads, external services, analytics, or contact-form backend were added.
+- Files: index.html, contact.js, contact.css, contact tests, asset-version tool/tests, validation workflow, README.md, and this record.
+- Verification: all 15 JavaScript suites passed, including nine contact-copy checks and 115 project checks; all 11 asset tests, site links/metadata (14 pages, 451 references, 19 images), related-work checks, and 77 asset references passed. Original PDFs remain unchanged. Real local browser copying succeeded on desktop and a 320px phone layout; a temporary manual-fallback layout preview fit without root overflow and was removed before publication.
+- Previous batch verified: 5bf1c0a2c234cde683981a0890feb5d1d420e9bc passed Portfolio Checks and Pages deployment. Live review confirmed all three schematic workflow steps and the pending-validation caption, superseding its pending gate above.
+- Deployment gate: GitHub checks, Pages deployment, and live copy-action review remain required for this update.

@@ -44,5 +44,9 @@ class AssetVersions(unittest.TestCase):
     def test_blank_parameters_remain_present(self):
         self.assertEqual(self.update('src="ambient.js?mode=&amp;v=old"'), 'src="ambient.js?v=123456789abc&amp;mode="')
 
+    def test_contact_assets_receive_current_versions(self):
+        self.assertEqual(self.update('href="contact.css?v=old"'), 'href="contact.css?v=123456789abc"')
+        self.assertEqual(self.update('src="contact.js"'), 'src="contact.js?v=123456789abc"')
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
