@@ -515,3 +515,12 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: visual review at 521px and 700px confirmed a more compact, readable introduction. Measurements at 320, 520, 521, 600, 601, 700, and 701px found no clipped heading and equal client/scroll widths. Broader tablet review also confirmed readable research columns, fitting navigation, capabilities, and library controls. Stylesheet safeguards, contrast checks, 11 asset tests, 14-page/455-reference site checks, and 77 asset versions passed.
 - Previous addition verified: 78526e3955ea539b3eb6992081dcd5800204c064 passed Portfolio Checks and Pages deployment. Live review showed all four capability links; Software & Automation opened its four matching projects. This supersedes its pending gate above.
 - Deployment gate: GitHub checks, Pages deployment, and live small-tablet portrait review remain required for this correction.
+
+## 2026-11-13 — Return from case-study endings to their overview
+
+- Added Back to Project Overview beside the ending actions on all 12 case studies. Readers of long cases can return to the title and summary without leaving the project or scrolling through several screens manually.
+- Uses a native fragment link to the existing main element, the existing 44px target styling, and the existing keyboard-focus handler. Native scrolling retains the site pause/reduced-motion behavior. No new styles, scripts, animation, or content claims were introduced.
+- Files: all 12 case studies, README.md, and this record.
+- Verification: site checks validated 14 pages, 467 references, 19 images, and all return targets; 21 engineering checks, 118 portfolio cases, 24 related-work links, and 77 asset references passed. Local 320px review confirmed the 44px target and fitting ending actions. Activation retained the case URL, focused project-content, and returned to the title after the native smooth scroll settled.
+- Previous correction verified: 27de1ea5c4c10b71c18e5a62dd5efbe1888dba02 passed Portfolio Checks and Pages deployment. Live 700px and 521px review confirmed the intended side portraits and equal client/scroll widths. This supersedes its pending deployment gate above.
+- Deployment gate: GitHub checks, Pages deployment, and live overview-return review remain required for this addition.
