@@ -408,3 +408,11 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Files: index.html and CHANGELOG.md. No new research claims were added; a description of Dustin's own research awaits his supplied details.
 - Verification: all 14 JavaScript test suites, site checks (13 pages, 393 references, 15 images), 10 asset tests, related-work checks, and 70 content-hash asset references passed. Windows checkout line endings were normalized for the asset check without changing published assets.
 - Deployment gate: GitHub Actions, Pages deployment, and live verification remain pending.
+
+## 2026-11-13 — Add Michigan WAAM research case study
+
+- Added a manufacturing-first research case based on Dustin’s supplied public-copy handoff. Includes thermal modeling, CAD/path workflows, sequence studies, numerical verification, experimental preparation, and current limitations.
+- At Dustin’s request, results and performance figures are omitted from the page and project card. The copy covers methods and current status, with physical validation pending. No confidential workspace references, partner settings, or private figures are published.
+- Linked the case from the Michigan timeline and the 12-project library; extended related-work generation, next-project navigation, sitemap, and content checks. The earlier S2A link addition passed GitHub checks and Pages deployment and was verified live.
+- Verification: all 14 JavaScript suites, including 21 engineering checks; 10 asset tests; 14 pages/422 references/15 images; 24 related links; and 75 asset references passed. Original documents remain unchanged.
+- Deployment gate: local browser preview was unreachable from the connected browser. GitHub checks, Pages deployment, and live desktop/phone review are required before reporting the research update live.

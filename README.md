@@ -80,3 +80,5 @@ Initial library restoration skips its opening transition for the first rendered 
 Putter and carabiner loops keep their existing timing but skip geometry writes when the rendered stage and progress have not changed. The putter also tracks reduced motion as a render input, refreshing the static cutter when that preference changes without clearing a local pause. This extends the earlier stage-only metadata updates; it is not an FPS benchmark.
 
 The two illustrations' playback and selection controls retain a 44px minimum height, including the compact phone styles. Keep that minimum when adjusting their padding or typography.
+
+The Michigan S2A Lab case (`projects/waam-thermal-planning.html`) describes ongoing WAAM thermal modeling and toolpath research from Dustin’s November 13, 2026 public-copy handoff. At Dustin’s request, results and performance figures are omitted; the case describes the problem, contributions, methods, and current status. Physical validation is pending; no private assets or partner process settings are published.

@@ -4,7 +4,8 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.join(__dirname,'..');
 const pairs={
-  'nasa-manufacturing':['rocket-structures','gating-optimization'],
+  'waam-thermal-planning':['nasa-manufacturing','gating-optimization'],
+  'nasa-manufacturing':['waam-thermal-planning','rocket-structures'],
   'protective-covers':['ergonomic-tools','die-design'],
   'rocket-structures':['carabiner-fea','nasa-manufacturing'],
   'legacy-reverse-engineering':['gating-optimization','die-design'],
@@ -47,7 +48,7 @@ function main(){
     if(next!==original){changed.push(name);if(write)fs.writeFileSync(file,next,'utf8');}
   }
   if(changed.length&&!write){console.error('FAIL: refresh related work with node tools/build_related.cjs --write: '+changed.join(', '));process.exitCode=1;return;}
-  console.log(`${write?'Refreshed':'Verified'} 22 related-work links and 11 project email contexts; ${changed.length} pages ${write?'updated':'stale'}.`);
+  console.log(`${write?'Refreshed':'Verified'} ${Object.keys(pairs).length*2} related-work links and ${Object.keys(pairs).length} project email contexts; ${changed.length} pages ${write?'updated':'stale'}.`);
 }
 module.exports={pairs,library,relatedHTML,refreshed};
 if(require.main===module)main();

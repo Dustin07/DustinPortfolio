@@ -10,6 +10,15 @@ const near = (actual, expected, tolerance) => assert.ok(Math.abs(actual-expected
 let total=0; const test=(name,action)=>{action();total++;console.log('PASS '+name);};
 const home=read('index.html');
 const cards=[...home.matchAll(/<article class="project-card"[^>]*>([\s\S]*?)<\/article>/g)].map(([,card])=>({html:card,target:card.match(/<h3><a href="([^"]+)"/)[1]}));
+
+test('WAAM case explains ongoing methods without publishing results',()=>{
+  const html=read('projects/waam-thermal-planning.html');
+  assert.match(html,/Physical measurements and a completed physical demonstration remain pending/);
+  assert.match(html,/Research Approach/);
+  assert.match(html,/Numerical verification/);
+  assert.doesNotMatch(html.split('<main')[1].split('<nav class="related-projects"')[0],/<table|[0-9]+(?:\.[0-9]+)?%|Strategy A|Strategy B|Preliminary Outcome/);
+});
+
 test('every case appears exactly once in the library',()=>{
   const cases=fs.readdirSync(path.join(root,'projects')).filter(file=>file.endsWith('.html')).map(file=>'projects/'+file).sort();
   assert.deepEqual(cards.map(card=>card.target).sort(),cases);
@@ -17,7 +26,7 @@ test('every case appears exactly once in the library',()=>{
 test('project numbers are sequential',()=>cards.forEach((card,index)=>assert.equal(card.html.match(/class="number">(\d+)/)[1],String(index+1).padStart(2,'0'))));
 
 test('every case offers a valid, specifically labeled project highlight shortcut',()=>{
-  const targets={'nasa-manufacturing':['engineering-decisions','Engineering Decisions'],'protective-covers':['section-4','View Outcome'],'rocket-structures':['section-5','View Results'],'legacy-reverse-engineering':['section-3','View Impact'],'ergonomic-tools':['section-4','View Outcome'],'carabiner-fea':['section-4','View Results'],'cnc-putter':['section-4','View Machining Plan'],'rocket-propulsion':['section-8','View Key Results'],'aircraft-aerodynamics':['section-2','View My Contribution'],'gating-optimization':['section-3','View Deliverables'],'die-design':['section-3','View Deliverables']};
+  const targets={'waam-thermal-planning':['section-3','View Research Methods'],'nasa-manufacturing':['engineering-decisions','Engineering Decisions'],'protective-covers':['section-4','View Outcome'],'rocket-structures':['section-5','View Results'],'legacy-reverse-engineering':['section-3','View Impact'],'ergonomic-tools':['section-4','View Outcome'],'carabiner-fea':['section-4','View Results'],'cnc-putter':['section-4','View Machining Plan'],'rocket-propulsion':['section-8','View Key Results'],'aircraft-aerodynamics':['section-2','View My Contribution'],'gating-optimization':['section-3','View Deliverables'],'die-design':['section-3','View Deliverables']};
   assert.equal(Object.keys(targets).length,cards.length);
   for(const [name,[id,label]] of Object.entries(targets)){
     const html=read('projects/'+name+'.html');
