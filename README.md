@@ -115,3 +115,5 @@ The old nasa-manufacturing.html#documentation fragment remains on the related ca
 Compact main navigation measures the remaining space below its rendered links when opened, and refits on header or viewport changes. Keep this independent of an assumed single-row brand/menu header so expanded text spacing and short viewports retain access to every link. CSS viewport bounds remain a fallback.
 
 Figure-viewer fit previews retain an 80px image-height allowance on short screens instead of letting viewport subtraction collapse the image. The bounded dialog can scroll for the caption; Actual Size still enables detailed panning.
+
+On short viewports up to 360px high and at least 480px wide, the figure viewer uses a compact single-row toolbar and 12px content padding. Narrow portrait layouts retain the stacked toolbar and 44px controls.
