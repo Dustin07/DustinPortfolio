@@ -1232,3 +1232,12 @@ html.motion-disabled::view-transition-new(*) {animation:none!important}
 @media screen and (max-width:760px) {
  .nav-enhanced .navlinks {max-height:var(--nav-menu-room,max(44px,calc(100vh - 104px)));max-height:var(--nav-menu-room,max(44px,calc(100dvh - 104px)));overflow-y:auto;scrollbar-width:thin}
 }
+
+/* Pair the desktop biography with recognition without widening its reading measure. */
+@media screen and (min-width:901px) {
+ .about-grid {grid-template-columns:minmax(0,2fr) minmax(240px,1fr);align-items:start}
+ .about-intro {grid-column:1;max-width:none;margin-bottom:0}
+ .about-recognition {grid-column:2;padding-top:44px}
+ .about-recognition h2 {font-size:1.4rem;line-height:1.4}
+ .about-grid>#capabilities {grid-column:1/-1}
+}

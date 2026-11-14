@@ -121,3 +121,5 @@ On short viewports up to 360px high and at least 480px wide, the figure viewer u
 At viewport heights of 300px or less, compact project contents stay in normal page flow to preserve reading space. Section offsets and active-section tracking omit the sticky contents allowance in that mode, including the NASA documentation bookmark. Restoring sticky contents after rotation reveals a fragment target only when it remains in view and would otherwise be covered; it does not return to an offscreen target.
 
 The WAAM process schematic uses the shared engineering-figure viewer, including its descriptive vector alternative, schematic caption, Actual Size, keyboard panning, and focus restoration. Its attributed cropped context photos remain inline and link to their original published figures.
+
+Above 900px, About pairs the leadership introduction with the existing recognition entry in a side column, then places Technical Capabilities across the full grid. The narrative keeps its bounded reading measure; 900px and smaller retain the original introduction, recognition, capabilities order. These layout rules are screen-only so the print layout remains independent.

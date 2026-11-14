@@ -700,3 +700,11 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: 27 figure-viewer checks, 25 engineering checks, 16-page/525-reference/19-image site checks, and 85 asset-version checks passed. Local 320px keyboard review confirmed opening, 40px horizontal panning, Escape/focus restoration, and a single copy of the original SVG title ID; desktop visual review passed.
 - Previous shallow-window batch verified: 6b1a0d4bc976818f25e9c08abd62a220f71a8d47 passed Portfolio Checks and Pages. Live 568x200 review confirmed the NASA bookmark and What I Learned heading at about 104px; rotating to 390x844 restored heading clearance below the sticky contents. This supersedes its pending gate above.
 - Files: projects/waam-thermal-planning.html, README.md, and this record. Deployment gate: GitHub checks, Pages, and the live WAAM viewer remain required before reporting it live.
+
+## 2026-11-14 — Balance the desktop About composition
+
+- Desktop review showed a large empty area beside the leadership introduction while Recognition and Technical Capabilities began on a separate lower row. Paired the existing recognition entry with the biography above 900px and moved capabilities across the full grid beneath them. No biography, award, education, or experience claims were added.
+- The introduction retains its bounded reading measure. Recognition uses a quieter heading in the desktop side column. Tablet and phone layouts preserve the original reading order; print retains its independent layout.
+- Verification: stylesheet safeguards, 127 portfolio cases, and 16-page/525-reference/19-image checks passed. Local visual review at 1280px and geometry checks at 901px/900px/320px confirmed fitting content, two-to-one-column transition, and no horizontal overflow. The 901px biography remains 532px wide; capability groups span the full row.
+- Previous schematic update verified: 51e0693777a71e8b3abde904b069d88ba00087b9 passed Portfolio Checks and Pages. The live WAAM viewer opened on a phone with its full vector description and schematic caption, then closed with focus restored. This supersedes its pending gate above.
+- Files: index.html, styles.css, stylesheet versions across 16 pages, README.md, and this record. Deployment gate: GitHub checks, Pages, and live About layout verification remain required.
