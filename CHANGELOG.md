@@ -669,3 +669,12 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: at 200px height, widths 480, 568, 600, 601, and 1280 all showed the complete wing preview below a 69px toolbar, without toolbar overflow. At 390×844, the title and controls retained their full-width stacked rows and did not overflow. All 27 viewer checks, stylesheet safeguards, site checks, and asset refresh passed.
 - Previous nonzero-preview batch verified: 3b8842a1aff50d2c07e8b572451b6041630d12f8 passed Portfolio Checks and Pages deployment; live short-screen preview measured 160×80 and Escape dismissed it. This supersedes its pending gate above.
 - Files: styles.css, stylesheet-version references on 16 pages, README.md, and this record. No scripts, image assets, original documents, or research results changed. Deployment gate: GitHub checks, Pages deployment, and live landscape-preview verification remain required.
+
+## 2026-11-14 — Personalize Outside Engineering with Dustin's own details
+
+- Dustin supplied specific interests: a longstanding love of playing basketball, following his hometown Portland Trail Blazers, interest in how statistics changed basketball/football/baseball, and bouldering as his current favorite workout. Replaced the generic personal-page copy with these details.
+- Separated Basketball, Sports Statistics, and Bouldering into three short entries. Added a decorative statistics icon consistent with the existing line icons. Desktop uses three columns; layouts through 800px stack the entries for comfortable reading. Updated that page's description metadata.
+- The homepage still has only its quiet About link to this separate page. No favorite metrics, playing/climbing achievements, analytical projects, teams beyond the one supplied, or personal photos were invented.
+- Verification: desktop visual review and 320px/800px/801px responsive checks confirmed all three headings and fitting paragraphs. Site checks (16 pages, 525 references, 19 images), 17 sharing checks, stylesheet safeguards, and asset refresh passed.
+- Previous landscape viewer batch verified: cdb48e9d971c259575d9262598a99f4ba0157f4f passed Portfolio Checks and Pages deployment; live 568×200 review confirmed the complete preview beneath a 69px toolbar. This supersedes its pending gate above.
+- Files: personal page, styles.css, stylesheet-version references on 16 pages, README.md, and this record. Deployment gate: GitHub checks, Pages deployment, and live personal-copy/layout verification remain required.
