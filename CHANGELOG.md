@@ -605,3 +605,10 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: local browser searches for heat and cooling each returned the WAAM case and retained the shareable query. All 121 portfolio tests, 24 engineering checks, site checks (16 pages, 525 references, 19 images), related-work generation, and 85 asset references passed.
 - Previous share-artwork batch verified: 61ff4bfdf59e799b35c56011c80bb6eebb0ebb1e passed Portfolio Checks and Pages deployment; live review confirmed the new image and leadership-focused alternative description after reload. This supersedes its pending gate above.
 - Files: index.html, tests/portfolio.test.cjs, and this record. Deployment gate: GitHub checks, Pages deployment, and live plain-language search verification remain required.
+
+## 2026-11-14 — Match the homepage title to current positioning
+
+- Updated the browser and Open Graph homepage title from Mechanical Engineering Portfolio to Aerospace Innovation & Engineering Leadership, matching the user's stated direction, visible introduction, and refreshed sharing artwork. The Person structured data remains Mechanical Engineering Graduate Student, preserving the distinction between current role and career direction.
+- Verification: 17 sharing checks, 16-page/525-reference site checks, and 85 asset references passed. No body copy, navigation, styling, degrees, documents, or research claims changed.
+- Previous search batch verified: b7d404f4de3089427b0dc6dc644377b33cd84b7d passed Portfolio Checks and Pages deployment; live heat/cooling queries returned WAAM on desktop and a 320px phone with zero settled overflow. This supersedes its pending gate above.
+- Files: index.html and this record. Deployment gate: GitHub checks, Pages deployment, and live title verification remain required.
