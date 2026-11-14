@@ -303,6 +303,24 @@
     addEventListener('resize', clearance, {passive:true});
     clearance();
   }
+  const hasStickyContents = () => toc && innerWidth <= 1000 && innerHeight > 300;
+  if (toc) {
+    let previouslySticky = hasStickyContents();
+    addEventListener('resize', () => {
+      const currentlySticky = hasStickyContents();
+      if (currentlySticky && !previouslySticky) requestAnimationFrame(() => {
+        const target = document.getElementById(location.hash.slice(1));
+        if (!target?.closest('.case-content')) return;
+        const bounds = target.getBoundingClientRect();
+        const contentsBounds = toc.getBoundingClientRect();
+        const headerBottom = header?.getBoundingClientRect().bottom || 0;
+        if (bounds.top >= headerBottom && bounds.top < contentsBounds.bottom && bounds.bottom > contentsBounds.top) {
+          target.scrollIntoView({block:'start', behavior:'instant'});
+        }
+      });
+      previouslySticky = currentlySticky;
+    }, {passive:true});
+  }
   const sectionLinks = toc ? [...toc.querySelectorAll('a[href^="#"]')] :
     [...document.querySelectorAll('.navlinks a[href^="#"]')];
   const sections = sectionLinks.map(link => ({ link, section: document.getElementById(link.hash.slice(1)) })).filter(item => item.section);
@@ -310,8 +328,9 @@
     let scheduled = false;
     const highlight = () => {
       scheduled = false;
-      // Compact contents occupy another 70px plus a small reading gap.
-      const offset = (header?.getBoundingClientRect().bottom || 80) + 32 + (toc && innerWidth <= 1000 ? 80 : 0);
+      // Compact contents stay in page flow when vertical space is very limited.
+      const contentsClearance = hasStickyContents() ? 80 : 0;
+      const offset = (header?.getBoundingClientRect().bottom || 80) + 32 + contentsClearance;
       let current = null;
       sections.forEach(item => { if (item.section.getBoundingClientRect().top <= offset) current = item; });
       if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) current = sections.at(-1);

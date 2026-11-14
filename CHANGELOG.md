@@ -684,3 +684,11 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - The personal-copy deployment d1a0088ab0c19b9178d665e6aa59124b2a1b8150 passed Pages but failed Portfolio Checks because an existing navigation assertion still required the old combined Basketball & Sports Statistics heading. Updated it to require all three new topic headings while preserving the separate-page/quiet-homepage-link safeguards.
 - Verification: all 15 JavaScript suites passed locally, including 124 portfolio cases, along with 11 asset tests, site checks, 85 asset references, generated related work, and original-PDF integrity. No production-page change was needed for this correction.
 - Files: tests/portfolio.test.cjs and this record. Deployment gate: renewed GitHub checks and final live personal-page verification remain required before reporting the overall personal-copy update complete.
+
+## 2026-11-14 — Preserve project reading space in shallow windows
+
+- Confirmed that the sticky project contents covered most of a 568×200 viewport and pushed the What I Learned heading below its bottom edge. At heights up to 300px, compact contents now remain in normal flow; heading and legacy NASA documentation offsets reserve only the main header clearance.
+- Active-section tracking uses the same sticky/static distinction. When rotation restores sticky contents, an in-view fragment target is revealed if it would be covered; offscreen targets do not pull the visitor back.
+- Verification: all 15 JavaScript suites passed, including 127 portfolio cases, plus 11 asset tests, 16-page/525-reference/19-image checks, original-PDF integrity, related-work generation, and 85 asset-version checks. Local browser review confirmed readable 568×200 headings/bookmarks and their clearance after rotation to 390×844.
+- Previous personal-copy update verified: cf538e0ff77e0d227927b97d3c68f2052733e56f passed Portfolio Checks and Pages; live desktop/320px review and the About return link passed. This supersedes its pending gate above.
+- Files: portfolio.js, styles.css, related-work generator, portfolio regression tests, NASA legacy-card markup, asset references across 16 pages, README.md, and this record. Deployment gate: GitHub checks, Pages, and live short-screen/rotation verification remain required.

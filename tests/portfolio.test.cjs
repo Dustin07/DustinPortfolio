@@ -245,7 +245,7 @@ function navigationFixture(withResizeObserver = false) {
   const properties={};const events={},documentEvents={};
   const context={
     document:{querySelector:selector=>({'.topbar':header,'.case-toc':toc,'.case-bottom':bottom}[selector]||null),querySelectorAll:selector=>selector==='a[href^="#"]'?links:[],getElementById:id=>sections[id],addEventListener:(name,fn)=>{(documentEvents[name]||=[]).push(fn);},createElement:()=>{const element=new Element();element.children=[];element.append=function(child){this.children.push(child);};return element;},documentElement:{scrollHeight:2000,style:{setProperty:(name,value)=>{properties[name]=value;}}}},
-    window:{print:()=>{printed++;}},innerWidth:390,innerHeight:600,scrollY:0,
+    window:{print:()=>{printed++;}},location:{hash:''},innerWidth:390,innerHeight:600,scrollY:0,
     addEventListener:(name,action)=>{const previous=events[name];events[name]=previous?(...args)=>{previous(...args);action(...args);}:action;},requestAnimationFrame:action=>action(),
   };
   if(withResizeObserver){
@@ -289,6 +289,28 @@ test('section navigation focuses the destination',()=>{const f=navigationFixture
 test('modified clicks retain normal browser behavior',()=>{const f=navigationFixture();f.links[1].events.click({ctrlKey:true});assert.equal(f.sections.results.focused,undefined);});
 test('active section follows scroll position',()=>{const f=navigationFixture();f.context.scrollY=1000;f.events.scroll();assert.equal(f.links[1].getAttribute('aria-current'),'location');assert.equal(f.links[0].getAttribute('aria-current'),undefined);});
 test('compact contents track a heading visible below the sticky bar',()=>{const f=navigationFixture();f.context.scrollY=640;f.events.scroll();assert.equal(f.links[1].getAttribute('aria-current'),'location');f.context.innerWidth=1280;f.events.resize();assert.equal(f.links[0].getAttribute('aria-current'),'location');});
+test('short-screen tracking does not reserve space for nonsticky contents',()=>{
+  const f=navigationFixture();f.context.innerHeight=200;
+  f.sections.results.getBoundingClientRect=()=>({top:150});f.events.scroll();
+  assert.equal(f.links[0].getAttribute('aria-current'),'location');
+  f.sections.results.getBoundingClientRect=()=>({top:100});f.events.scroll();
+  assert.equal(f.links[1].getAttribute('aria-current'),'location');
+});
+test('restoring sticky contents keeps an in-view fragment heading below the toolbar',()=>{
+  const f=navigationFixture();f.context.location.hash='#results';
+  f.sections.results.closest=()=>true;f.sections.results.getBoundingClientRect=()=>({top:104,bottom:140});
+  f.toc.getBoundingClientRect=()=>({top:88,bottom:158});
+  f.context.innerHeight=200;f.events.resize();f.context.innerHeight=844;f.events.resize();
+  assert.equal(f.sections.results.scrollCalls,1);
+  assert.equal(f.sections.results.scrollOptions.behavior,'instant');
+});
+test('restoring sticky contents does not jump back to a fragment outside the reading area',()=>{
+  const f=navigationFixture();f.context.location.hash='#results';
+  f.sections.results.closest=()=>true;f.sections.results.getBoundingClientRect=()=>({top:-200,bottom:-164});
+  f.toc.getBoundingClientRect=()=>({top:88,bottom:158});
+  f.context.innerHeight=200;f.events.resize();f.context.innerHeight=844;f.events.resize();
+  assert.equal(f.sections.results.scrollCalls,undefined);
+});
 test('last section is active at page bottom',()=>{const f=navigationFixture();f.context.scrollY=1400;f.events.scroll();assert.equal(f.links[2].getAttribute('aria-current'),'location');});
 test('print control invokes the browser print workflow',()=>{const f=navigationFixture();f.bottom.children[0].events.click();assert.equal(f.printed(),1);});
 

@@ -31,7 +31,7 @@ function relatedHTML(name){
     if(!project)throw Error(`Missing library entry: ${key}`);
     // Preserve old links to the documentation section after the NASA split.
     const legacyAnchor=name==='nasa-manufacturing'&&key==='nasa-documentation-assistant'?
-      ' id="documentation" style="scroll-margin-top:calc(var(--nav-clearance,145px) + 80px)"':'';
+      ' id="documentation" style="scroll-margin-top:calc(var(--nav-clearance,145px) + var(--case-toc-clearance,80px))"':'';
     return `<a class="related-card"${legacyAnchor} href="${key}.html" aria-label="Read Case Study: ${attribute(project.title)}"><span class="related-category">${project.category}</span><h3>${project.title}</h3><p>${project.summary}</p><span class="related-action">Read Case Study <span aria-hidden="true">→</span></span></a>`;
   }).join('')+'</div></nav>';
 }
