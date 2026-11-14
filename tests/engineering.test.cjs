@@ -11,6 +11,22 @@ let total=0; const test=(name,action)=>{action();total++;console.log('PASS '+nam
 const home=read('index.html');
 const cards=[...home.matchAll(/<article class="project-card"[^>]*>([\s\S]*?)<\/article>/g)].map(([,card])=>({html:card,target:card.match(/<h3><a href="([^"]+)"/)[1]}));
 
+test('native technical diagrams separate their names from detailed descriptions',()=>{
+  let checked=0;
+  for(const card of cards){
+    for(const [,attributes,body] of read(card.target).matchAll(/<svg\b([^>]*)>([\s\S]*?)<\/svg>/g)){
+      if(!/role="img"/.test(attributes))continue;
+      const title=body.match(/<title id="([^"]+)">([^<]+)<\/title>/);
+      const description=body.match(/<desc id="([^"]+)">([^<]+)<\/desc>/);
+      assert.ok(title&&description,card.target);
+      assert.equal(attributes.match(/aria-labelledby="([^"]+)"/)?.[1],title[1],card.target);
+      assert.equal(attributes.match(/aria-describedby="([^"]+)"/)?.[1],description[1],card.target);
+      checked++;
+    }
+  }
+  assert.ok(checked>0);
+});
+
 test('WAAM case explains ongoing methods without publishing results',()=>{
   const html=read('projects/waam-thermal-planning.html');
   assert.match(html,/Physical measurements and a completed physical demonstration remain pending/);
