@@ -119,3 +119,5 @@ Figure-viewer fit previews retain an 80px image-height allowance on short screen
 On short viewports up to 360px high and at least 480px wide, the figure viewer uses a compact single-row toolbar and 12px content padding. Narrow portrait layouts retain the stacked toolbar and 44px controls.
 
 At viewport heights of 300px or less, compact project contents stay in normal page flow to preserve reading space. Section offsets and active-section tracking omit the sticky contents allowance in that mode, including the NASA documentation bookmark. Restoring sticky contents after rotation reveals a fragment target only when it remains in view and would otherwise be covered; it does not return to an offscreen target.
+
+The WAAM process schematic uses the shared engineering-figure viewer, including its descriptive vector alternative, schematic caption, Actual Size, keyboard panning, and focus restoration. Its attributed cropped context photos remain inline and link to their original published figures.

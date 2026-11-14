@@ -692,3 +692,11 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: all 15 JavaScript suites passed, including 127 portfolio cases, plus 11 asset tests, 16-page/525-reference/19-image checks, original-PDF integrity, related-work generation, and 85 asset-version checks. Local browser review confirmed readable 568×200 headings/bookmarks and their clearance after rotation to 390×844.
 - Previous personal-copy update verified: cf538e0ff77e0d227927b97d3c68f2052733e56f passed Portfolio Checks and Pages; live desktop/320px review and the About return link passed. This supersedes its pending gate above.
 - Files: portfolio.js, styles.css, related-work generator, portfolio regression tests, NASA legacy-card markup, asset references across 16 pages, README.md, and this record. Deployment gate: GitHub checks, Pages, and live short-screen/rotation verification remain required.
+
+## 2026-11-14 — Make the WAAM process schematic inspectable
+
+- Confirmed the WAAM process schematic rendered at 273px on a 320px phone without the View Larger control available on other technical diagrams. Opted that figure into the existing engineering-figure presentation/viewer; no new viewer code or dependencies were added.
+- Visitors can open the schematic, read its full description and not-to-scale caption, inspect the 400px vector at Actual Size, pan with arrow keys, and close it with focus returned to the same trigger. The separate attributed context photos keep their original-source links and inline cropping.
+- Verification: 27 figure-viewer checks, 25 engineering checks, 16-page/525-reference/19-image site checks, and 85 asset-version checks passed. Local 320px keyboard review confirmed opening, 40px horizontal panning, Escape/focus restoration, and a single copy of the original SVG title ID; desktop visual review passed.
+- Previous shallow-window batch verified: 6b1a0d4bc976818f25e9c08abd62a220f71a8d47 passed Portfolio Checks and Pages. Live 568x200 review confirmed the NASA bookmark and What I Learned heading at about 104px; rotating to 390x844 restored heading clearance below the sticky contents. This supersedes its pending gate above.
+- Files: projects/waam-thermal-planning.html, README.md, and this record. Deployment gate: GitHub checks, Pages, and the live WAAM viewer remain required before reporting it live.
