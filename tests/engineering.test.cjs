@@ -25,6 +25,22 @@ test('every case appears exactly once in the library',()=>{
 });
 test('project numbers are sequential',()=>cards.forEach((card,index)=>assert.equal(card.html.match(/class="number">(\d+)/)[1],String(index+1).padStart(2,'0'))));
 
+test('current WAAM research leads the library and featured projects',()=>{
+  assert.equal(cards[0].target,'projects/waam-thermal-planning.html');
+  assert.equal(home.match(/<a class="featured-card" href="([^"]+)"/)[1],cards[0].target);
+});
+
+test('every project has its own reflection reachable from its contents',()=>{
+  const reflections=cards.map(card=>{
+    const page=read(card.target);
+    assert.equal((page.match(/id="what-i-learned"/g)||[]).length,1,card.target);
+    const toc=page.match(/<nav class="case-toc"[\s\S]*?<\/nav>/)[0];
+    assert.ok(toc.includes('href="#what-i-learned"'),card.target);
+    return page.match(/<section class="project-lessons"[\s\S]*?<p>([\s\S]*?)<\/p>/)[1];
+  });
+  assert.equal(new Set(reflections).size,cards.length);
+});
+
 test('every case offers a valid, specifically labeled project highlight shortcut',()=>{
   const targets={'waam-thermal-planning':['section-3','View Research Methods'],'nasa-manufacturing':['engineering-decisions','Engineering Decisions'],'protective-covers':['section-4','View Outcome'],'rocket-structures':['section-5','View Results'],'legacy-reverse-engineering':['section-3','View Impact'],'ergonomic-tools':['section-4','View Outcome'],'carabiner-fea':['section-4','View Results'],'cnc-putter':['section-4','View Machining Plan'],'rocket-propulsion':['section-8','View Key Results'],'aircraft-aerodynamics':['section-2','View My Contribution'],'gating-optimization':['section-3','View Deliverables'],'die-design':['section-3','View Deliverables']};
   assert.equal(Object.keys(targets).length,cards.length);
