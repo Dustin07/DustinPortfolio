@@ -1033,7 +1033,7 @@ html.motion-disabled .related-card:hover .related-action>span:last-child {transf
 
 /* Static neutral ground gives text and engineering evidence a clean surface. */
 @media screen and (forced-colors:none) {
- body,.ambient-field {background:#f7f8fa}
+ body,.ambient-field {background:#f7f6f2}
  .ambient-field {opacity:1}
  .projects,.about {background:#fff;border-top:1px solid #e5e9ed;border-bottom:1px solid #e5e9ed}
  .timeline-heading {width:100%;max-width:none}
@@ -1214,3 +1214,8 @@ html.motion-disabled::view-transition-new(*) {animation:none!important}
 .personal-return {margin:32px 0 0}
 .personal-return a {display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:.85rem}
 .personal-page .back {display:inline-flex;align-items:center;min-height:44px}
+
+/* Keep compact navigation reachable on short or heavily zoomed screens. */
+@media screen and (max-width:760px) {
+ .nav-enhanced .navlinks {max-height:max(44px,calc(100vh - 104px));max-height:max(44px,calc(100dvh - 104px));overflow-y:auto;scrollbar-width:thin}
+}

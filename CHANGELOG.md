@@ -579,3 +579,12 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: desktop and 320px browser review confirmed H1/H2/H2 semantics and unchanged visual hierarchy; the phone document had matching 305px client/scroll widths. Site checks passed for 16 pages, 525 references, and 19 images; stylesheet safeguards, 11 asset tests, 17 sharing checks, 85 asset versions, and related-work generation passed.
 - Previous compatibility fix verified: 207742d77a351b43117d8fef486eed072532259f passed Portfolio Checks and Pages deployment; live review confirmed the legacy documentation link reaches the separate assistant card. This supersedes its pending deployment gate above.
 - Deployment gate: GitHub checks, Pages deployment, and live heading verification remain required for this correction.
+
+## 2026-11-14 — Adopt the selected warm canvas and fit short-screen menus
+
+- Dustin selected warm off-white #F7F6F2 after comparing it with the prior cool gray. Applied it to the shared screen background while retaining navy accents and white content surfaces. This supersedes the earlier pending background choice.
+- Fixed a verified compact-navigation issue at 568×200: the expanded menu placed Contact below the viewport. The enhanced menu now has a viewport-bounded scrolling area with vh/dvh fallbacks. Keyboard traversal scrolls Contact into view; ordinary phone menus retain their natural height.
+- Verification: local desktop review confirmed the warm portrait canvas and white project surface. At 568×200, keyboard focus reached Contact at approximately 169px with internal menu scrolling; at 390×844, the 146px menu needed no internal scrolling. 120 navigation tests, stylesheet safeguards, representative contrast checks, 16-page/525-reference site checks, and 85 asset versions passed.
+- Files: styles.css, stylesheet version references on 16 pages, and this record. No research results, original documents, or scripts changed.
+- Previous correction verified: 5f93093e1909a20bbbfd14db498c3ca76ec51477 passed Portfolio Checks and Pages deployment; live personal-page headings are H1/H2/H2. This supersedes its pending gate above.
+- Deployment gate: GitHub checks, Pages deployment, and live palette/menu verification remain required for this batch.
