@@ -620,3 +620,11 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: repeated rendered checks on the eight affected pages found no remaining issue in the sampled opaque HTML text pairs. Desktop visual review and 320px label-fit checks passed with matching 305px client/scroll widths. All 15 representative contrast/focus safeguards, six workflow behavior checks, stylesheet safeguards, 16-page/525-reference site checks, and asset refresh passed.
 - Previous title batch verified: 5813778863d9431907f3500367589513bcaab116 passed Portfolio Checks and Pages deployment; live browser and Open Graph titles match the aerospace innovation/engineering leadership wording. This supersedes its pending gate above.
 - Files: styles.css, tests/contrast.test.cjs, stylesheet-version references on 16 pages, and this record. No content claims, original PDFs, or research results changed. Deployment gate: GitHub checks, Pages deployment, and live label verification remain required.
+
+## 2026-11-14 — Clarify the wing-sweep diagram annotation
+
+- Reviewed SVG text separately from the prior HTML contrast audit. The aircraft planform's small orange sweep label fell just below the text-contrast threshold on its #FBFDFF surface. Applied the darker #B93608 text color and added a contrast guard using the actual SVG fill.
+- Enlarged visual review also showed that label crossing the leading-edge outline. Moved it into clear space above the left wing while preserving all geometric paths and numerical values.
+- Verification: desktop enlarged-diagram review confirmed clear text placement and the updated color. At 320px, the existing four metric labels remain readable below the diagram while inline text stays hidden; matching 305px client/scroll widths confirmed no root overflow. All 16 contrast/focus safeguards, 24 engineering checks, site checks, and asset versions passed.
+- Previous workflow contrast batch verified: 9033a405c56c79be11f97f381c8892535966a3c6 passed Portfolio Checks and Pages deployment; live WAAM workflow labels use #B93608. This supersedes its pending gate above.
+- Files: aircraft-aerodynamics case, tests/contrast.test.cjs, and this record. No original documents, diagrams' engineering values, scripts, or shared styles changed. Deployment gate: GitHub checks, Pages deployment, and live diagram verification remain required.

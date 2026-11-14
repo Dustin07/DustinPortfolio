@@ -36,4 +36,9 @@ for(const [name,foreground,background,minimum] of [
   ['orange focus indicator',variables.orange,'#fff',3],
 ])test(`${name} retains its contrast threshold`,()=>assert.ok(ratio(foreground,background)>=minimum,`${name}: ${ratio(foreground,background).toFixed(3)} is below ${minimum}`));
 test('figure focus outline is inset so the clipped figure does not hide it',()=>assert.match(css,/\.figure-zoom:focus-visible\s*\{outline-offset:-4px\}/));
+test('the wing-sweep SVG label is readable on its pale diagram surface',()=>{
+  const wing=fs.readFileSync(path.join(__dirname,'../projects/aircraft-aerodynamics.html'),'utf8');
+  const fill=wing.match(/<text[^>]*fill="(#[\da-f]+)"[^>]*>Leading-edge sweep:/i)[1];
+  assert.ok(ratio(fill,'#fbfdff')>=4.5);
+});
 console.log(`${total} representative contrast and focus safeguards passed.`);
