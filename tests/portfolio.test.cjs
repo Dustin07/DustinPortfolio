@@ -226,7 +226,7 @@ test('FEA search does not imply completed rocket material analysis',()=>{const f
 test('GD&T matches its actual metrology case',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('GD&T');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/Legacy Component Reverse Engineering/);});
 test('untagged C++ projects are not invented by broad substring matching',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('C++');assert.equal(f.shown().length,0);});
 
-function navigationFixture() {
+function navigationFixture(withResizeObserver = false) {
   const nav = new Element(), navigation = new Element(), header = new Element(), toc = new Element(), heading = new Element('Inside This Project'), bottom = new Element();
   const links = ['overview','results','files'].map(name=>Object.assign(new Element(name),{hash:'#'+name,closest:()=>true}));
   const sections = Object.fromEntries(links.map((link,index)=>[link.hash.slice(1),Object.assign(new Element(),{getBoundingClientRect:()=>({top:[200,800,1800][index]-context.scrollY})})]));
@@ -236,6 +236,7 @@ function navigationFixture() {
   nav.querySelector=selector=>selector==='.navlinks'?navigation:null;
   header.querySelector=selector=>selector==='.nav'?nav:null;
   header.getBoundingClientRect=()=>({height:72,bottom:80});
+  navigation.getBoundingClientRect=()=>({top:80});
   toc.querySelector=selector=>selector==='strong'?heading:null;
   toc.querySelectorAll=()=>links;
   const navLink=new Element('Projects');navigation.children=[navLink];
@@ -245,12 +246,29 @@ function navigationFixture() {
   const context={
     document:{querySelector:selector=>({'.topbar':header,'.case-toc':toc,'.case-bottom':bottom}[selector]||null),querySelectorAll:selector=>selector==='a[href^="#"]'?links:[],getElementById:id=>sections[id],addEventListener:(name,fn)=>{(documentEvents[name]||=[]).push(fn);},createElement:()=>{const element=new Element();element.children=[];element.append=function(child){this.children.push(child);};return element;},documentElement:{scrollHeight:2000,style:{setProperty:(name,value)=>{properties[name]=value;}}}},
     window:{print:()=>{printed++;}},innerWidth:390,innerHeight:600,scrollY:0,
-    addEventListener:(name,action)=>{events[name]=action;},requestAnimationFrame:action=>action(),
+    addEventListener:(name,action)=>{const previous=events[name];events[name]=previous?(...args)=>{previous(...args);action(...args);}:action;},requestAnimationFrame:action=>action(),
   };
+  if(withResizeObserver){
+    context.ResizeObserver=class {observe(){}};
+    context.window.ResizeObserver=context.ResizeObserver;
+  }
   vm.runInNewContext(source,context);
   return {nav,navigation,navLink,header,toc,bottom,links,sections,context,properties,events,menu:nav.children[0],toggle:toc.children[0],tocLinks:toc.children[1],printed:()=>printed,pointer:target=>(documentEvents.pointerdown||[]).forEach(fn=>fn({target}))};
 }
 test('phone menu has associated controls and starts collapsed',()=>{const f=navigationFixture();assert.equal(f.menu.getAttribute('aria-controls'),'primary-links');assert.equal(f.menu.getAttribute('aria-expanded'),'false');assert.equal(f.properties['--nav-clearance'],'104px');});
+test('a wrapped compact header leaves room for the last navigation link',()=>{
+  const f=navigationFixture();f.context.innerWidth=320;f.context.innerHeight=200;
+  f.navigation.getBoundingClientRect=()=>({top:121});f.menu.events.click();
+  assert.equal(f.properties['--nav-menu-room'],'55px');
+});
+test('viewport height changes refit an open menu even with a header observer',()=>{
+  const f=navigationFixture(true);f.menu.events.click();f.context.innerHeight=200;f.events.resize();
+  assert.equal(f.properties['--nav-menu-room'],'96px');
+});
+test('collapsed menus do not measure hidden navigation geometry',()=>{
+  const f=navigationFixture();f.navigation.getBoundingClientRect=()=>{throw Error('hidden menu measured');};
+  f.events.resize();assert.equal(f.menu.getAttribute('aria-expanded'),'false');
+});
 test('a contents link hidden by a compact breakpoint returns focus to its toggle',()=>{const f=navigationFixture();f.links[1].hidden=true;f.toc.events.focusout({target:f.links[1],relatedTarget:null});assert.equal(f.toggle.focused,true);});
 test('a main-menu toggle hidden by a wide breakpoint moves focus to visible navigation',()=>{const f=navigationFixture();f.menu.hidden=true;f.nav.events.focusout({target:f.menu,relatedTarget:null});assert.equal(f.navLink.focused,true);});
 test('a contents toggle hidden by a wide breakpoint moves focus into the visible contents',()=>{const f=navigationFixture();f.toggle.hidden=true;f.tocLinks.querySelector=()=>f.links[0];f.toc.events.focusout({target:f.toggle,relatedTarget:null});assert.equal(f.links[0].focused,true);});

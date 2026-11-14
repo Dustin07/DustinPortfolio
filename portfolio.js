@@ -272,16 +272,23 @@
     nav.insertBefore(menu, navigation);
     nav.classList.add('nav-enhanced');
     keepNavigationFocusVisible(nav, menu, navigation);
-    menu.addEventListener('click', () => menu.setAttribute('aria-expanded', String(menu.getAttribute('aria-expanded') !== 'true')));
+    menu.addEventListener('click', () => {
+      menu.setAttribute('aria-expanded', String(menu.getAttribute('aria-expanded') !== 'true'));
+      clearance();
+    });
     navigation.addEventListener('click', event => {
       if (event.target.closest('a')) { menu.setAttribute('aria-expanded', 'false'); clearance(); }
     });
     nav.addEventListener('keydown', event => {
       if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') {
-        menu.setAttribute('aria-expanded', 'false'); menu.focus();
+        menu.setAttribute('aria-expanded', 'false'); menu.focus(); clearance();
       }
     });
     const clearance = () => {
+      if (innerWidth <= 760 && menu.getAttribute('aria-expanded') === 'true') {
+        const room = Math.max(44, Math.floor(innerHeight - navigation.getBoundingClientRect().top - 24));
+        document.documentElement.style.setProperty('--nav-menu-room', `${room}px`);
+      }
       const height = header.getBoundingClientRect().height;
       document.documentElement.style.setProperty('--nav-clearance', `${Math.ceil(height) + (innerWidth <= 760 ? 8 : 12) + 24}px`);
     };
@@ -293,7 +300,7 @@
       }
     });
     if ('ResizeObserver' in window) new ResizeObserver(clearance).observe(header);
-    else addEventListener('resize', clearance, {passive:true});
+    addEventListener('resize', clearance, {passive:true});
     clearance();
   }
   const sectionLinks = toc ? [...toc.querySelectorAll('a[href^="#"]')] :
