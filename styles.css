@@ -1242,3 +1242,9 @@ html.motion-disabled::view-transition-new(*) {animation:none!important}
  .about-recognition h2 {font-size:1.4rem;line-height:1.4}
  .about-grid>#capabilities {grid-column:1/-1}
 }
+
+/* Script-free compact navigation must not occupy a shallow reading window. */
+@media screen and (max-width:760px) and (max-height:360px) {
+ html:not(:has(.nav-enhanced)) {--nav-clearance:16px;--case-toc-clearance:0px}
+ .topbar:not(:has(.nav-enhanced)) {position:static}
+}
