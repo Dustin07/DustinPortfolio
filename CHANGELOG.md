@@ -588,3 +588,12 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Files: styles.css, stylesheet version references on 16 pages, and this record. No research results, original documents, or scripts changed.
 - Previous correction verified: 5f93093e1909a20bbbfd14db498c3ca76ec51477 passed Portfolio Checks and Pages deployment; live personal-page headings are H1/H2/H2. This supersedes its pending gate above.
 - Deployment gate: GitHub checks, Pages deployment, and live palette/menu verification remain required for this batch.
+
+## 2026-11-14 — Align shared-link artwork with aerospace leadership positioning
+
+- Replaced the outdated Aerospace Manufacturing / Experimental Research share-image tagline with the homepage's Mechanical Design / Aerospace Innovation / Engineering Leadership direction. Removed the old portfolio eyebrow and decorative curves, adopted the selected warm off-white canvas, and retained the DL mark and navy university footer.
+- The Michigan footer now names the DEng pathway with the M.S. along the way. Existing NASA/Boeing/PCC industry experience appears as context, without adding leadership roles or degree-completion claims.
+- Updated matching Open Graph and Twitter image descriptions on the homepage, personal page, and all 13 case studies. Rendered the editable SVG into a verified 1200×630 JPEG (51,827 bytes) using the existing browser fixture; retained page-specific titles and descriptions.
+- Verification: inspected the rendered artwork at its declared size; all 17 sharing checks, 16-page/525-reference site checks, and 85 asset versions passed. No original PDFs, research results, scripts, or styles changed.
+- Previous palette/menu batch verified: 86fbaa788c788b093e461ea0ee922a97dd69e27f passed Portfolio Checks and Pages deployment. Live background resolves to #F7F6F2, and Contact remains keyboard-reachable inside the bounded menu at 568×200. This supersedes its pending gate above.
+- Deployment gate: GitHub checks, Pages deployment, and live artwork/metadata verification remain required. Social platforms may retain their own cached previews.
