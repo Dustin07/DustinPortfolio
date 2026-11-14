@@ -725,3 +725,12 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Previous vector update verified: 9b6843a543526057452c3ba204c0477f2d75c864 passed Portfolio Checks and Pages. Live desktop review measured the 918px fitted preview, preserved the 400px Actual Size, and confirmed Escape restored the opener. This supersedes its pending gate above.
 - Files: styles.css, stylesheet references across 16 pages, README.md, and this record. Deployment gate: required checks, Pages, and live normal-menu verification remain required; script-free behavior was tested through the local copy.
 - Required local checks passed: all 15 JavaScript suites, 11 asset tests, 16-page/525-reference/19-image site checks, related-work generation, and 85 current asset references.
+
+## 2026-11-14 — Explain the casting process before the project details
+
+- The gating and die-design introductions assumed readers already knew the roles of gates and wax-pattern tooling. Added brief process explanations before each existing project overview: gates direct molten metal into the cavity, while dies form the wax patterns used to create a ceramic mold.
+- Checked the general context against the Investment Casting Institute's The Investment Casting Process guide and linked that public PDF from both paragraphs. No new employer-specific process details, results, contribution claims, or production-status changes were added.
+- Local 320px review confirmed fitting source links and project-specific overview paragraphs beginning at about 398px/427px. Desktop review confirmed the context fits naturally before the existing project workflow. The public source is https://www.investmentcasting.org/uploads/8/1/9/8/81988734/the_investment_casting_process_-_website.pdf.
+- Previous fallback update verified: a2b51038c5c7b8c73fdf1c5ea04d8e858dfb05c5 passed Portfolio Checks and Pages. Live short-screen review confirmed enhanced navigation remained sticky and its expanded menu was bounded; the script-free local view and temporary-fixture removal were verified. This supersedes its pending gate above.
+- Files: projects/gating-optimization.html, projects/die-design.html, README.md, and this record. Deployment gate: required checks, Pages, and live overview verification remain required.
+- Required local checks passed: 25 engineering checks, 15 original-document integrity checks and 13 size cues, 17 social checks, 16-page/527-reference/19-image site checks, generated related work, and 85 asset references.
