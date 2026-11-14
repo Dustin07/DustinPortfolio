@@ -612,3 +612,11 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: 17 sharing checks, 16-page/525-reference site checks, and 85 asset references passed. No body copy, navigation, styling, degrees, documents, or research claims changed.
 - Previous search batch verified: b7d404f4de3089427b0dc6dc644377b33cd84b7d passed Portfolio Checks and Pages deployment; live heat/cooling queries returned WAAM on desktop and a 320px phone with zero settled overflow. This supersedes its pending gate above.
 - Files: index.html and this record. Deployment gate: GitHub checks, Pages deployment, and live title verification remain required.
+
+## 2026-11-14 — Improve contrast for small workflow step labels
+
+- A rendered solid-surface text review across all 13 cases identified 24 small orange workflow labels on eight pages below the normal-text contrast threshold. Changed only those labels from the general orange accent to darker burnt orange #B93608; navigation accents, diagrams, workflow animation, and other typography remain unchanged.
+- Added contrast guards for both the ordinary #F3F6F9 and highlighted #E3EDF5 workflow backgrounds. These protect the small-label color pair rather than asserting whole-site accessibility conformance.
+- Verification: repeated rendered checks on the eight affected pages found no remaining issue in the sampled opaque HTML text pairs. Desktop visual review and 320px label-fit checks passed with matching 305px client/scroll widths. All 15 representative contrast/focus safeguards, six workflow behavior checks, stylesheet safeguards, 16-page/525-reference site checks, and asset refresh passed.
+- Previous title batch verified: 5813778863d9431907f3500367589513bcaab116 passed Portfolio Checks and Pages deployment; live browser and Open Graph titles match the aerospace innovation/engineering leadership wording. This supersedes its pending gate above.
+- Files: styles.css, tests/contrast.test.cjs, stylesheet-version references on 16 pages, and this record. No content claims, original PDFs, or research results changed. Deployment gate: GitHub checks, Pages deployment, and live label verification remain required.
