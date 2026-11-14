@@ -29,7 +29,10 @@ function relatedHTML(name){
   return '<nav class="related-projects" aria-labelledby="related-projects-heading"><h2 id="related-projects-heading">Related Engineering Work</h2><div class="related-grid">'+pairs[name].map(key=>{
     const project=library.get(key);
     if(!project)throw Error(`Missing library entry: ${key}`);
-    return `<a class="related-card" href="${key}.html" aria-label="Read Case Study: ${attribute(project.title)}"><span class="related-category">${project.category}</span><h3>${project.title}</h3><p>${project.summary}</p><span class="related-action">Read Case Study <span aria-hidden="true">→</span></span></a>`;
+    // Preserve old links to the documentation section after the NASA split.
+    const legacyAnchor=name==='nasa-manufacturing'&&key==='nasa-documentation-assistant'?
+      ' id="documentation" style="scroll-margin-top:calc(var(--nav-clearance,145px) + 80px)"':'';
+    return `<a class="related-card"${legacyAnchor} href="${key}.html" aria-label="Read Case Study: ${attribute(project.title)}"><span class="related-category">${project.category}</span><h3>${project.title}</h3><p>${project.summary}</p><span class="related-action">Read Case Study <span aria-hidden="true">→</span></span></a>`;
   }).join('')+'</div></nav>';
 }
 function refreshed(name,html){

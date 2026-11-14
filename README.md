@@ -109,3 +109,5 @@ Dustin’s stated career direction is engineering leadership in aerospace innova
 Outside Engineering contains Dustin’s stated interests in basketball, sports statistics, and bouldering. It lives on outside-engineering.html, reached through a quiet About link, and uses decorative vector icons. The homepage does not include a scrolling interests section. Do not invent favorite teams, playing/climbing achievements, sports-analysis projects, or personal photos.
 
 NASA work is presented as two separate cases: real-time LDED monitoring on Jetson/Holoscan with LED feedback, and a Raspberry Pi/local-language-model documentation assistant using RAG. The old nasa-manufacturing.html address remains the monitoring case. Preserve this distinction without inventing accuracy, latency, privacy, or deployment claims.
+
+The old nasa-manufacturing.html#documentation fragment remains on the related card for the separate documentation-assistant case. Keep this alias in the related-work generator so saved links still reveal the correct destination; the card clears the sticky navigation and remains keyboard operable.

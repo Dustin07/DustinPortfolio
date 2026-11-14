@@ -17,6 +17,13 @@ for(const [name,targets] of Object.entries(pairs))test(`${name} has current, dis
   assert.equal(subject,'Engineering Portfolio — '+library.get(name).title.replace(/&amp;/g,'&'));
   assert.equal((html.match(/id="related-projects-heading"/g)||[]).length,1);
 });
+test('the old NASA documentation fragment reaches its separate case-study link',()=>{
+  const html=relatedHTML('nasa-manufacturing');
+  assert.equal((html.match(/id="documentation"/g)||[]).length,1);
+  assert.match(html,/<a class="related-card" id="documentation"[^>]*href="nasa-documentation-assistant.html"/);
+  assert.ok(!relatedHTML('waam-thermal-planning').includes('id="documentation"'));
+});
+
 test('mechanical refresh preserves case-study body and originals',()=>{
   const original='<article><p>Keep my source facts.</p><div class="case-bottom"><a href="../index.html#contact">Discuss This Work</a></div></article>';
   const next=refreshed('nasa-manufacturing',original);
