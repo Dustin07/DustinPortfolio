@@ -127,6 +127,7 @@
       setSize(false);
       title.textContent = heading;
       if (vector) {
+        enlarged.classList.add('figure-viewer-vector');
         const copy = image.cloneNode(true);
         const dimensions = image.viewBox.baseVal;
         if (dimensions.width && dimensions.height) {
@@ -136,7 +137,10 @@
         // An isolated SVG image preserves vector detail without duplicating
         // title, description, or gradient IDs in the live page document.
         enlarged.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(copy));
-      } else enlarged.src = image.currentSrc || image.src;
+      } else {
+        enlarged.classList.remove('figure-viewer-vector');
+        enlarged.src = image.currentSrc || image.src;
+      }
       enlarged.alt = enlargedDescription;
       const fullCaption = originalCaption?.textContent.trim() || description;
       const captionBody = captionHeading && fullCaption.startsWith(captionHeading)

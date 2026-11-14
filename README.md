@@ -123,3 +123,5 @@ At viewport heights of 300px or less, compact project contents stay in normal pa
 The WAAM process schematic uses the shared engineering-figure viewer, including its descriptive vector alternative, schematic caption, Actual Size, keyboard panning, and focus restoration. Its attributed cropped context photos remain inline and link to their original published figures.
 
 Above 900px, About pairs the leadership introduction with the existing recognition entry in a side column, then places Technical Capabilities across the full grid. The narrative keeps its bounded reading measure; 900px and smaller retain the original introduction, recognition, capabilities order. These layout rules are screen-only so the print layout remains independent.
+
+Fitted vector figures scale into the available viewer area instead of stopping at their SVG export dimensions. The image keeps contain fitting and the existing viewport-height limit; Actual Size restores the original vector dimensions. Raster previews keep their existing intrinsic sizing, and opening a raster clears the shared viewer image's vector marker.
