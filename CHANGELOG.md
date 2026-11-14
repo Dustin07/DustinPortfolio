@@ -571,3 +571,11 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: 16 related-work checks, 16-page/525-reference site checks, and 85 asset references passed. Desktop and 320px review placed the destination card below the sticky header (approximately 188px and 184px respectively). The narrow page had no root overflow, and pressing Enter on the focused card opened the separate assistant case.
 - Previous batch verified: 2ff3de320164852f65936f9920de1e6694766b38 passed Portfolio Checks and Pages deployment. Live review confirmed the quiet personal-page link, separate interests page, removed hero eyebrow, and two NASA projects with preserved filtered navigation. This supersedes its pending deployment gate above.
 - Deployment gate: GitHub checks, Pages deployment, and live bookmark verification remain required for this compatibility fix.
+
+## 2026-11-14 — Give personal interests a consistent heading hierarchy
+
+- Corrected the separate Outside Engineering page from H1 → H3 to H1 → H2 for its basketball/statistics and bouldering sections. Screen-reader heading navigation now reflects the actual page structure.
+- Updated the interest-heading selector to preserve the existing 16.8px appearance, spacing, and restrained styling. Refreshed stylesheet content-hash references across 16 pages.
+- Verification: desktop and 320px browser review confirmed H1/H2/H2 semantics and unchanged visual hierarchy; the phone document had matching 305px client/scroll widths. Site checks passed for 16 pages, 525 references, and 19 images; stylesheet safeguards, 11 asset tests, 17 sharing checks, 85 asset versions, and related-work generation passed.
+- Previous compatibility fix verified: 207742d77a351b43117d8fef486eed072532259f passed Portfolio Checks and Pages deployment; live review confirmed the legacy documentation link reaches the separate assistant card. This supersedes its pending deployment gate above.
+- Deployment gate: GitHub checks, Pages deployment, and live heading verification remain required for this correction.

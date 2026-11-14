@@ -1204,7 +1204,7 @@ html.motion-disabled::view-transition-new(*) {animation:none!important}
 .interest-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
 .interest-card {min-width:0;border-top:1px solid #dce4eb;padding-top:24px}
 .interest-symbol {display:block;width:40px;height:40px;color:#a74d20;margin-bottom:14px}
-.interest-card h3 {margin:0 0 10px;font-size:1.05rem;line-height:1.4}
+.interest-card h2 {margin:0 0 10px;font-size:1.05rem;line-height:1.4}
 .interest-card p {margin:0;max-width:56ch;color:#435867;line-height:1.8}
 @media(max-width:600px) {.outside-engineering {padding-top:40px;padding-bottom:48px}.interest-grid {grid-template-columns:minmax(0,1fr);gap:28px}}
 @media print {.outside-engineering {padding:20pt 0}.interest-grid {display:block}.interest-card {break-inside:avoid;margin-bottom:16pt}}
