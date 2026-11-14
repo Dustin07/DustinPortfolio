@@ -17,7 +17,7 @@ test('share image has a valid JPEG header and the declared dimensions',()=>{
   assert.deepEqual(dimensions,{width:1200,height:630});
 });
 test('share image stays small enough for a lightweight static site',()=>assert.ok(image.length<250000));
-const pages=['index.html',...fs.readdirSync(path.join(root,'projects')).filter(f=>f.endsWith('.html')).map(f=>'projects/'+f)];
+const pages=['index.html','outside-engineering.html',...fs.readdirSync(path.join(root,'projects')).filter(f=>f.endsWith('.html')).map(f=>'projects/'+f)];
 for(const file of pages)test(`${file} has a complete branded link preview`,()=>{
   const html=fs.readFileSync(path.join(root,file),'utf8');
   const metas=new Map([...html.matchAll(/<meta (?:property|name)="([^"]+)" content="([^"]*)">/g)].map(([,key,value])=>[key,value]));

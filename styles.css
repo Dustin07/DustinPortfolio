@@ -1195,3 +1195,22 @@ html.motion-disabled::view-transition-new(*) {animation:none!important}
 #capabilities {scroll-margin-top:var(--nav-clearance,145px)}
 @media screen and (min-width:521px) and (max-width:700px) {.hero {grid-template-columns:minmax(0,1fr) 180px;gap:24px}.hero-portrait {width:180px;grid-row:auto;justify-self:end}}
 @media screen and (min-width:521px) and (max-width:600px) {.hero {grid-template-columns:minmax(0,1fr) 144px;gap:20px}.hero-portrait {width:144px}.hero h1 {font-size:2.8rem}}
+
+/* Personal interests, separate from project and professional evidence. */
+.about-links {display:flex;flex-wrap:wrap;gap:8px 24px}
+.outside-engineering {padding-top:56px;padding-bottom:64px}
+.outside-engineering .section-heading {margin-bottom:24px}
+.outside-engineering h2 {font-size:clamp(1.65rem,3vw,2rem);line-height:1.25;text-wrap:balance}
+.interest-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px}
+.interest-card {min-width:0;border-top:1px solid #dce4eb;padding-top:24px}
+.interest-symbol {display:block;width:40px;height:40px;color:#a74d20;margin-bottom:14px}
+.interest-card h3 {margin:0 0 10px;font-size:1.05rem;line-height:1.4}
+.interest-card p {margin:0;max-width:56ch;color:#435867;line-height:1.8}
+@media(max-width:600px) {.outside-engineering {padding-top:40px;padding-bottom:48px}.interest-grid {grid-template-columns:minmax(0,1fr);gap:28px}}
+@media print {.outside-engineering {padding:20pt 0}.interest-grid {display:block}.interest-card {break-inside:avoid;margin-bottom:16pt}}
+
+.personal-interest-link {display:inline-flex;align-items:center;min-height:44px;font-size:.85rem;color:#435867}
+.personal-page h1 {font-size:clamp(2rem,4.5vw,3rem);line-height:1.15;text-wrap:balance}
+.personal-return {margin:32px 0 0}
+.personal-return a {display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:.85rem}
+.personal-page .back {display:inline-flex;align-items:center;min-height:44px}

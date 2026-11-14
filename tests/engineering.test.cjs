@@ -30,6 +30,15 @@ test('current WAAM research leads the library and featured projects',()=>{
   assert.equal(home.match(/<a class="featured-card" href="([^"]+)"/)[1],cards[0].target);
 });
 
+test('NASA monitoring and documentation retain distinct implementation scopes',()=>{
+  const monitoring=read('projects/nasa-manufacturing.html').split('<nav class="related-projects"')[0];
+  const assistant=read('projects/nasa-documentation-assistant.html').split('<nav class="related-projects"')[0];
+  assert.match(monitoring,/NVIDIA Jetson Thor/);assert.match(monitoring,/Holoscan/);assert.match(monitoring,/LED/);
+  assert.doesNotMatch(monitoring,/Raspberry Pi|local language model|retrieval-augmented generation/i);
+  assert.match(assistant,/Raspberry Pi/);assert.match(assistant,/retrieval-augmented generation/);
+  assert.doesNotMatch(assistant,/NVIDIA Jetson|Holoscan/);
+});
+
 test('every project has its own reflection reachable from its contents',()=>{
   const reflections=cards.map(card=>{
     const page=read(card.target);
@@ -42,7 +51,7 @@ test('every project has its own reflection reachable from its contents',()=>{
 });
 
 test('every case offers a valid, specifically labeled project highlight shortcut',()=>{
-  const targets={'waam-thermal-planning':['section-3','View Research Methods'],'nasa-manufacturing':['engineering-decisions','Engineering Decisions'],'protective-covers':['section-4','View Outcome'],'rocket-structures':['section-5','View Results'],'legacy-reverse-engineering':['section-3','View Impact'],'ergonomic-tools':['section-4','View Outcome'],'carabiner-fea':['section-4','View Results'],'cnc-putter':['section-4','View Machining Plan'],'rocket-propulsion':['section-8','View Key Results'],'aircraft-aerodynamics':['section-2','View My Contribution'],'gating-optimization':['section-3','View Deliverables'],'die-design':['section-3','View Deliverables']};
+  const targets={'waam-thermal-planning':['section-3','View Research Methods'],'nasa-manufacturing':['engineering-decisions','Engineering Decisions'],'nasa-documentation-assistant':['assistant-approach','Explore the Approach'],'protective-covers':['section-4','View Outcome'],'rocket-structures':['section-5','View Results'],'legacy-reverse-engineering':['section-3','View Impact'],'ergonomic-tools':['section-4','View Outcome'],'carabiner-fea':['section-4','View Results'],'cnc-putter':['section-4','View Machining Plan'],'rocket-propulsion':['section-8','View Key Results'],'aircraft-aerodynamics':['section-2','View My Contribution'],'gating-optimization':['section-3','View Deliverables'],'die-design':['section-3','View Deliverables']};
   assert.equal(Object.keys(targets).length,cards.length);
   for(const [name,[id,label]] of Object.entries(targets)){
     const html=read('projects/'+name+'.html');

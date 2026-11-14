@@ -20,6 +20,7 @@ Project memory: read [CHANGELOG.md](CHANGELOG.md) for completed improvements, re
 - The WAAM case includes a static process schematic that connects wire, welding arc, deposited layers, and build plate. It illustrates the general process, not research outputs or a particular machine.
 - The ergonomic-tool, gating, and die-design cases use the same numbered workflow layout as static summaries of their published methods and handoff boundaries.
 - `images/portfolio-social.svg` and `.jpg`: editable branded link-preview artwork and the rendered 1200 × 630 sharing image. Page titles and descriptions remain specific to each case study.
+- `outside-engineering.html`: basketball, sports statistics, and bouldering, reached through a quiet About link rather than a homepage section.
 - `404.html`: recovery links for missing addresses, including nested project paths.
 - `images/`: selected engineering visuals from the original project reports.
 - `documents/`: original reports and the publicly approved general resume.
@@ -101,6 +102,10 @@ Case-study ending actions include Back to Project Overview, a native link to tha
 
 The missing-page recovery action opens #project-library directly, revealing the full library. Keep its absolute project-site addresses so recovery also works from nested missing paths; its navigation includes Current Research.
 
-WAAM leads both the featured row and full project library as Dustin’s current project. Each of the 12 case studies includes a What I Learned reflection and contents link, based on its existing documented methods, decisions, and limitations. Keep the WAAM reflection free of research results.
+WAAM leads both the featured row and full project library as Dustin’s current project. Each of the 13 case studies includes a What I Learned reflection and contents link, based on its existing documented methods, decisions, and limitations. Keep the WAAM reflection free of research results.
 
 Dustin’s stated career direction is engineering leadership in aerospace innovation and development. The homepage connects his NASA, Boeing, and PCC experience to that ambition and his DEng path. He clarified that he is earning the M.S. along the way within that path; May 2028 applies to the M.S., with no DEng completion date supplied. Present leadership as a goal, without inventing prior leadership positions or program-specific curriculum claims.
+
+Outside Engineering contains Dustin’s stated interests in basketball, sports statistics, and bouldering. It lives on outside-engineering.html, reached through a quiet About link, and uses decorative vector icons. The homepage does not include a scrolling interests section. Do not invent favorite teams, playing/climbing achievements, sports-analysis projects, or personal photos.
+
+NASA work is presented as two separate cases: real-time LDED monitoring on Jetson/Holoscan with LED feedback, and a Raspberry Pi/local-language-model documentation assistant using RAG. The old nasa-manufacturing.html address remains the monitoring case. Preserve this distinction without inventing accuracy, latency, privacy, or deployment claims.

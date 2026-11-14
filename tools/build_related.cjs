@@ -5,7 +5,8 @@ const path=require('node:path');
 const root=path.join(__dirname,'..');
 const pairs={
   'waam-thermal-planning':['nasa-manufacturing','gating-optimization'],
-  'nasa-manufacturing':['waam-thermal-planning','rocket-structures'],
+  'nasa-manufacturing':['nasa-documentation-assistant','waam-thermal-planning'],
+  'nasa-documentation-assistant':['nasa-manufacturing','waam-thermal-planning'],
   'protective-covers':['ergonomic-tools','die-design'],
   'rocket-structures':['carabiner-fea','nasa-manufacturing'],
   'legacy-reverse-engineering':['gating-optimization','die-design'],
