@@ -102,3 +102,5 @@ Case-study ending actions include Back to Project Overview, a native link to tha
 The missing-page recovery action opens #project-library directly, revealing the full library. Keep its absolute project-site addresses so recovery also works from nested missing paths; its navigation includes Current Research.
 
 WAAM leads both the featured row and full project library as Dustin’s current project. Each of the 12 case studies includes a What I Learned reflection and contents link, based on its existing documented methods, decisions, and limitations. Keep the WAAM reflection free of research results.
+
+Dustin’s stated career direction is engineering leadership in aerospace innovation and development. The homepage connects his NASA, Boeing, and PCC experience to that ambition and his DEng path. He clarified that he is earning the M.S. along the way within that path; May 2028 applies to the M.S., with no DEng completion date supplied. Present leadership as a goal, without inventing prior leadership positions or program-specific curriculum claims.
