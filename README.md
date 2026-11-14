@@ -113,3 +113,5 @@ NASA work is presented as two separate cases: real-time LDED monitoring on Jetso
 The old nasa-manufacturing.html#documentation fragment remains on the related card for the separate documentation-assistant case. Keep this alias in the related-work generator so saved links still reveal the correct destination; the card clears the sticky navigation and remains keyboard operable.
 
 Compact main navigation measures the remaining space below its rendered links when opened, and refits on header or viewport changes. Keep this independent of an assumed single-row brand/menu header so expanded text spacing and short viewports retain access to every link. CSS viewport bounds remain a fallback.
+
+Figure-viewer fit previews retain an 80px image-height allowance on short screens instead of letting viewport subtraction collapse the image. The bounded dialog can scroll for the caption; Actual Size still enables detailed panning.
