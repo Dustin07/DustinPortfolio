@@ -678,3 +678,9 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: desktop visual review and 320px/800px/801px responsive checks confirmed all three headings and fitting paragraphs. Site checks (16 pages, 525 references, 19 images), 17 sharing checks, stylesheet safeguards, and asset refresh passed.
 - Previous landscape viewer batch verified: cdb48e9d971c259575d9262598a99f4ba0157f4f passed Portfolio Checks and Pages deployment; live 568×200 review confirmed the complete preview beneath a 69px toolbar. This supersedes its pending gate above.
 - Files: personal page, styles.css, stylesheet-version references on 16 pages, README.md, and this record. Deployment gate: GitHub checks, Pages deployment, and live personal-copy/layout verification remain required.
+
+## 2026-11-14 — Update the personal-page navigation expectation
+
+- The personal-copy deployment d1a0088ab0c19b9178d665e6aa59124b2a1b8150 passed Pages but failed Portfolio Checks because an existing navigation assertion still required the old combined Basketball & Sports Statistics heading. Updated it to require all three new topic headings while preserving the separate-page/quiet-homepage-link safeguards.
+- Verification: all 15 JavaScript suites passed locally, including 124 portfolio cases, along with 11 asset tests, site checks, 85 asset references, generated related work, and original-PDF integrity. No production-page change was needed for this correction.
+- Files: tests/portfolio.test.cjs and this record. Deployment gate: renewed GitHub checks and final live personal-page verification remain required before reporting the overall personal-copy update complete.

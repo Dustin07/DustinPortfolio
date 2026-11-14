@@ -187,7 +187,7 @@ test('personal interests have a quiet page link rather than a homepage section',
   assert.ok(home.includes('class="personal-interest-link" href="outside-engineering.html"'));
   assert.ok(!home.includes('id="outside-engineering"'));
   const personal=fs.readFileSync(path.join(__dirname,'../outside-engineering.html'),'utf8');
-  assert.ok(personal.includes('Basketball &amp; Sports Statistics'));assert.ok(personal.includes('Bouldering'));
+  for(const topic of ['Basketball','Sports Statistics','Bouldering'])assert.ok(personal.includes(`<h2>${topic}</h2>`));
   assert.ok(personal.includes('href="index.html#about"'));
 });
 
