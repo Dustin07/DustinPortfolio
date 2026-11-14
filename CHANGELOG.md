@@ -597,3 +597,11 @@ Dates below use the commit's UTC author timestamp. This index records 183 commit
 - Verification: inspected the rendered artwork at its declared size; all 17 sharing checks, 16-page/525-reference site checks, and 85 asset versions passed. No original PDFs, research results, scripts, or styles changed.
 - Previous palette/menu batch verified: 86fbaa788c788b093e461ea0ee922a97dd69e27f passed Portfolio Checks and Pages deployment. Live background resolves to #F7F6F2, and Contact remains keyboard-reachable inside the bounded menu at 568×200. This supersedes its pending gate above.
 - Deployment gate: GitHub checks, Pages deployment, and live artwork/metadata verification remain required. Social platforms may retain their own cached previews.
+
+## 2026-11-14 — Find current research with plain-language heat searches
+
+- Reproduced a live discovery gap: searching heat returned zero projects despite heat buildup being central to the current WAAM case. Added heat buildup, temperature, cooling, and welding to that card's search aliases, grounded in its existing process and methods descriptions.
+- Added a behavior regression covering five plain-language searches and the saved WAAM destination. No search algorithm, visible copy, layout, styles, research results, or external service changed.
+- Verification: local browser searches for heat and cooling each returned the WAAM case and retained the shareable query. All 121 portfolio tests, 24 engineering checks, site checks (16 pages, 525 references, 19 images), related-work generation, and 85 asset references passed.
+- Previous share-artwork batch verified: 61ff4bfdf59e799b35c56011c80bb6eebb0ebb1e passed Portfolio Checks and Pages deployment; live review confirmed the new image and leadership-focused alternative description after reload. This supersedes its pending gate above.
+- Files: index.html, tests/portfolio.test.cjs, and this record. Deployment gate: GitHub checks, Pages deployment, and live plain-language search verification remain required.

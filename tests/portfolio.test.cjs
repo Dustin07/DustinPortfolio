@@ -213,6 +213,14 @@ test('3D printing search finds both Boeing projects',()=>{const f=fixture(undefi
 test('CAM does not match camera sensing',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('CAM');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/Custom CNC Golf Putter/);});
 test('AI finds both NASA software projects without matching an aircraft tail',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('AI');assert.equal(f.shown().length,2);assert.ok(f.shown().every(text=>/Manufacturing Monitoring|Documentation Assistant/.test(text)));});
 test('language-model search finds the documentation assistant independently',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('language model');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/Local Manufacturing Documentation Assistant/);});
+test('plain-language heat and cooling searches find current WAAM research',()=>{
+  for(const query of ['heat','heat buildup','temperature','cooling','welding']){
+    const f=fixture(undefined,null,false,realLibrary);f.search(query);
+    assert.equal(f.shown().length,1,query);
+    assert.match(f.shown()[0],/Thermal-Aware Toolpath Planning/);
+    assert.deepEqual(f.stored().matches.map(item=>item.href),['projects/waam-thermal-planning.html']);
+  }
+});
 test('CAD search finds the actual part-modeling and tooling work',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('CAD');assert.equal(f.shown().length,9);assert.ok(f.shown().every(text=>!/Manufacturing Monitoring|Documentation Assistant/.test(text)));});
 test('FEA search does not imply completed rocket material analysis',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('FEA');assert.equal(f.shown().length,2);assert.ok(f.shown().every(text=>!text.includes('Rocket Structures')));});
 test('GD&T matches its actual metrology case',()=>{const f=fixture(undefined,null,false,realLibrary);f.search('GD&T');assert.equal(f.shown().length,1);assert.match(f.shown()[0],/Legacy Component Reverse Engineering/);});
